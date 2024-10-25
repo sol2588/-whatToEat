@@ -11,12 +11,11 @@ export interface SSEProps {
 
 export default function fetchSSEHandler() {
     const [alarmData, setAlarmData] = useState<SSEProps[]>([]); // 서버가 푸쉬한 데이터 저장
-    const [isConnected, setIsConnected] = useState(false);
     const token = useAuthToken();
     const eventSource = useRef<EventSource | null>(null);
 
     useEffect(() => {
-        if (token && !isConnected) {
+        if (token) {
             fetchSSE();
         }
         return () => {
@@ -25,7 +24,7 @@ export default function fetchSSEHandler() {
                 console.log('Close SSE connection');
             }
         };
-    }, [token, isConnected]);
+    }, [token]);
 
     const fetchSSE = () => {
         // 기존 연결이 있다면 닫기
@@ -46,7 +45,6 @@ export default function fetchSSEHandler() {
 
         // 연결 -> 최초 연결시 "Alarm Init Message"
         eventSource.current.onopen = () => {
-            setIsConnected(true);
             console.log('Connection to SSE server stablished');
         };
 
@@ -59,7 +57,6 @@ export default function fetchSSEHandler() {
                 setAlarmData((prev) => [...prev, parsedData]); // recipeId, comment, reviewer, createdAt
             } catch (error) {
                 console.log('first message: ', res);
-                console.log('onmessage catch error: ', error);
             }
         };
 
@@ -68,7 +65,7 @@ export default function fetchSSEHandler() {
             console.log('SSE connection error', err);
             if (eventSource.current) {
                 eventSource.current.close();
-                setIsConnected(false);
+                setTimeout(fetchSSE, 5000);
             }
         };
     };
