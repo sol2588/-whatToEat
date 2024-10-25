@@ -63,10 +63,10 @@ export default function fetchSSEHandler() {
         // 종료시 onerror로 처리
         eventSource.current.onerror = (err: any) => {
             console.log('SSE connection error', err);
-            if (eventSource.current) {
-                eventSource.current.close();
-                setTimeout(fetchSSE, 5000);
-            }
+            // if (eventSource.current) {
+            //     eventSource.current.close();
+            //     setTimeout(fetchSSE, 5000);
+            // }
         };
     };
 
