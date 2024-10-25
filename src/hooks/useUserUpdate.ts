@@ -1,7 +1,8 @@
 import instance from '../utils/api/instance';
 import { validateUserIfno } from '../utils/validation/validation';
 import { userFormHandler } from '../handler/userFormHandler';
-
+import { showModal } from '../redux/reducer/modalSlice';
+import { useDispatch } from 'react-redux';
 export const useUserUpdate = (
     password: string,
     newPassword: string,
@@ -11,7 +12,7 @@ export const useUserUpdate = (
     refetchUserInfo: () => void,
 ) => {
     // const token = useAuthToken();
-
+    const dispatch = useDispatch();
     const { setInputMessage } = userFormHandler();
 
     const handleUpdate = async () => {
@@ -33,7 +34,7 @@ export const useUserUpdate = (
             });
             console.log('회원정보 수정 성공', response);
             console.log('response.data : ', response.data);
-            alert('회원정보가 성공적으로 수정되었습니다.');
+            dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
 
             //서버에서 받은 새로운 정보 상태 업데이트
             refetchUserInfo();
