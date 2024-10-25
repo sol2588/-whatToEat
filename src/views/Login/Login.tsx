@@ -62,7 +62,7 @@ export default function Login(): JSX.Element {
             if (response.data.data.code === 'OK') {
                 closeModal();
                 handlePasswordModalClose();
-                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
+                dispatch(showModal({ isOpen: true, content: response.data.data.message, onConfirm: null }));
                 navigate('/login');
             }
         } catch (err: any) {
