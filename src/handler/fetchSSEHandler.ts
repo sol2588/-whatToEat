@@ -40,7 +40,7 @@ export default function fetchSSEHandler() {
                 'access-token': `Bearer ${token}`,
             },
             withCredentials: true,
-            heartbeatTimeout: 100 * 60 * 1000,
+            heartbeatTimeout: 5 * 60 * 1000, // 5분
         });
 
         // 연결 -> 최초 연결시 "Alarm Init Message"
@@ -71,6 +71,7 @@ export default function fetchSSEHandler() {
         // 종료시 onerror로 처리
         eventSource.current.onerror = (err: any) => {
             console.log('SSE connection error', err);
+            setTimeout(fetchSSE, 600000); // 10분 후 연결
         };
     };
 
