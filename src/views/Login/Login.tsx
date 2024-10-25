@@ -45,8 +45,9 @@ export default function Login(): JSX.Element {
             console.log('비밀번호 response : ', response);
             console.log('비밀번호 response.data : ', response.data);
             if (response.data.code === 'OK') {
-                handlePasswordModalOpen();
                 setUserId(response.data.data.userId);
+                handlePasswordModalOpen();
+                console.log(userId);
             }
         } catch (err: any) {
             console.log('비밀번호찾기에러:', err);
@@ -58,7 +59,9 @@ export default function Login(): JSX.Element {
             const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/update-password`, { userId, password });
             console.log('비밀번호수정 response:', response);
             console.log('비밀번호 수정response.data:', response);
-            if (response.data.code === 200) {
+            if (response.data.data.code === 'OK') {
+                closeModal();
+                handlePasswordModalClose();
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
                 navigate('/login');
             }
@@ -222,6 +225,7 @@ export default function Login(): JSX.Element {
                                     error={!!inputMessage.password && clickedButEmpty.password}
                                     helperText={inputMessage.password && clickedButEmpty.password && inputMessage.password}
                                     margin="normal"
+                                    type="password"
                                 />
                                 <TextField
                                     fullWidth
@@ -233,6 +237,7 @@ export default function Login(): JSX.Element {
                                     error={!!inputMessage.passwordCheck && clickedButEmpty.passwordCheck}
                                     helperText={inputMessage.passwordCheck && clickedButEmpty.passwordCheck && inputMessage.passwordCheck}
                                     margin="normal"
+                                    type="password"
                                 />
                                 <Box sx={{ display: 'flex', justifyContent: 'cetner', width: '100%' }}>
                                     <Button
