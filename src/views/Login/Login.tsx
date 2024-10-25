@@ -5,7 +5,7 @@ import SocialKakao from './SocialKakao';
 import { Container, Box, Typography, TextField, Button, Divider } from '@mui/material';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import { showModal } from '../../redux/reducer/modalSlice';
+import { hideModal, showModal } from '../../redux/reducer/modalSlice';
 import { RootState } from '../../redux/store/store';
 import colors from '../../styles/colors';
 import axios from 'axios';
@@ -62,8 +62,16 @@ export default function Login(): JSX.Element {
             if (response.data.code === 'OK') {
                 closeModal();
                 handlePasswordModalClose();
-                dispatch(showModal({ isOpen: true, content: response.data.data.message, onConfirm: null }));
-                navigate('/login');
+                dispatch(
+                    showModal({
+                        isOpen: true,
+                        content: response.data.message,
+                        onConfirm: () => {
+                            dispatch(hideModal());
+                            navigate('/login');
+                        },
+                    }),
+                );
             }
         } catch (err: any) {
             console.log('회원가입 에러:', err);
