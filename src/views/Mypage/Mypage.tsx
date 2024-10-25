@@ -6,7 +6,6 @@ import { useUpdateForm } from '../../hooks/useUpdateForm';
 import { useGetMyRecipes } from '../../hooks/useGetMyRecipes';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { Button, Typography, Avatar, Grid, Pagination, Box } from '@mui/material';
-
 import { useUserUpdate } from '../../hooks/useUserUpdate';
 import { useRecipeDelete } from '../../hooks/useRecipeDelete';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
@@ -18,9 +17,11 @@ import { userFormHandler } from '../../handler/userFormHandler';
 import useAuthToken from '../../hooks/useAuthToken';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteUser } from '../../hooks/useDeleteUser';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { showModal } from '../../redux/reducer/modalSlice';
 import { RootState } from '../../redux/store/store';
 export default function Mypage(): JSX.Element {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const isLoggedIn = useSelector((state: RootState) => state.user.value.isLoggedIn);
     useEffect(() => {
@@ -323,8 +324,15 @@ export default function Mypage(): JSX.Element {
                                     <Button
                                         type="button"
                                         onClick={() => {
-                                            handleCheckModalOpen();
-                                            handleCheckNickname();
+                                            dispatch(
+                                                showModal({
+                                                    isOpen: true,
+                                                    content: checkFailMessage,
+                                                    onConfirm: () => {
+                                                        handleCheckNickname();
+                                                    },
+                                                }),
+                                            );
                                         }}
                                     >
                                         중복확인
@@ -359,8 +367,15 @@ export default function Mypage(): JSX.Element {
                                     <Button
                                         type="button"
                                         onClick={() => {
-                                            handlePasswordModalOpen();
-                                            handlePasswordCheck();
+                                            dispatch(
+                                                showModal({
+                                                    isOpen: true,
+                                                    content: checkFailMsg,
+                                                    onConfirm: () => {
+                                                        handlePasswordCheck();
+                                                    },
+                                                }),
+                                            );
                                         }}
                                     >
                                         비밀번호 확인
