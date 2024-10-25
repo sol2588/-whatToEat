@@ -59,7 +59,7 @@ export default function Login(): JSX.Element {
             const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/auth/update-password`, { userId, password });
             console.log('비밀번호수정 response:', response);
             console.log('비밀번호 수정response.data:', response);
-            if (response.data.data.code === 'OK') {
+            if (response.data.code === 'OK') {
                 closeModal();
                 handlePasswordModalClose();
                 dispatch(showModal({ isOpen: true, content: response.data.data.message, onConfirm: null }));
@@ -119,7 +119,7 @@ export default function Login(): JSX.Element {
                         sx={{
                             mt: 3,
                             backgroundColor: `${colors[300]}`,
-                            color: 'black',
+                            color: 'white',
                             fontWeight: 'bold',
                             ':hover': { backgroundColor: '#80cbc4' },
                         }}
