@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import useAuthToken from '../hooks/useAuthToken';
 
@@ -13,15 +13,15 @@ export default function fetchSSEHandler() {
     const [alarmData, setAlarmData] = useState<SSEProps[]>([]); // 서버가 푸쉬한 데이터 저장
     const [isConnected, setIsConnected] = useState(false);
     const token = useAuthToken();
-    let eventSource: EventSource | null = null;
+    const eventSource = useRef<EventSource | null>(null);
 
     useEffect(() => {
         if (token && !isConnected) {
             fetchSSE();
         }
         return () => {
-            if (eventSource) {
-                eventSource.close();
+            if (eventSource.current) {
+                eventSource.current.close();
                 console.log('Close SSE connection');
             }
         };
@@ -29,14 +29,14 @@ export default function fetchSSEHandler() {
 
     const fetchSSE = () => {
         // 기존 연결이 있다면 닫기
-        if (eventSource) {
-            eventSource.close();
+        if (eventSource.current) {
+            eventSource.current.close();
             console.log('Exisiting Connetion CLOSED!!!');
         }
 
         const EventSource = EventSourcePolyfill || NativeEventSource; // request header에 token을 보내기 위해 EventSourcePolyfill(EventSource는 header 수정불가)
         // 새로운 EventSource생성
-        eventSource = new EventSource(`${import.meta.env.VITE_BASE_URL}/notify`, {
+        eventSource.current = new EventSource(`${import.meta.env.VITE_BASE_URL}/notify`, {
             headers: {
                 'access-token': `Bearer ${token}`,
             },
@@ -45,13 +45,13 @@ export default function fetchSSEHandler() {
         });
 
         // 연결 -> 최초 연결시 "Alarm Init Message"
-        eventSource.onopen = () => {
+        eventSource.current.onopen = () => {
             setIsConnected(true);
             console.log('Connection to SSE server stablished');
         };
 
         // 데이터 받아옴
-        eventSource.onmessage = (evt) => {
+        eventSource.current.onmessage = (evt) => {
             const res = evt.data;
             console.log('event data: ', res);
             try {
@@ -64,10 +64,10 @@ export default function fetchSSEHandler() {
         };
 
         // 종료시 onerror로 처리
-        eventSource.onerror = (err: any) => {
+        eventSource.current.onerror = (err: any) => {
             console.log('SSE connection error', err);
-            if (eventSource) {
-                eventSource.close();
+            if (eventSource.current) {
+                eventSource.current.close();
                 setIsConnected(false);
             }
         };
