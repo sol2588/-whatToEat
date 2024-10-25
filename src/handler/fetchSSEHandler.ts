@@ -52,21 +52,25 @@ export default function fetchSSEHandler() {
         eventSource.current.onmessage = (evt) => {
             const res = evt.data;
             console.log('event data: ', res);
-            try {
-                const parsedData = JSON.parse(res);
-                setAlarmData((prev) => [...prev, parsedData]); // recipeId, comment, reviewer, createdAt
-            } catch (error) {
-                console.log('first message: ', res);
+
+            if (res == 'Connection closed') {
+                eventSource.current?.close();
+                setTimeout(fetchSSE, 5000);
+            } else if (res == 'Alarm Init Message') {
+                console.log(res);
+            } else {
+                try {
+                    const parsedData = JSON.parse(res);
+                    setAlarmData((prev) => [...prev, parsedData]); // recipeId, comment, reviewer, createdAt
+                } catch (error) {
+                    console.log('other message not JSON: ', res);
+                }
             }
         };
 
         // 종료시 onerror로 처리
         eventSource.current.onerror = (err: any) => {
             console.log('SSE connection error', err);
-            // if (eventSource.current) {
-            //     eventSource.current.close();
-            //     setTimeout(fetchSSE, 5000);
-            // }
         };
     };
 
