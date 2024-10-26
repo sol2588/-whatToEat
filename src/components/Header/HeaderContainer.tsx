@@ -141,8 +141,8 @@ const S_HeaderButton = styled.div`
     }
 `;
 const S_AlaramBadge = styled.span`
-    width: 30px;
-    height: 30px;
+    width: 15px;
+    height: 15px;
     font-size: 10px;
     background-color: red;
     color: #fff;
