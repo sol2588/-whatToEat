@@ -469,6 +469,7 @@ const S_Subtitle = styled(Typography)`
 `;
 
 const S_MyFigure = styled.figure`
+    position: relative;
     background-color: #fff;
     padding: 16px;
     border-radius: 8px;
