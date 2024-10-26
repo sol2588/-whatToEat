@@ -2,7 +2,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import useAuthToken from '../hooks/useAuthToken';
 import reissueToken from '../utils/api/reissueToken';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { loginSuccess } from '../redux/reducer/userSlice';
 
 export interface SSEProps {
     recipeName: string;
@@ -24,6 +26,7 @@ export default function fetchSSEHandler() {
         error: null,
         reconnectCount: 0,
     });
+    const dispatch = useDispatch();
     const eventSource = useRef<EventSource | null>(null);
     let token = useAuthToken();
 
@@ -108,8 +111,12 @@ export default function fetchSSEHandler() {
 
             if (response.status == 401) {
                 const newToken = await reissueToken();
+                const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
+                const userData = JSON.parse(parsedData.user);
+                const parsedProvider = userData.value.provider;
                 if (newToken) {
                     token = newToken;
+                    dispatch(loginSuccess({ isLoggedIn: true, token: newToken, nickname: response.data.data, provider: parsedProvider }));
                     fetchSSE();
                 }
                 return;

@@ -50,7 +50,6 @@ instance.interceptors.response.use(
                 const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
                 const userData = JSON.parse(parsedData.user);
                 const parsedProvider = userData.value.provider;
-                console.log(parsedProvider);
 
                 store.dispatch(loginSuccess({ isLoggedIn: true, token: newAccessToken, nickname: err.response.data.data, provider: parsedProvider }));
                 err.config.headers['access-token'] = `Bearer ${newAccessToken}`;
