@@ -13,7 +13,7 @@ interface SearchBoxProps {
 export function SearchBox({ value, onChange, handleKeyDown }: SearchBoxProps) {
     return (
         <S_SearchWrapper>
-            <Box component="form" sx={{ width: 600, maxWidth: '100%' }}>
+            <Box component="form" sx={{ width: '100%', maxWidth: '100%' }}>
                 <TextField
                     fullWidth
                     id="search"
