@@ -1,5 +1,5 @@
 import axios from 'axios';
-import useAuthToken from '../hooks/useAuthToken';
+import useAuthToken from './useAuthToken';
 import { useNavigate } from 'react-router-dom';
 interface Recipe {
     myRecipeId: number;
@@ -9,7 +9,7 @@ interface Recipe {
 
 type SetMyRecipes = React.Dispatch<React.SetStateAction<Recipe[]>>;
 
-export const recipeDeleteHandler = (setMyRecipes?: SetMyRecipes) => {
+export const useRecipeDelete = (setMyRecipes?: SetMyRecipes) => {
     const token = useAuthToken();
     const navigate = useNavigate();
     const handleMyRecipeDelete = async (myRecipeId: number) => {

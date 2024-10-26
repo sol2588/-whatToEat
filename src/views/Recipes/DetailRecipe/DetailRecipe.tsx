@@ -9,7 +9,7 @@ import axios from 'axios';
 import { RootState } from '../../../redux/store/store';
 import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
-import { recipeDeleteHandler } from '../../../handler/recipeDeleteHandler';
+import { useRecipeDelete } from '../../../hooks/useRecipeDelete';
 interface Props {
     recipeId: number;
     recipeAuthor: string;
@@ -27,7 +27,7 @@ export default function DetailRecipe(): JSX.Element {
     const [recipe, setRecipe] = useState<Props | null>(null);
     const [message, setMessage] = useState<string>();
     //게시물삭제
-    const { handleMyRecipeDelete } = recipeDeleteHandler();
+    const { handleMyRecipeDelete } = useRecipeDelete();
 
     //로그인된 유저 닉네임
     const nickname = useSelector((state: RootState) => state.user.value.nickname);
