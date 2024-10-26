@@ -6,7 +6,10 @@ import CommentsView from '../../Comments/CommentsView';
 import { convertLevel, convertTime } from '../../../common/convertFunc';
 import styled from 'styled-components';
 import axios from 'axios';
-
+import { RootState } from '../../../redux/store/store';
+import { useSelector } from 'react-redux';
+import { Button } from '@mui/material';
+import { useRecipeDelete } from '../../../hooks/useRecipeDelete';
 interface Props {
     recipeId: number;
     recipeAuthor: string;
@@ -23,11 +26,17 @@ export default function DetailRecipe(): JSX.Element {
     const { id } = useParams();
     const [recipe, setRecipe] = useState<Props | null>(null);
     const [message, setMessage] = useState<string>();
+    //게시물삭제
+    const { handleMyRecipeDelete } = useRecipeDelete();
+
+    //로그인된 유저 닉네임
+    const nickname = useSelector((state: RootState) => state.user.value.nickname);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
+                console.log('response 값 :', response);
                 if (response.data.code === 'OK') {
                     const data = response.data.data;
                     const convertData = {
@@ -45,7 +54,13 @@ export default function DetailRecipe(): JSX.Element {
             }
         };
         fetchData();
-    }, []);
+    }, [id]);
+
+    // recipeAuthor와 loggedNickname이 일치할 경우 수정, 삭제 버튼을 보여줌
+    const isAuthor = recipe && recipe.recipeAuthor === nickname;
+    console.log('loggedNickname:', nickname);
+    console.log('recipeAuthor :', recipe && recipe.recipeAuthor);
+    console.log('isAuthor :', isAuthor);
     console.log('detailPage message:', message);
 
     if (!recipe) {
@@ -54,6 +69,12 @@ export default function DetailRecipe(): JSX.Element {
 
     return (
         <DetailRecipeContainer>
+            {isAuthor && (
+                <ButtonWrapper>
+                    <Link to={`/recipes/:${id}`}>수정</Link>
+                    <Button onClick={() => handleMyRecipeDelete(Number(id))}>삭제</Button>
+                </ButtonWrapper>
+            )}
             <DetailRecipeName>{recipe.recipeName}</DetailRecipeName>
             <DetailRecipeContents>
                 <DetailRecipeInstruction>
@@ -203,4 +224,8 @@ const CartIcon = styled(BsCartCheckFill)`
         color: #efb63e;
     }
     cursor: pointer;
+`;
+
+const ButtonWrapper = styled.div`
+    display: flex;
 `;
