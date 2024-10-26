@@ -8,17 +8,19 @@ export const useBookmark = () => {
     const handleClickBookmark = async (recipeId: number) => {
         try {
             const response = await instance.post(`/recipes/${recipeId}/scrap`);
+            console.log('북마크 response :', response);
+            console.log('북마크 response.data :', response.data);
             if (response.data.data === 'SCRAPED') {
                 //스크랩 성공 : 해당 게시물 스크랩 상태로 설정
                 setBookmarkRecipes((prev) => ({
                     ...prev,
-                    [recipeId]: response.data.data,
+                    [recipeId]: true,
                 }));
             } else if (response.data.data === 'CANCELED') {
                 //스크랩 취소: 해당 게시물 스크랩 해제
                 setBookmarkRecipes((prev) => ({
                     ...prev,
-                    [recipeId]: response.data.data,
+                    [recipeId]: false,
                 }));
             }
         } catch (error) {
