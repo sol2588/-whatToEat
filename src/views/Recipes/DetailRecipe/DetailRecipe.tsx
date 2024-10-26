@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { BsCartCheckFill } from 'react-icons/bs';
 import RecipeMetaData from '../../../components/Recipe/RecipeMetaData';
 import CommentsView from '../../Comments/CommentsView';
@@ -9,9 +9,8 @@ import axios from 'axios';
 import { RootState } from '../../../redux/store/store';
 import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
-import useAuthToken from '../../../hooks/useAuthToken';
-import { useDispatch } from 'react-redux';
-import { showModal } from '../../../redux/reducer/modalSlice';
+
+import { useRecipeDelete } from '../../../hooks/useRecipeDelete';
 interface Props {
     recipeId: number;
     recipeAuthor: string;
@@ -28,33 +27,11 @@ export default function DetailRecipe(): JSX.Element {
     const { id } = useParams();
     const [recipe, setRecipe] = useState<Props | null>(null);
     const [message, setMessage] = useState<string>();
-    const token = useAuthToken();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-
     //게시물삭제
-    const handleMyRecipeDelete = async (id?: string) => {
-        try {
-            const response = await axios.delete(`${import.meta.env.VITE_BASE_URL}/recipes`, {
-                headers: {
-                    'access-token': `Bearer ${token}`,
-                },
-                data: {
-                    recipeId: id,
-                },
-            });
-            console.log('게시물삭제 response : ', response);
-            if (response.data.code === 'OK') {
-                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
-                navigate('/recipes/all');
-            }
-        } catch (error) {
-            console.error('레시피 삭제 실패', error);
-        }
-    };
+    const { handleMyRecipeDelete } = useRecipeDelete();
 
     //로그인된 유저 닉네임
-    const loggedNickname = useSelector((state: RootState) => state.user.value.nickname);
+    const nickname = useSelector((state: RootState) => state.user.value.nickname);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -81,8 +58,8 @@ export default function DetailRecipe(): JSX.Element {
     }, [id]);
 
     // recipeAuthor와 loggedNickname이 일치할 경우 수정, 삭제 버튼을 보여줌
-    const isAuthor = recipe && recipe.recipeAuthor === loggedNickname;
-    console.log('loggedNickname:', loggedNickname);
+    const isAuthor = recipe && recipe.recipeAuthor === nickname;
+    console.log('loggedNickname:', nickname);
     console.log('recipeAuthor :', recipe && recipe.recipeAuthor);
     console.log('isAuthor :', isAuthor);
     console.log('detailPage message:', message);
@@ -96,7 +73,7 @@ export default function DetailRecipe(): JSX.Element {
             {isAuthor && (
                 <ButtonWrapper>
                     <Link to={`/recipes/:${id}`}>수정</Link>
-                    <Button onClick={() => handleMyRecipeDelete(id)}>삭제</Button>
+                    <Button onClick={() => handleMyRecipeDelete(Number(id))}>삭제</Button>
                 </ButtonWrapper>
             )}
             <DetailRecipeName>{recipe.recipeName}</DetailRecipeName>

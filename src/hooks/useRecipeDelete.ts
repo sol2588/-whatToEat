@@ -9,7 +9,7 @@ interface Recipe {
 
 type SetMyRecipes = React.Dispatch<React.SetStateAction<Recipe[]>>;
 
-export const useRecipeDelete = (setMyRecipes: SetMyRecipes) => {
+export const useRecipeDelete = (setMyRecipes?: SetMyRecipes) => {
     const token = useAuthToken();
 
     const handleMyRecipeDelete = async (myRecipeId: number) => {
@@ -22,8 +22,11 @@ export const useRecipeDelete = (setMyRecipes: SetMyRecipes) => {
                     recipeId: myRecipeId,
                 },
             });
-            setMyRecipes((prevRecipes) => prevRecipes.filter((recipe) => recipe.myRecipeId !== myRecipeId));
-            console.log('response : ', response);
+
+            console.log('삭제성공 , response : ', response);
+            if (setMyRecipes) {
+                setMyRecipes((prevRecipes) => prevRecipes.filter((recipe) => recipe.myRecipeId !== myRecipeId));
+            }
         } catch (error) {
             console.error('레시피 삭제 실패', error);
         }
