@@ -28,6 +28,7 @@ export default function DetailRecipe(): JSX.Element {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
+                console.log('response 값 :', response);
                 if (response.data.code === 'OK') {
                     const data = response.data.data;
                     const convertData = {

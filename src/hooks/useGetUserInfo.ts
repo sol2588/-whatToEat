@@ -16,7 +16,7 @@ export const useGetUserInfo = () => {
             setUserInfo({
                 email: email,
                 nickname: nickname,
-                img: 'https://thumb.ac-illust.com/73/7387030e5a5600726e5309496353969a_t.jpeg',
+                img: 'https://cdn.pixabay.com/photo/2014/04/02/10/48/food-304597_1280.png',
             });
         } catch (error) {
             console.error('유저정보를 불러오는 데 실패했습니다', error);
