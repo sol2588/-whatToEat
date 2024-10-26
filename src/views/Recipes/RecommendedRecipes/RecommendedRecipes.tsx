@@ -5,7 +5,7 @@ import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import instance from '../../../utils/api/instance.js';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../../redux/reducer/modalSlice.js';
-import Navibar from '../../../components/Navibar/Navibar.js';
+import Navbar from '../../../components/Navbar/Navbar.js';
 import { convertTime, convertLevel } from '../../../common/convertFunc.js';
 
 interface RecipeProps {
@@ -47,7 +47,7 @@ function RecommendedRecipes(): JSX.Element {
     return (
         <S_RecipeContainer>
             <RecipeList recipes={recipes} />
-            <Navibar />
+            <Navbar />
         </S_RecipeContainer>
     );
 }

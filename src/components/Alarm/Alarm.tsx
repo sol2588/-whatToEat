@@ -11,20 +11,24 @@ export default function Alarm({ alarmData, changeAlarmData }: { alarmData: SSEPr
         <AlarmContainer>
             <h5>알람</h5>
             <AlarmList>
-                {alarmData.map((data, idx) => (
-                    <AlarmItem key={idx}>
-                        <AlarmItemText>
-                            <span>{data.commentUser}</span>
-                            <span>
-                                작성 게시글({data.recipeName})에 <br />
-                                새로운 댓글이 추가되었습니다
-                            </span>
-                        </AlarmItemText>
-                        <Link to={`/recipes/${data.recipeId}`} onClick={() => handleChangeAlarmData(data.recipeId)}>
-                            확인
-                        </Link>
-                    </AlarmItem>
-                ))}
+                {alarmData.length > 0 ? (
+                    alarmData.map((data, idx) => (
+                        <AlarmItem key={idx}>
+                            <AlarmItemText>
+                                <span>{data.commentUser}</span>
+                                <span>
+                                    작성 게시글({data.recipeName})에 <br />
+                                    새로운 댓글이 추가되었습니다
+                                </span>
+                            </AlarmItemText>
+                            <Link to={`/recipes/${data.recipeId}`} onClick={() => handleChangeAlarmData(data.recipeId)}>
+                                확인
+                            </Link>
+                        </AlarmItem>
+                    ))
+                ) : (
+                    <AlarmItemText>새로운 알림이 없습니다.</AlarmItemText>
+                )}
             </AlarmList>
         </AlarmContainer>
     );

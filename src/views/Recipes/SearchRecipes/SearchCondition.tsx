@@ -11,7 +11,7 @@ import colors from '../../../styles/colors';
 import styled from 'styled-components';
 import instance from '../../../utils/api/instance';
 import qs from 'qs';
-import Navibar from '../../../components/Navibar/Navibar';
+import Navbar from '../../../components/Navbar/Navbar.js';
 import { convertLevel, convertTime } from '../../../common/convertFunc.js';
 
 export interface RecipeProps {
@@ -160,7 +160,7 @@ export default function SearchCondition(): JSX.Element {
                 </S_SearchedContent>
             )}
             <SearchResult hasMore={hasMore} recipes={recipes} isLoading={isLoading} hasSearched={hasSearched} fetchRecipes={fetchRecipes} />
-            <Navibar />
+            <Navbar />
         </S_ConditionContainer>
     );
 }

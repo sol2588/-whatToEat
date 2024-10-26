@@ -141,11 +141,14 @@ const S_HeaderButton = styled.div`
     }
 `;
 const S_AlaramBadge = styled.span`
+    width: 10px;
+    height: 10px;
+    font-size: 10px;
     background-color: red;
     color: #fff;
     border-radius: 50%;
     padding: 4px;
     position: absolute;
-    top: -5px;
-    right: -5px;
+    top: -15px;
+    right: -15px;
 `;
