@@ -3,6 +3,7 @@ import { validateUserIfno } from '../utils/validation/validation';
 import { userFormHandler } from '../handler/userFormHandler';
 import { showModal } from '../redux/reducer/modalSlice';
 import { useDispatch } from 'react-redux';
+import { Dispatch, SetStateAction } from 'react';
 
 export const useUserUpdate = (
     password: string,
@@ -11,6 +12,10 @@ export const useUserUpdate = (
     nickname: string,
     closeModal: () => void,
     refetchUserInfo: () => void,
+    setPassword: Dispatch<SetStateAction<string>>,
+    setNewPassword: Dispatch<SetStateAction<string>>,
+    setPasswordCheck: Dispatch<SetStateAction<string>>,
+    setNickname: Dispatch<SetStateAction<string>>,
 ) => {
     // const token = useAuthToken();
     const dispatch = useDispatch();
@@ -37,6 +42,10 @@ export const useUserUpdate = (
             console.log('response.data : ', response.data);
             if (response.data.code === 'OK') {
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
+                setPassword('');
+                setNewPassword('');
+                setPasswordCheck('');
+                setNickname('');
             }
 
             //서버에서 받은 새로운 정보 상태 업데이트
