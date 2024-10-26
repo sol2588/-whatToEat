@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import useAuthToken from '../hooks/useAuthToken';
 import reissueToken from '../utils/api/reissueToken';
-import instance from '../utils/api/instance';
 import axios from 'axios';
 
 export interface SSEProps {
