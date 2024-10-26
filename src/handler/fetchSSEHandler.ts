@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import useAuthToken from '../hooks/useAuthToken';
 import reissueToken from '../utils/api/reissueToken';
+import axios from 'axios';
 
 export interface SSEProps {
     recipeName: string;
@@ -47,7 +48,7 @@ export default function fetchSSEHandler() {
         };
     }, [token, closeConnection]);
 
-    const fetchSSE = useCallback(() => {
+    const fetchSSE = useCallback(async () => {
         if (!token) return;
 
         // 기존 연결이 있다면 종료
@@ -98,19 +99,27 @@ export default function fetchSSEHandler() {
                 }
             };
 
+            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/token/refresh`, {
+                headers: {
+                    'access-token': `Bearer ${token}`,
+                },
+                withCredentials: true,
+            });
+
+            if (response.status == 401) {
+                const newToken = await reissueToken();
+                if (newToken) {
+                    token = newToken;
+                    fetchSSE();
+                }
+                return;
+            } else {
+                console.error('Failed to reissue token');
+            }
+
             // 종료시 onerror로 처리
             eventSource.current.onerror = async (err: any) => {
                 console.log('SSE connection error', err);
-
-                if (err.status === 401) {
-                    const newToken = await reissueToken();
-                    token = newToken;
-                    fetchSSE();
-                    return;
-                } else {
-                    console.error('Failed to reissue token, logging out...');
-                    closeConnection();
-                }
 
                 setSseState((prev) => {
                     const newState = {
