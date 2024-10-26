@@ -1,6 +1,7 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import useAuthToken from '../hooks/useAuthToken';
+import reissueToken from '../utils/api/reissueToken';
 
 export interface SSEProps {
     recipeName: string;
@@ -9,71 +10,140 @@ export interface SSEProps {
     commentUser: string;
 }
 
+interface SSEState {
+    isConnected: boolean;
+    error: Error | null;
+    reconnectCount: number;
+}
+
 export default function fetchSSEHandler() {
     const [alarmData, setAlarmData] = useState<SSEProps[]>([]); // 서버가 푸쉬한 데이터 저장
-    const token = useAuthToken();
+    const [sseState, setSseState] = useState<SSEState>({
+        isConnected: false,
+        error: null,
+        reconnectCount: 0,
+    });
     const eventSource = useRef<EventSource | null>(null);
+    let token = useAuthToken();
+
+    const MAX_RECONNECT_ATTEMPTS = 5;
+    let reconnecting = false;
+
+    const closeConnection = useCallback(() => {
+        if (eventSource.current) {
+            eventSource.current.close();
+            eventSource.current = null;
+            setSseState((prev) => ({ ...prev, isConnected: false }));
+            console.log('SSE connection closed');
+        }
+    }, []);
 
     useEffect(() => {
         if (token) {
             fetchSSE();
         }
         return () => {
-            if (eventSource.current) {
-                eventSource.current.close();
-                console.log('Close SSE connection');
-            }
+            closeConnection();
         };
-    }, [token]);
+    }, [token, closeConnection]);
 
-    const fetchSSE = () => {
-        // 기존 연결이 있다면 닫기
-        if (eventSource.current) {
-            eventSource.current.close();
-            console.log('Exisiting Connetion CLOSED!!!');
-        }
+    const fetchSSE = useCallback(() => {
+        if (!token) return;
 
-        const EventSource = EventSourcePolyfill || NativeEventSource; // request header에 token을 보내기 위해 EventSourcePolyfill(EventSource는 header 수정불가)
-        // 새로운 EventSource생성
-        eventSource.current = new EventSource(`${import.meta.env.VITE_BASE_URL}/notify`, {
-            headers: {
-                'access-token': `Bearer ${token}`,
-            },
-            withCredentials: true,
-            heartbeatTimeout: 5 * 60 * 1000, // 5분
-        });
+        // 기존 연결이 있다면 종료
+        closeConnection();
 
-        // 연결 -> 최초 연결시 "Alarm Init Message"
-        eventSource.current.onopen = () => {
-            console.log('Connection to SSE server stablished');
-        };
+        try {
+            const EventSource = EventSourcePolyfill || NativeEventSource; // request header에 token을 보내기 위해 EventSourcePolyfill(EventSource는 header 수정불가)
+            // 새로운 EventSource생성
+            eventSource.current = new EventSource(`${import.meta.env.VITE_BASE_URL}/notify`, {
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'access-token': `Bearer ${token}`,
+                },
+                withCredentials: true,
+                heartbeatTimeout: 5 * 60 * 1000 + 5 * 1000, // 5분 5초
+            });
 
-        // 데이터 받아옴
-        eventSource.current.onmessage = (evt) => {
-            const res = evt.data;
-            console.log('event data: ', res);
+            // 연결
+            eventSource.current.onopen = () => {
+                console.log('SSE Connection established');
+                setSseState((prev) => ({ ...prev, isConnected: true, error: null, reconnectCount: 0 }));
+            };
 
-            if (res == 'Connection closed') {
-                eventSource.current?.close();
-                setTimeout(fetchSSE, 5000);
-            } else if (res == 'Alarm Init Message') {
-                console.log(res);
-            } else {
+            // event data
+            eventSource.current.onmessage = (event) => {
+                console.log('Raw SSE message:', event.data);
+
                 try {
-                    const parsedData = JSON.parse(res);
+                    if (event.data === 'Alarm Init Message') {
+                        console.log('Initial connection message received');
+                        return;
+                    } else if (event.data === 'Connection closed') {
+                        closeConnection();
+                        if (!reconnecting) {
+                            reconnecting = true;
+                            setTimeout(() => {
+                                fetchSSE();
+                                reconnecting = false;
+                            }, 5000);
+                        }
+                        return;
+                    }
+                    const parsedData = JSON.parse(event.data);
+                    console.log('SSE Event data : ', parsedData);
                     setAlarmData((prev) => [...prev, parsedData]); // recipeId, comment, reviewer, createdAt
-                } catch (error) {
-                    console.log('other message not JSON: ', res);
+                } catch (err) {
+                    console.error('Error parsing SSE message:', err);
                 }
-            }
-        };
+            };
 
-        // 종료시 onerror로 처리
-        eventSource.current.onerror = (err: any) => {
-            console.log('SSE connection error', err);
-            setTimeout(fetchSSE, 600000); // 10분 후 연결
-        };
-    };
+            // 종료시 onerror로 처리
+            eventSource.current.onerror = async (err: any) => {
+                console.log('SSE connection error', err);
 
-    return { alarmData };
+                if (err.status === 401) {
+                    const newToken = await reissueToken();
+                    token = newToken;
+                    fetchSSE();
+                    return;
+                } else {
+                    console.error('Failed to reissue token, logging out...');
+                    closeConnection();
+                }
+
+                setSseState((prev) => {
+                    const newState = {
+                        ...prev,
+                        isConnected: false,
+                        error: err as Error,
+                        reconnectionCount: prev.reconnectCount + 1,
+                    };
+
+                    if (newState.reconnectCount < MAX_RECONNECT_ATTEMPTS) {
+                        setTimeout(() => {
+                            console.log(`Attempting to reconnect (${newState.reconnectCount}/${MAX_RECONNECT_ATTEMPTS})`);
+                            fetchSSE();
+                        }, 5000);
+                    } else {
+                        console.error('Max reconnection attempts reached');
+                        closeConnection();
+                    }
+
+                    return newState;
+                });
+            };
+        } catch (err) {
+            console.error('Error initializing SSE:', err);
+            setSseState((prev) => ({
+                ...prev,
+                error: err as Error,
+                isConnected: false,
+            }));
+        }
+    }, [token, closeConnection]);
+
+    console.log('SSE State: ', sseState);
+
+    return { alarmData, sseState };
 }
