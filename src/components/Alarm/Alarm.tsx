@@ -27,7 +27,9 @@ export default function Alarm({ alarmData, changeAlarmData }: { alarmData: SSEPr
                         </AlarmItem>
                     ))
                 ) : (
-                    <AlarmItemText>새로운 알림이 없습니다.</AlarmItemText>
+                    <AlarmItem>
+                        <AlarmItemText>새로운 알림이 없습니다.</AlarmItemText>
+                    </AlarmItem>
                 )}
             </AlarmList>
         </AlarmContainer>
