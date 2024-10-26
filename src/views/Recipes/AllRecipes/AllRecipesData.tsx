@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import instance from '../../../utils/api/instance.js';
 import { showModal } from '../../../redux/reducer/modalSlice.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import AllRecipes from './AllRecipes.js';
-import Navibar from '../../../components/Navibar/Navibar.js';
+import Navbar from '../../../components/Navbar/Navbar.js';
 import { RecipeLimitProps } from './AllRecipesView.js';
 import { convertLevel, convertTime } from '../../../common/convertFunc.js';
 import fakeData from '../../../fakeData/recipeFake.js';
@@ -24,6 +25,7 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [hasMore, setHasMore] = useState<boolean>(true);
     const dispatch = useDispatch();
+    const { pathname } = useLocation();
 
     useEffect(() => {
         fetchRecipes();
@@ -66,7 +68,7 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
     return (
         <S_RecipeContainer>
             <AllRecipes hasMore={hasMore} limit={limit} recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
-            <Navibar />
+            {pathname != '/' && <Navbar />}
         </S_RecipeContainer>
     );
 }

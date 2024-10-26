@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { HiListBullet, HiOutlinePencilSquare, HiOutlineHeart } from 'react-icons/hi2';
 import { Link } from 'react-router-dom';
 
-export default function Navibar() {
+export default function Navbar() {
     return (
         <S_BarContainer>
             <S_BarHeader>
@@ -77,7 +77,7 @@ const S_BarItem = styled.li`
 
 // import colors from '../../styles/colors';
 
-// export default function NaviBar() {
+// export default function NavBar() {
 //     return (
 //         <S_BarContainer>
 //             <S_BarWrapper>
