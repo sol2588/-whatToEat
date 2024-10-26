@@ -12,13 +12,13 @@ export const useBookmark = () => {
                 //스크랩 성공 : 해당 게시물 스크랩 상태로 설정
                 setBookmarkRecipes((prev) => ({
                     ...prev,
-                    [recipeId]: true,
+                    [recipeId]: response.data.data,
                 }));
             } else if (response.data.data === 'CANCELED') {
                 //스크랩 취소: 해당 게시물 스크랩 해제
                 setBookmarkRecipes((prev) => ({
                     ...prev,
-                    [recipeId]: false,
+                    [recipeId]: response.data.data,
                 }));
             }
         } catch (error) {

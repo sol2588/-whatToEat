@@ -55,7 +55,7 @@ export default function Mypage(): JSX.Element {
     const { handleMyRecipeDelete } = useRecipeDelete(setMyRecipes);
 
     //북마크 hook
-    const { bookmarkRecipes, handleClickBookmark } = useBookmark();
+    const { bookmarkRecipes, handleClickBookmark, setBookmarkRecipes } = useBookmark();
 
     //유효성 검사를 위한 hook
     const {
@@ -106,6 +106,7 @@ export default function Mypage(): JSX.Element {
     const [nicknameCheck, setNicknameCheck] = useState<boolean>(false);
     const [checkFailMessage, setCheckFailMessage] = useState<string>('');
 
+    //닉네임체크 핸들러
     const handleCheckNickname = async () => {
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
@@ -132,7 +133,7 @@ export default function Mypage(): JSX.Element {
         }
     };
 
-    //비밀번호확인
+    //비밀번호확인 핸들러
     const [passowordInfoCheck, setPasswordInfoCheck] = useState<boolean>(false);
     const [checkFailMsg, setCheckFailMsg] = useState<string>('');
     const handlePasswordCheck = async () => {
@@ -175,10 +176,16 @@ export default function Mypage(): JSX.Element {
     };
 
     useEffect(() => {
-        if (!token) {
-            navigate('/login');
+        if (scrapedRecipes.length > 0) {
+            // `scrapedRecipes`에 스크랩된 게시물 ID 값을 기반으로 `bookmarkRecipes` 업데이트
+            const initialBookmarks = scrapedRecipes.reduce((acc, recipe) => {
+                acc[recipe.recipeId] = true; // 이미 스크랩된 게시물은 true로 설정
+                return acc;
+            }, {} as Record<string, boolean>);
+
+            setBookmarkRecipes(initialBookmarks);
         }
-    }, [token, navigate]);
+    }, [scrapedRecipes, setBookmarkRecipes]);
 
     return (
         <S_MyContainer>
@@ -195,7 +202,7 @@ export default function Mypage(): JSX.Element {
                                     </M_Linked>
                                     <M_BookmarkIcons
                                         onClick={() => handleClickBookmark(scrapedRecipe.recipeId)}
-                                        mark={bookmarkRecipes[scrapedRecipe.recipeId] ?? true}
+                                        mark={bookmarkRecipes[scrapedRecipe.recipeId] ?? false}
                                     >
                                         {bookmarkRecipes[scrapedRecipe.recipeId] ? <FaBookmark /> : <FaRegBookmark />}
                                     </M_BookmarkIcons>
@@ -203,6 +210,7 @@ export default function Mypage(): JSX.Element {
                             </Grid>
                         ))}
                     </Grid>
+
                     <S_PaginationContainer>
                         <Pagination
                             count={totalScrapedRecipesPages} // 스크랩 레시피 총 페이지 수
