@@ -35,7 +35,7 @@ export default function Home(): JSX.Element {
         <HomeContainer>
             <HomeMain>
                 <HomeContent>
-                    <h2>만개의 레시피 추천</h2>
+                    <h2>자취생을 위한 만개의 레시피 추천</h2>
                     <p>자취생을 위한 레시피를 추천합니다.</p>
                     <StyledLink to="/recipes/recommended">추천 레시피</StyledLink>
                 </HomeContent>
@@ -59,6 +59,7 @@ const HomeMain = styled.div`
 const HomeContent = styled.div`
     background-color: #d8dced;
     padding: 30px 70px;
+    word-break: keep-all;
     h2 {
         font-size: 40px;
         border-bottom: 3px solid #3f51b515;

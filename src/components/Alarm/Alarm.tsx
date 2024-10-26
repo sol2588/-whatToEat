@@ -1,24 +1,30 @@
+import { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { SSEProps } from '../../handler/fetchSSEHandler';
 
-export default function Alarm({ alarmData }: { alarmData: SSEProps[] }) {
+export default function Alarm({ alarmData, changeAlarmData }: { alarmData: SSEProps[]; changeAlarmData: Dispatch<SetStateAction<SSEProps[]>> }) {
+    const handleChangeAlarmData = (id: number) => {
+        changeAlarmData((prev) => prev.filter((alarm) => alarm.recipeId != id));
+    };
     return (
         <AlarmContainer>
             <h5>알람</h5>
             <AlarmList>
                 {alarmData.map((data, idx) => (
                     <AlarmItem key={idx}>
-                        <Link to="/">{data.message}</Link>
+                        <AlarmItemText>
+                            <span>{data.commentUser}</span>
+                            <span>
+                                작성 게시글({data.recipeName})에 <br />
+                                새로운 댓글이 추가되었습니다
+                            </span>
+                        </AlarmItemText>
+                        <Link to={`/recipes/${data.recipeId}`} onClick={() => handleChangeAlarmData(data.recipeId)}>
+                            확인
+                        </Link>
                     </AlarmItem>
                 ))}
-                <AlarmItem>
-                    <AlarmItemText>
-                        <span>nickname(reviewer)</span>
-                        <span>새로운 댓글이 추가되었습니다</span>
-                    </AlarmItemText>
-                    <Link to="/">확인</Link>
-                </AlarmItem>
             </AlarmList>
         </AlarmContainer>
     );
