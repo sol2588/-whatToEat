@@ -110,13 +110,14 @@ export default function fetchSSEHandler() {
             });
 
             if (response.status == 401) {
+                console.log('401 response in SSE', response);
                 const newToken = await reissueToken();
                 const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
                 const userData = JSON.parse(parsedData.user);
                 const parsedProvider = userData.value.provider;
                 if (newToken) {
-                    token = newToken;
-                    dispatch(loginSuccess({ isLoggedIn: true, token: newToken, nickname: response.data.data, provider: parsedProvider }));
+                    token = newToken.accessToken;
+                    dispatch(loginSuccess({ isLoggedIn: true, token: newToken.accessToken, nickname: newToken.nickname, provider: parsedProvider }));
                     fetchSSE();
                 }
                 return;
