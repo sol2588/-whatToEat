@@ -4,13 +4,14 @@ import useAuthToken from '../hooks/useAuthToken';
 import reissueToken from '../utils/api/reissueToken';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import { loginSuccess } from '../redux/reducer/userSlice';
+import { loginSuccess, logoutSuccess } from '../redux/reducer/userSlice';
 
 export interface SSEProps {
     recipeName: string;
     message: string;
     rating: number;
     commentUser: string;
+    recipeId: number;
 }
 
 interface SSEState {
@@ -84,6 +85,7 @@ export default function fetchSSEHandler() {
                         console.log('Initial connection message received');
                         return;
                     } else if (event.data === 'Connection closed') {
+                        console.log(event.data);
                         closeConnection();
                         if (!reconnecting) {
                             reconnecting = true;
@@ -121,8 +123,11 @@ export default function fetchSSEHandler() {
                     fetchSSE();
                 }
                 return;
-            } else {
-                console.error('Failed to reissue token');
+            } else if (response.status == 410) {
+                dispatch(logoutSuccess());
+                alert('다시 로그인해주시기 바랍니다.');
+                window.location.href = '/login';
+                console.error('412 expired refreshtoken');
             }
 
             // 종료시 onerror로 처리
@@ -162,5 +167,5 @@ export default function fetchSSEHandler() {
 
     console.log('SSE State: ', sseState);
 
-    return { alarmData, sseState };
+    return { alarmData, sseState, setAlarmData };
 }

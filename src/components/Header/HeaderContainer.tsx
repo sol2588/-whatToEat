@@ -21,7 +21,8 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
     const isLogin = useSelector((state: RootState) => state.user.value.isLoggedIn);
     const dispatch = useDispatch();
 
-    const { alarmData } = fetchSSEHandler();
+    const { alarmData, setAlarmData } = fetchSSEHandler();
+    const alarmCount = alarmData.length;
     const handleShowAlarm = (e: MouseEvent) => {
         e.stopPropagation();
         setShowAlarm(!showAlarm);
@@ -59,8 +60,9 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                             </S_StyledLink>
                             <S_BellIcon>
                                 <FiBell onClick={handleShowAlarm} />
+                                <S_AlaramBadge>{alarmCount}</S_AlaramBadge>
                             </S_BellIcon>
-                            {showAlarm && <Alarm alarmData={alarmData} />}
+                            {showAlarm && <Alarm alarmData={alarmData} changeAlarmData={setAlarmData} />}
                         </S_LoginUserList>
                     ) : (
                         <>
@@ -116,6 +118,7 @@ const S_StyledLink = styled(Link)`
 const S_BellIcon = styled.div`
     margin: 10px;
     cursor: pointer;
+    position: relative;
 `;
 const S_UserAction = styled.div`
     flex-grow: 1;
@@ -136,4 +139,13 @@ const S_HeaderButton = styled.div`
         color: #000;
         text-decoration: none;
     }
+`;
+const S_AlaramBadge = styled.span`
+    background-color: red;
+    color: #fff;
+    border-radius: 50%;
+    padding: 4px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
 `;
