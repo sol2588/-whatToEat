@@ -10,12 +10,10 @@ function convertTime(time: string) {
             return '20분 이내';
         case 'THIRTY_MINUTES':
             return '30분 이내';
-        case 'SIXTY_MINUTES':
-            return '60분 이내';
-        case 'OVER_SIXTY_MINUTES':
-            return '60분 이상';
+        case 'ONE_HOUR':
+            return '1시간 이내';
         default:
-            return time;
+            return '1시간 이상';
     }
 }
 
