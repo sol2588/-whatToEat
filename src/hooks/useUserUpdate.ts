@@ -3,16 +3,12 @@ import { validateUserIfno } from '../utils/validation/validation';
 import { userFormHandler } from '../handler/userFormHandler';
 import { showModal } from '../redux/reducer/modalSlice';
 import { useDispatch } from 'react-redux';
-import { Dispatch, SetStateAction } from 'react';
+
 export const useUserUpdate = (
     password: string,
     newPassword: string,
     passwordCheck: string,
     nickname: string,
-    setPassword: Dispatch<SetStateAction<string>>,
-    setNewPassword: Dispatch<SetStateAction<string>>,
-    setPasswordCheck: Dispatch<SetStateAction<string>>,
-    setNickname: Dispatch<SetStateAction<string>>,
     closeModal: () => void,
     refetchUserInfo: () => void,
 ) => {
@@ -41,10 +37,6 @@ export const useUserUpdate = (
             console.log('response.data : ', response.data);
             if (response.data.code === 'OK') {
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
-                setPassword('');
-                setNickname('');
-                setPasswordCheck('');
-                setNewPassword('');
             }
 
             //서버에서 받은 새로운 정보 상태 업데이트

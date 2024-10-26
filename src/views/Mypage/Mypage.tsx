@@ -88,18 +88,7 @@ export default function Mypage(): JSX.Element {
     } = useModal();
 
     //회원정보수정 hook
-    const { handleUpdate } = useUserUpdate(
-        password,
-        setPassword,
-        newPassword,
-        setNewPassword,
-        passwordCheck,
-        setPasswordCheck,
-        nickname,
-        setNickname,
-        closeModal,
-        refetchUserInfo,
-    );
+    const { handleUpdate } = useUserUpdate(password, newPassword, passwordCheck, nickname, closeModal, refetchUserInfo);
 
     //닉네임중복확인
     const { inputMessage, clickedButEmpty } = userFormHandler();
