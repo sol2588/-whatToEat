@@ -116,8 +116,8 @@ export default function fetchSSEHandler() {
                 const userData = JSON.parse(parsedData.user);
                 const parsedProvider = userData.value.provider;
                 if (newToken) {
-                    token = newToken.accessToken;
-                    dispatch(loginSuccess({ isLoggedIn: true, token: newToken.accessToken, nickname: newToken.nickname, provider: parsedProvider }));
+                    token = newToken;
+                    dispatch(loginSuccess({ isLoggedIn: true, token: newToken, nickname: response.data.data, provider: parsedProvider }));
                     fetchSSE();
                 }
                 return;
