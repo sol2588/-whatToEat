@@ -2,28 +2,33 @@ import { Link } from 'react-router-dom';
 import Carousel from './Carousel';
 import styled from 'styled-components';
 import AllRecipesView from '../Recipes/AllRecipes/AllRecipesView';
+import whatoEat from '../../assets/img/whatoEat.webp';
+import recipePick from '../../assets/img/bookmarkRecipe.webp';
+import createRecipe from '../../assets/img/createRecipe.jpg';
+import recommend from '../../assets/img/recommend.jpg';
+import likes from '../../assets/img/likes.jpg';
 
 export default function Home(): JSX.Element {
-    const images = [
+    const carouselLists = [
         {
-            download_url: 'https://picsum.photos/200/300',
+            url: whatoEat,
             content: '자취할때 어떻게 요리를 선택하시나요 ?',
         },
         {
-            download_url: 'https://picsum.photos/200/300',
+            url: recommend,
             content: '좋아하는 요리를 선택해 오늘의 요리를 추천받아보세요.',
         },
         {
-            download_url: 'https://picsum.photos/200/300',
+            url: likes,
             content: '나중에 도전하고 싶은 요리는 저장해 놓을 수 있어요',
         },
         {
-            download_url: 'https://picsum.photos/200/300',
+            url: recipePick,
             content: ' 원하는 요리를 직접 고를수도 있어요',
         },
         {
-            download_url: 'https://picsum.photos/200/300',
-            content: '마지막페이지',
+            url: createRecipe,
+            content: '직접 레시피를 작성할수도 있어요',
         },
     ];
     return (
@@ -34,7 +39,7 @@ export default function Home(): JSX.Element {
                     <p>자취생을 위한 레시피를 추천합니다.</p>
                     <StyledLink to="/recipes/recommended">추천 레시피</StyledLink>
                 </HomeContent>
-                <Carousel images={images} />
+                <Carousel carouselLists={carouselLists} />
             </HomeMain>
             <RecipesList>
                 <h3>전체 레시피</h3>
@@ -48,7 +53,7 @@ export default function Home(): JSX.Element {
 const HomeContainer = styled.section``;
 const HomeMain = styled.div`
     display: grid;
-    grid-template-columns: 34% 65%;
+    grid-template-columns: 33% 67%;
 `;
 
 const HomeContent = styled.div`
