@@ -57,5 +57,6 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
         scrapedRecipes,
         totalMyRecipesPages,
         totalScrapedRecipesPages,
+        setScrapedRecipes,
     };
 };

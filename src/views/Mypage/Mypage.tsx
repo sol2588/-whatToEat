@@ -46,7 +46,7 @@ export default function Mypage(): JSX.Element {
     const { userInfo, refetchUserInfo: refetchUserInfo } = useGetUserInfo();
 
     // 스크랩, 작성 게시물 불러오는 hook
-    const { myRecipes, setMyRecipes, scrapedRecipes, totalMyRecipesPages, totalScrapedRecipesPages } = useGetMyRecipes(
+    const { myRecipes, setMyRecipes, scrapedRecipes, totalMyRecipesPages, totalScrapedRecipesPages, setScrapedRecipes } = useGetMyRecipes(
         myRecipesPage,
         scrapedRecipesPage,
     );
@@ -55,7 +55,7 @@ export default function Mypage(): JSX.Element {
     const { handleMyRecipeDelete } = useRecipeDelete(setMyRecipes);
 
     //북마크 hook
-    const { bookmarkRecipes, handleClickBookmark, setBookmarkRecipes } = useBookmark();
+    const { bookmarkRecipes, handleClickBookmark, setBookmarkRecipes } = useBookmark(setScrapedRecipes);
 
     //유효성 검사를 위한 hook
     const {
