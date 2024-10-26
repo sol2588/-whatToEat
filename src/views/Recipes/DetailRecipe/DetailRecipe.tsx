@@ -78,10 +78,13 @@ export default function DetailRecipe(): JSX.Element {
             }
         };
         fetchData();
-    }, []);
+    }, [id]);
 
     // recipeAuthor와 loggedNickname이 일치할 경우 수정, 삭제 버튼을 보여줌
     const isAuthor = recipe && recipe.recipeAuthor === loggedNickname;
+    console.log('loggedNickname:', loggedNickname);
+    console.log('recipeAuthor :', recipe && recipe.recipeAuthor);
+    console.log('isAuthor :', isAuthor);
     console.log('detailPage message:', message);
 
     if (!recipe) {
