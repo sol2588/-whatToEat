@@ -7,7 +7,7 @@ import { useGetMyRecipes } from '../../hooks/useGetMyRecipes';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
 import { Button, Typography, Avatar, Grid, Pagination, Box } from '@mui/material';
 import { useUserUpdate } from '../../hooks/useUserUpdate';
-import { useRecipeDelete } from '../../hooks/useRecipeDelete';
+import { recipeDeleteHandler } from '../../handler/recipeDeleteHandler';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
 import colors from '../../styles/colors';
 import { useBookmark } from '../../hooks/useBookmark';
@@ -52,7 +52,7 @@ export default function Mypage(): JSX.Element {
     );
 
     //게시물 삭제 hook
-    const { handleMyRecipeDelete } = useRecipeDelete(setMyRecipes);
+    const { handleMyRecipeDelete } = recipeDeleteHandler(setMyRecipes);
 
     //북마크 hook
     const { bookmarkRecipes, handleClickBookmark, setBookmarkRecipes } = useBookmark(setScrapedRecipes);
