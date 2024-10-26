@@ -8,11 +8,11 @@ import {
 } from '../utils/validation/validation.ts';
 
 export const useUpdateForm = () => {
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
-    const [newPassword, setNewPassword] = useState<string>('');
-    const [passwordCheck, setPasswordCheck] = useState<string>('');
-    const [nickname, setNickname] = useState<string>('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [passwordCheck, setPasswordCheck] = useState('');
+    const [nickname, setNickname] = useState('');
 
     const [errors, setErrors] = useState<{ [key: string]: string }>({
         email: '',
