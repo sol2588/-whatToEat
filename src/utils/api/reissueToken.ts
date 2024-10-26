@@ -7,12 +7,9 @@ const reissueToken = async () => {
 
         if (response.data.code == 'OK') {
             console.log('response reissue', response.data);
-            const nickname = response.data.data;
             const token = response.headers['access-token'];
             const accessToken = token?.replace('Bearer ', '');
-            if (nickname && accessToken) {
-                return { nickname, accessToken };
-            }
+            return accessToken;
         }
     } catch (err: any) {
         console.log('reissue access token error', err);
