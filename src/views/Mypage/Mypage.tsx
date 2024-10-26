@@ -18,7 +18,7 @@ import useAuthToken from '../../hooks/useAuthToken';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteUser } from '../../hooks/useDeleteUser';
 import { useSelector, useDispatch } from 'react-redux';
-import { showModal } from '../../redux/reducer/modalSlice';
+import { hideModal, showModal } from '../../redux/reducer/modalSlice';
 import { RootState } from '../../redux/store/store';
 export default function Mypage(): JSX.Element {
     const dispatch = useDispatch();
@@ -107,6 +107,15 @@ export default function Mypage(): JSX.Element {
                 setNicknameCheck(false);
                 setCheckFailMessage(response.data.message);
             }
+            dispatch(
+                showModal({
+                    isOpen: true,
+                    content: response.data.message,
+                    onConfirm: () => {
+                        dispatch(hideModal());
+                    },
+                }),
+            );
         } catch (err) {
             console.log(err);
         }
@@ -139,6 +148,15 @@ export default function Mypage(): JSX.Element {
             } else if (response.data.data === false) {
                 setCheckFailMsg(response.data.message);
             }
+            dispatch(
+                showModal({
+                    isOpen: true,
+                    content: response.data.message,
+                    onConfirm: () => {
+                        dispatch(hideModal());
+                    },
+                }),
+            );
             console.log('passwordcheckmessage : ', response.data.message);
         } catch (error) {
             console.error('비밀번호 확인 중 오류 발생:', error);
@@ -322,15 +340,7 @@ export default function Mypage(): JSX.Element {
                                     <Button
                                         type="button"
                                         onClick={() => {
-                                            dispatch(
-                                                showModal({
-                                                    isOpen: true,
-                                                    content: checkFailMessage,
-                                                    onConfirm: () => {
-                                                        handleCheckNickname();
-                                                    },
-                                                }),
-                                            );
+                                            handleCheckNickname();
                                         }}
                                     >
                                         중복확인
@@ -365,15 +375,7 @@ export default function Mypage(): JSX.Element {
                                     <Button
                                         type="button"
                                         onClick={() => {
-                                            dispatch(
-                                                showModal({
-                                                    isOpen: true,
-                                                    content: checkFailMsg,
-                                                    onConfirm: () => {
-                                                        handlePasswordCheck();
-                                                    },
-                                                }),
-                                            );
+                                            handlePasswordCheck();
                                         }}
                                     >
                                         비밀번호 확인
