@@ -168,15 +168,16 @@ export default function SearchCondition(): JSX.Element {
                         ))}
                     </S_SearchItem>
                 </S_SearchTimeLevelWrapper>
+                <S_ButtonWrapper>
+                    <S_SearchButton type="button" searchBtn={false} onClick={handleInit}>
+                        초기화
+                    </S_SearchButton>
+                    <S_SearchButton type="button" onClick={handleSubmit} searchBtn={true} disabled={ingredientsList.length == 0 && !level && !time}>
+                        검색
+                    </S_SearchButton>
+                </S_ButtonWrapper>
+                <p>재료명, 조리시간, 난이도 중 필요한 정보를 입력하여주시기 바랍니다. </p>
             </S_ConditionList>
-            <S_ButtonWrapper>
-                <S_SearchButton type="button" searchBtn={false} onClick={handleInit}>
-                    초기화
-                </S_SearchButton>
-                <S_SearchButton type="button" onClick={handleSubmit} searchBtn={true} disabled={ingredientsList.length == 0 && !level && !time}>
-                    검색
-                </S_SearchButton>
-            </S_ButtonWrapper>
 
             <SearchResult hasMore={hasMore} recipes={recipes} isLoading={isLoading} hasSearched={hasSearched} fetchRecipes={fetchRecipes} />
             <Navbar />
@@ -187,9 +188,21 @@ const S_ConditionContainer = styled.div`
     padding: 38px;
 `;
 const S_ConditionList = styled.ul`
-    list-style: none;
-    width: 80%;
+    padding: 40px;
     margin: 0 auto;
+    width: 80%;
+    list-style: none;
+    border: 1px solid #f3f3f3;
+    border-radius: 16px;
+    background-color: #f9fafc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+
+    p {
+        margin-top: 20px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #f66767;
+    }
 `;
 const S_SearchItem = styled.li`
     margin: 8px 0 20px;
@@ -228,7 +241,7 @@ const S_SearchIngredientsList = styled.ul<{ length: number }>`
 
 const S_ButtonWrapper = styled.div`
     width: 80%;
-    margin: 0 auto;
+    margin: 30px auto 0px;
     display: flex;
     justify-content: space-between;
 `;
@@ -237,7 +250,7 @@ const S_SearchButton = styled.button<{ searchBtn: boolean }>`
     outline: none;
     border: 1px solid lightgray;
     border-radius: 8px;
-    background-color: ${(props) => (props.searchBtn ? `${colors[200]}` : 'inherit')};
+    background-color: ${(props) => (props.searchBtn ? `${colors[200]}` : '#fff')};
     cursor: pointer;
 
     &:hover {
@@ -258,7 +271,7 @@ const S_SelectBtn = styled.button<{ active: boolean }>`
     border: 1px solid lightgray;
     border-radius: 16px;
     color: ${(props) => (props.active ? '#fff' : '#000')};
-    background-color: ${(props) => (props.active ? `${colors[200]}` : 'inherit')};
+    background-color: ${(props) => (props.active ? `${colors[200]}` : '#fff')};
     outline: none;
     cursor: pointer;
 

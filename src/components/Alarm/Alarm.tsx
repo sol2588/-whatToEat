@@ -40,14 +40,15 @@ const AlarmContainer = styled.div`
     width: 300px;
     height: 400px;
     border: 1px solid lightgray;
-    background-color: rgba(239, 182, 62, 0.5);
+    background-color: rgba(255, 223, 186, 0.9);
     border-radius: 16px;
 
     position: absolute;
-    top: 70px;
-    right: 0;
+    top: 100%;
+    right: -30%;
     z-index: 999;
     h5 {
+        margin-top: 20px;
         font-weight: 400;
         text-align: center;
     }
@@ -59,7 +60,7 @@ const AlarmContainer = styled.div`
         top: -20px;
         right: 10%;
         border: 10px solid transparent;
-        border-bottom: 10px solid rgba(239, 182, 62, 0.5);
+        border-bottom: 10px solid rgba(255, 223, 186, 0.9);
     }
     &::after {
         // 툴팁 테두리

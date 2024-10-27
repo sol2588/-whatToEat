@@ -58,11 +58,13 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                             <S_StyledLink to="/mypage">
                                 <FiUser />
                             </S_StyledLink>
-                            <S_BellIcon>
-                                <FiBell onClick={handleShowAlarm} />
-                                <S_AlaramBadge>{alarmCount}</S_AlaramBadge>
-                            </S_BellIcon>
-                            {showAlarm && <Alarm alarmData={alarmData} changeAlarmData={setAlarmData} />}
+                            <S_BellIconWrapper>
+                                <S_BellIcon>
+                                    <FiBell onClick={handleShowAlarm} />
+                                    <S_AlaramBadge>{alarmCount}</S_AlaramBadge>
+                                </S_BellIcon>
+                                {showAlarm && <Alarm alarmData={alarmData} changeAlarmData={setAlarmData} />}
+                            </S_BellIconWrapper>
                         </S_LoginUserList>
                     ) : (
                         <>
@@ -115,6 +117,9 @@ const S_StyledLink = styled(Link)`
     margin: 10px;
     color: inherit;
 `;
+const S_BellIconWrapper = styled.div`
+    position: relative;
+`;
 const S_BellIcon = styled.div`
     margin: 10px;
     cursor: pointer;
@@ -143,6 +148,7 @@ const S_HeaderButton = styled.div`
 const S_AlaramBadge = styled.span`
     width: 15px;
     height: 15px;
+    padding: 2px 4px;
     font-size: 10px;
     background-color: red;
     color: #fff;
