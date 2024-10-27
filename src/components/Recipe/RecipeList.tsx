@@ -18,20 +18,20 @@ interface RecipeListProps {
 export default function RecipeList({ recipes, limit }: RecipeListProps): JSX.Element {
     const mainRecipes = limit ? recipes.slice(0, limit) : recipes;
     return (
-        <S_RecipeULlist>
+        <S_RecipeUlList>
             {mainRecipes.map((recipe: RecipeProps) => (
                 <li key={recipe.recipeId}>
                     <RecipeNewCard key={recipe.recipeId} {...recipe} />
                 </li>
             ))}
-        </S_RecipeULlist>
+        </S_RecipeUlList>
     );
 }
 
-const S_RecipeULlist = styled.ul`
+const S_RecipeUlList = styled.ul`
     list-style: none;
     display: grid;
-    gap: 16px;
+    gap: 30px;
     padding: 30px;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 345px);
 `;
