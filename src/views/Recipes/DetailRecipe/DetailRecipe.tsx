@@ -10,6 +10,7 @@ import { RootState } from '../../../redux/store/store';
 import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import { useRecipeDelete } from '../../../hooks/useRecipeDelete';
+import colors from '../../../styles/colors';
 interface Props {
     recipeId: number;
     recipeAuthor: string;
@@ -71,8 +72,8 @@ export default function DetailRecipe(): JSX.Element {
         <DetailRecipeContainer>
             {isAuthor && (
                 <ButtonWrapper>
-                    <Link to={`/recipes/:${id}`}>수정</Link>
-                    <Button onClick={() => handleMyRecipeDelete(Number(id))}>삭제</Button>
+                    <S_StyledLink to={`/recipes/update/${id}`}>수정</S_StyledLink>
+                    <S_StyledButton onClick={() => handleMyRecipeDelete(Number(id))}>삭제</S_StyledButton>
                 </ButtonWrapper>
             )}
             <DetailRecipeName>{recipe.recipeName}</DetailRecipeName>
@@ -230,4 +231,18 @@ const CartIcon = styled(BsCartCheckFill)`
 
 const ButtonWrapper = styled.div`
     display: flex;
+    justify-content: flex-end;
+`;
+
+const S_StyledLink = styled(Link)`
+    text-decoration: none;
+    margin: 10px;
+    color: ${colors[300]};
+    font-size: 1.2rem;
+`;
+
+const S_StyledButton = styled(Button)`
+    color: ${colors[300]};
+    font-size: 1.2rem;
+    margin-left: 10px;
 `;
