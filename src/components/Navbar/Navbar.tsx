@@ -1,6 +1,5 @@
 import { HiListBullet, HiOutlinePencilSquare, HiOutlineHeart } from 'react-icons/hi2';
 import { Link } from 'react-router-dom';
-import colors from '../../styles/colors';
 import styled from 'styled-components';
 
 export default function NavBar() {
