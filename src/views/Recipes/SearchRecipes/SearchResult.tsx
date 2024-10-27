@@ -38,7 +38,7 @@ export function SearchResult({ hasMore, recipes, isLoading, fetchRecipes, hasSea
                     <Loading />
                 </div>
             ) : (
-                <div>No more recipes to load.</div>
+                <div style={{ padding: '30px', fontSize: '20px' }}>No more recipes to load.</div>
             )}
         </ResultContainer>
     );

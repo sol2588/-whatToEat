@@ -30,7 +30,7 @@ export default function AllRecipes({ limit, recipes, fetchRecipes, isLoading, ha
                     <Loading />
                 </div>
             ) : (
-                <div>No more recipes to load.</div>
+                <div style={{ padding: '30px', fontSize: '20px' }}>No more recipes to load.</div>
             )}
         </>
     );

@@ -95,6 +95,7 @@ const S_CardFigure = styled.figure`
     }
 `;
 const S_CardImg = styled.img`
+    height: 260px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 `;
