@@ -16,23 +16,24 @@ export default function CommentsContent({ isEditing, commentId, reviewId, conten
         <>
             {/* commentId는 수정하기 버튼을 눌렀을때 설정, commentId와 commentDataList-commentId가 일치하는 경우 */}
             {isEditing && commentId == reviewId ? (
-                <CommentsTextarea value={updateComment} onChange={handleUpdateComment}></CommentsTextarea>
+                <S_CommentsTextarea value={updateComment} onChange={handleUpdateComment}></S_CommentsTextarea>
             ) : (
-                <CommentsText>{content}</CommentsText>
+                <S_CommentsText>{content}</S_CommentsText>
             )}
         </>
     );
 }
 
-const CommentsText = styled.p`
+const S_CommentsText = styled.p`
     margin: 16px 0px;
     padding: 16px;
     width: 100%;
     height: 70%;
+    color: #181818;
     background-color: lightgray;
     border-radius: 16px;
 `;
-const CommentsTextarea = styled.textarea`
+const S_CommentsTextarea = styled.textarea`
     margin: 16px 0px;
     padding: 16px;
     width: 100%;

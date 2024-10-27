@@ -57,35 +57,16 @@ export default function CommentList({
 
     return (
         <>
-            <CommentsContainer>
-                <h4>리뷰보기</h4>
+            <S_CommentsContainer>
+                <h4>Comments</h4>
                 {commentDataList.map((comment) => (
-                    <CommentsWrapper>
-                        <ReviewerFigure>
+                    <S_CommentsWrapper>
+                        <S_ReviewerFigure>
                             <img src="" alt="유저이미지" />
-                            <ReviewerFigcaption>{comment.commentAuthor}</ReviewerFigcaption>
-                        </ReviewerFigure>
-                        <CommentsDataWrapper>
-                            <CommentRating
-                                isEditing={isEditing}
-                                commentId={commentId}
-                                reviewId={comment.commentId}
-                                rating={comment.rating}
-                                updateRate={updateRate ?? 0}
-                                handleUpdateRate={handleUpdateRate}
-                            />
-                            <span>{comment.createdAt.split('T')[0]}</span>
-                            <CommentEditBtn
-                                isEditing={isEditing}
-                                commentId={commentId}
-                                updateRate={updateRate ?? 0}
-                                updateComment={updateComment}
-                                handleClickEdit={handleClickEdit}
-                                updateCommentHandler={updateCommentHandler}
-                                deleteCommentHandler={deleteCommentHandler}
-                                review={comment}
-                                recipeId={id}
-                            />
+                            <S_ReviewerFigcaption date={false}>{comment.commentAuthor}</S_ReviewerFigcaption>
+                            <S_ReviewerFigcaption date={true}>{comment.createdAt.split('T')[0]}</S_ReviewerFigcaption>
+                        </S_ReviewerFigure>
+                        <S_CommentsDataWrapper>
                             <CommentsContent
                                 isEditing={isEditing}
                                 reviewId={comment.commentId}
@@ -94,48 +75,70 @@ export default function CommentList({
                                 updateComment={updateComment}
                                 handleUpdateComment={handleUpdateComment}
                             />
-                        </CommentsDataWrapper>
-                    </CommentsWrapper>
+                            <S_CommentsSelectWrapper>
+                                <CommentRating
+                                    isEditing={isEditing}
+                                    commentId={commentId}
+                                    reviewId={comment.commentId}
+                                    rating={comment.rating}
+                                    updateRate={updateRate ?? 0}
+                                    handleUpdateRate={handleUpdateRate}
+                                />
+                                <CommentEditBtn
+                                    isEditing={isEditing}
+                                    commentId={commentId}
+                                    updateRate={updateRate ?? 0}
+                                    updateComment={updateComment}
+                                    handleClickEdit={handleClickEdit}
+                                    updateCommentHandler={updateCommentHandler}
+                                    deleteCommentHandler={deleteCommentHandler}
+                                    review={comment}
+                                    recipeId={id}
+                                />
+                            </S_CommentsSelectWrapper>
+                        </S_CommentsDataWrapper>
+                    </S_CommentsWrapper>
                 ))}
-            </CommentsContainer>
+            </S_CommentsContainer>
         </>
     );
 }
-const CommentsContainer = styled.section`
-    margin-top: 24px;
+const S_CommentsContainer = styled.section`
+    margin-top: 36px;
     h4 {
         font-size: 24px;
         font-weight: 500;
     }
 `;
-const CommentsWrapper = styled.div`
+const S_CommentsWrapper = styled.div`
     padding: 16px;
     height: auto;
-    display: grid;
-    gap: 20px;
-    grid-template-columns: 10% 90%;
-    border: 1px solid lightgray;
-    border: 1px solid lightgray;
 `;
-const ReviewerFigure = styled.figure`
+const S_ReviewerFigure = styled.figure`
     display: flex;
-    flex-direction: column;
+    gap: 16px;
     align-items: center;
     justify-content: center;
+
     img {
         display: inline-block;
-        width: 70px;
-        height: 70px;
+        width: 50px;
+        height: 50px;
         border: 2px solid;
         border-radius: 50%;
     }
 `;
-const ReviewerFigcaption = styled.figcaption`
+const S_ReviewerFigcaption = styled.figcaption<{ date: boolean }>`
     margin: 16px 0 0px;
+    color: ${(props) => (props.date ? '#575757' : '#000')};
 `;
-const CommentsDataWrapper = styled.div`
+const S_CommentsDataWrapper = styled.div`
     width: 95%;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
+`;
+const S_CommentsSelectWrapper = styled.div`
+    display: flex;
     justify-content: space-between;
 `;

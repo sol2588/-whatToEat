@@ -1,12 +1,9 @@
-import { useState, useEffect, ChangeEvent, FormEvent, KeyboardEvent } from 'react';
+import { useState, useEffect, ChangeEvent, FormEvent, KeyboardEvent, MouseEvent } from 'react';
 import { SearchBox } from './SearchBox';
 import { SearchResult } from './SearchResult';
 import { levelOptions, timeOption } from '../../../common/options';
-import CustomSelect from '../../../ui/Select/CustomSelect';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../../redux/reducer/modalSlice';
-import { SelectChangeEvent } from '@mui/material/Select';
-import { CiSearch } from 'react-icons/ci';
 import colors from '../../../styles/colors';
 import styled from 'styled-components';
 import instance from '../../../utils/api/instance';
@@ -121,44 +118,67 @@ export default function SearchCondition(): JSX.Element {
     };
 
     // 난이도를 변경하는 핸들러
-    const handleLevel = (e: SelectChangeEvent) => {
-        console.log(e.target.value);
-        setLevel(e.target.value);
+    const handleLevel = (e: MouseEvent<HTMLButtonElement>) => {
+        const { value } = e.currentTarget;
+        setLevel(value);
     };
 
     // 소요시간을 변경하는 핸들러
-    const handleTime = (e: SelectChangeEvent) => {
-        setTime(e.target.value);
-        console.log(e.target.value);
+    const handleTime = (e: MouseEvent<HTMLButtonElement>) => {
+        const { value } = e.currentTarget;
+        setTime(value);
+    };
+
+    const handleInit = () => {
+        setTime('');
+        setLevel('');
+        setIngredientsList([]);
+        setSearchIngredients('');
     };
 
     return (
         <S_ConditionContainer>
             <S_ConditionList>
                 <S_SearchItem>
+                    <S_SearchItemTitle>재료를 입력해주세요.</S_SearchItemTitle>
                     <SearchBox value={searchIngredients} onChange={handleChange} handleKeyDown={handleKeyDown} />
+                    {ingredientsList.length != 0 && (
+                        <S_SearchIngredientsList length={ingredientsList.length}>
+                            {ingredientsList.map((ingredient, idx) => (
+                                <span key={idx}>{ingredient}</span>
+                            ))}
+                        </S_SearchIngredientsList>
+                    )}
                 </S_SearchItem>
-                <S_SearchItem>
-                    <CustomSelect id="recipeLevel" options={timeOption} value={level} label="난이도" handleChange={handleLevel} />
-                </S_SearchItem>
-                <S_SearchItem>
-                    <CustomSelect id="recipeTime" options={levelOptions} value={time} label="조리시간" handleChange={handleTime} />
-                </S_SearchItem>
-                <S_SearchIcon onClick={handleSubmit} />
-            </S_ConditionList>
-            {ingredientsList.length != 0 && (
-                <S_SearchedContent>
-                    <h4>선택하신 재료를 확인후, 엔터 혹은 검색버튼을 눌러주세요</h4>
-                    <S_ConditionContentList length={ingredientsList.length}>
-                        {ingredientsList.map((ingredient, idx) => (
-                            <S_ConditionContentItem key={idx}>
-                                <span>선택재료{idx + 1}</span>
-                                <span>{ingredient}</span>
-                            </S_ConditionContentItem>
+                <S_SearchTimeLevelWrapper>
+                    <S_SearchItem>
+                        <S_SearchItemTitle>난이도를 선택해 주세요.</S_SearchItemTitle>
+                        {timeOption.map((timeData) => (
+                            <S_SelectBtn key={timeData.value} value={timeData.value} onClick={handleTime} active={time == timeData.value}>
+                                {timeData.label}
+                            </S_SelectBtn>
                         ))}
-                    </S_ConditionContentList>
-                </S_SearchedContent>
-            )}
+                    </S_SearchItem>
+                    <S_SearchItem>
+                        <S_SearchItemTitle>조리시간을 선택해주세요</S_SearchItemTitle>
+                        {levelOptions.map((levelData) => (
+                            <S_SelectBtn key={levelData.value} value={levelData.value} onClick={handleLevel} active={level == levelData.value}>
+                                {levelData.label}
+                            </S_SelectBtn>
+                        ))}
+                    </S_SearchItem>
+                </S_SearchTimeLevelWrapper>
+                <S_ButtonWrapper>
+                    <S_SearchButton type="button" searchBtn={false} onClick={handleInit}>
+                        초기화
+                    </S_SearchButton>
+                    <S_SearchButton type="button" onClick={handleSubmit} searchBtn={true} disabled={ingredientsList.length == 0 && !level && !time}>
+                        검색
+                    </S_SearchButton>
+                </S_ButtonWrapper>
+                <p>재료명, 조리시간, 난이도 중 필요한 정보를 입력하여주시기 바랍니다. </p>
+            </S_ConditionList>
+
             <SearchResult hasMore={hasMore} recipes={recipes} isLoading={isLoading} hasSearched={hasSearched} fetchRecipes={fetchRecipes} />
             <Navbar />
         </S_ConditionContainer>
@@ -168,67 +188,96 @@ const S_ConditionContainer = styled.div`
     padding: 38px;
 `;
 const S_ConditionList = styled.ul`
+    padding: 40px;
+    margin: 0 auto;
+    width: 80%;
     list-style: none;
+    border: 1px solid #f3f3f3;
     border-radius: 16px;
-    background-color: ${colors[400]};
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
-const S_SearchItem = styled.li`
-    margin: 8px;
-    padding: 8px;
-    height: 80px;
-    border-radius: 16px;
-    background-color: #eaecec;
+    background-color: #f9fafc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
 
-    &:first-child {
-        flex-grow: 4;
+    p {
+        margin-top: 20px;
+        font-weight: 900;
+        font-size: 12px;
+        color: #f66767;
     }
 `;
-const S_SearchIcon = styled(CiSearch)`
-    margin-left: 10px;
-    font-size: 24px;
-    color: #333;
+const S_SearchItem = styled.li`
+    margin: 8px 0 20px;
+`;
+const S_SearchItemTitle = styled.h4`
+    font-size: 18px;
+    padding: 0 8px 8px;
+`;
+const S_SearchTimeLevelWrapper = styled.div`
+    margin-top: 30px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    position: relative;
+
+    &::after {
+        content: '';
+        width: 100%;
+        position: absolute;
+        top: -10%;
+        border: 0.8px solid lightgray;
+    }
+`;
+
+const S_SearchIngredientsList = styled.ul<{ length: number }>`
+    margin-top: 4px;
+    display: flex;
+
+    span {
+        padding: 8px;
+        margin: 4px;
+        color: #fff;
+        background-color: ${colors[200]};
+        border-radius: 20px;
+    }
+`;
+
+const S_ButtonWrapper = styled.div`
+    width: 80%;
+    margin: 30px auto 0px;
+    display: flex;
+    justify-content: space-between;
+`;
+const S_SearchButton = styled.button<{ searchBtn: boolean }>`
+    padding: 10px 80px;
+    outline: none;
+    border: 1px solid lightgray;
+    border-radius: 8px;
+    background-color: ${(props) => (props.searchBtn ? `${colors[200]}` : '#fff')};
     cursor: pointer;
 
     &:hover {
         color: #fff;
+        background-color: ${colors[200]};
+        border: 1px solid ${colors[200]};
     }
-`;
 
-const S_SearchedContent = styled.div`
-    h4 {
-        font-size: 20px;
-        font-weight: 400;
-        text-align: center;
+    &:disabled {
+        background-color: lightgray;
+        color: #999;
+        cursor: not-allowed;
     }
 `;
-const S_ConditionContentList = styled.ul<{ length: number }>`
-    margin: 0 auto 70px;
-    padding: 10px;
-    width: 80%;
-    height: auto;
-    border: 3px solid ${colors[400]};
-    border-radius: 16px;
-    list-style: none;
-
-    display: grid;
-    grid-template-columns: ${({ length }) => `repeat(${length}, 1fr)`};
-    label {
-        display: block;
-    }
-`;
-const S_ConditionContentItem = styled.li`
+const S_SelectBtn = styled.button<{ active: boolean }>`
+    margin: 4px;
     padding: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-right: 1px solid lightgray;
-    &:last-child {
-        border-right: none;
+    border: 1px solid lightgray;
+    border-radius: 16px;
+    color: ${(props) => (props.active ? '#fff' : '#000')};
+    background-color: ${(props) => (props.active ? `${colors[200]}` : '#fff')};
+    outline: none;
+    cursor: pointer;
+
+    &:hover {
+        color: #fff;
+        background-color: ${colors[200]};
+        border: 1px solid ${colors[200]};
     }
 `;

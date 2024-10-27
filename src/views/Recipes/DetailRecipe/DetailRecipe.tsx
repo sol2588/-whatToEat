@@ -76,10 +76,10 @@ export default function DetailRecipe(): JSX.Element {
                 </ButtonWrapper>
             )}
             <DetailRecipeName>{recipe.recipeName}</DetailRecipeName>
+            <img src={recipe.recipeThumbnail} alt="썸네일 이미지" />
             <DetailRecipeContents>
+                <h4>Directions</h4>
                 <DetailRecipeInstruction>
-                    <img src={recipe.recipeThumbnail} alt="썸네일 이미지" />
-                    <h4>Directions</h4>
                     {recipe.recipesManuals &&
                         recipe.recipesManuals.map((step, idx) => (
                             <DetailRecipeFigure key={idx}>
@@ -145,6 +145,11 @@ const DetailRecipeContents = styled.div`
     justify-content: space-between;
     align-items: flex-start;
     gap: 16px;
+
+    h4 {
+        margin-top: 40px;
+        font-size: 28px;
+    }
 `;
 const DetailRecipeInstruction = styled.div`
     display: flex;
@@ -152,13 +157,10 @@ const DetailRecipeInstruction = styled.div`
     justify-content: flex-start;
     gap: 16px;
     img {
-        width: 100%;
+        max-width: 60%;
         height: auto;
         object-fit: cover;
         border: 0.8 solid #656565;
-    }
-    h4 {
-        margin-top: 40px;
     }
 `;
 const DetailRecipeFigure = styled.figure`

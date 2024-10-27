@@ -14,7 +14,7 @@ export default function CommentRating({ rating, isEditing, commentId, reviewId, 
     return (
         <>
             {isEditing && commentId == reviewId ? (
-                <CommentsRating>
+                <S_CommentsRating>
                     {Array(5)
                         .fill(0)
                         .map((_, idx) => {
@@ -24,20 +24,20 @@ export default function CommentRating({ rating, isEditing, commentId, reviewId, 
                                 <MdStarBorder key={idx} onClick={() => handleUpdateRate(idx + 1)} />
                             );
                         })}
-                </CommentsRating>
+                </S_CommentsRating>
             ) : (
-                <CommentsRating>
+                <S_CommentsRating>
                     {Array(5)
                         .fill(0)
                         .map((_, idx) => {
                             return rating <= idx ? <MdStarBorder /> : <MdStar />;
                         })}
-                </CommentsRating>
+                </S_CommentsRating>
             )}
         </>
     );
 }
 
-const CommentsRating = styled.div`
-    color: #656565;
+const S_CommentsRating = styled.div`
+    color: #ff9900;
 `;
