@@ -188,6 +188,8 @@ const S_ConditionContainer = styled.div`
 `;
 const S_ConditionList = styled.ul`
     list-style: none;
+    width: 80%;
+    margin: 0 auto;
 `;
 const S_SearchItem = styled.li`
     margin: 8px 0 20px;
@@ -225,6 +227,8 @@ const S_SearchIngredientsList = styled.ul<{ length: number }>`
 `;
 
 const S_ButtonWrapper = styled.div`
+    width: 80%;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
 `;
