@@ -2,6 +2,7 @@ import { FormEvent, ChangeEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import { MdStar, MdStarBorder } from 'react-icons/md';
 import styled from 'styled-components';
+import colors from '../../styles/colors';
 
 interface CreateHandlerProps {
     recipeId: number;
@@ -26,63 +27,91 @@ export default function CreateComment({
     const { id } = useParams();
 
     return (
-        <ReviewContainer>
-            <h4>Leave a review</h4>
-            <ReviewForm
+        <S_ReviewContainer>
+            <h4>Add comment</h4>
+            <S_ReviewForm
                 method="post"
                 onSubmit={(e) => createCommentHandler(e, { recipeId: Number(id), comment: createdComment, rating: createdRate })}
             >
-                <textarea name="comments" value={createdComment} onChange={handleCreateComment}></textarea>
-                <ReviewBottom>
-                    <span>Check Rating</span>
-                    <ReviewRating>
-                        {Array(5)
-                            .fill(0)
-                            .map((_, idx) => {
-                                return createdRate >= idx + 1 ? (
-                                    <MdStar key={idx} onClick={() => handleCreateRate(idx + 1)} />
-                                ) : (
-                                    <MdStarBorder key={idx} onClick={() => handleCreateRate(idx + 1)} />
-                                );
-                            })}
-                    </ReviewRating>
-
-                    <button type="submit">등록하기</button>
-                </ReviewBottom>
-            </ReviewForm>
-        </ReviewContainer>
+                <textarea name="comments" rows={3} value={createdComment} onChange={handleCreateComment} placeholder="Add comment...."></textarea>
+                <S_ReviewSubmit>
+                    <S_ReviewRateOption>
+                        <span>평점 선택</span>
+                        <ReviewRating>
+                            {Array(5)
+                                .fill(0)
+                                .map((_, idx) => {
+                                    return createdRate >= idx + 1 ? (
+                                        <MdStar key={idx} onClick={() => handleCreateRate(idx + 1)} />
+                                    ) : (
+                                        <MdStarBorder key={idx} onClick={() => handleCreateRate(idx + 1)} />
+                                    );
+                                })}
+                        </ReviewRating>
+                    </S_ReviewRateOption>
+                    <S_SubmitBtn type="submit">등록하기</S_SubmitBtn>
+                </S_ReviewSubmit>
+            </S_ReviewForm>
+        </S_ReviewContainer>
     );
 }
 
-const ReviewContainer = styled.section`
+const S_ReviewContainer = styled.section`
     margin: 44px 0px;
+    position: relative;
     h4 {
         font-size: 24px;
         font-weight: 500;
     }
+
+    &::after {
+        content: '';
+        width: 100%;
+        position: absolute;
+        top: -10%;
+        border: 0.8px solid lightgray;
+    }
 `;
 
-const ReviewForm = styled.form`
+const S_ReviewForm = styled.form`
     margin: 16px 0px;
     padding: 16px;
     width: 95%;
     height: 70%;
-    background-color: lightgray;
-    border-radius: 16px;
+    background-color: #f2f2f2;
+    border-radius: 8px;
     textarea {
+        padding: 10px;
         width: 100%;
+        background-color: transparent;
+        border: 1px solid #656565;
+        border-radius: 8px;
+        outline: none;
     }
 `;
-const ReviewBottom = styled.div`
+const S_ReviewSubmit = styled.div`
+    margin-top: 8px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
+`;
+const S_ReviewRateOption = styled.div`
+    margin-top: 8px;
+
     span {
         margin-right: 8px;
     }
-    MdStar {
-        color: #656565;
-    }
 `;
 const ReviewRating = styled.span`
+    cursor: pointer;
+    color: #ff9900;
+`;
+const S_SubmitBtn = styled.button`
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background-color: ${colors[300]};
     cursor: pointer;
 `;
