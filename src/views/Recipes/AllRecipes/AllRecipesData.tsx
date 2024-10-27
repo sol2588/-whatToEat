@@ -29,7 +29,7 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
 
     useEffect(() => {
         fetchRecipes();
-    }, [offset]);
+    }, []);
 
     const fetchRecipes = async () => {
         if (isLoading && !hasMore) return;
@@ -49,11 +49,10 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
                 // 현재 레시피의 총 개수와 전체 레시피 개수를 비교하여 hasMore 업데이트
                 if (recipes.length + convertData.length >= totalRecipes) {
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
-                    return;
+                } else {
+                    setRecipes((prev) => [...prev, ...convertData]);
+                    setOffset((prev) => prev + 1);
                 }
-
-                setRecipes((prev) => [...prev, ...convertData]);
-                setOffset((prev) => prev + 1);
             }
         } catch (err: any) {
             console.log('전체레시피 error: ', err);

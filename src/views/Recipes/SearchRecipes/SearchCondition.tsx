@@ -90,11 +90,12 @@ export default function SearchCondition(): JSX.Element {
                 if (recipes.length + convertData.length >= totalRecipes) {
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
                     return;
+                } else {
+                    setRecipes((prev) => [...prev, ...convertData]);
+                    setOffset((prev) => prev + 1);
+                    setHasSearched(true);
+                    dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
                 }
-                setRecipes((prev) => [...prev, ...convertData]);
-                setOffset((prev) => prev + 1);
-                setHasSearched(true);
-                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
             } else {
                 console.log('code ok 아닐때');
                 dispatch(showModal({ isOpen: true, content: '재료명을 다시 입력해주시기 바랍니다.', onConfirm: null }));
