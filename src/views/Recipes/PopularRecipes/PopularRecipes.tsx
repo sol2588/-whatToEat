@@ -28,7 +28,7 @@ export default function PopularRecipes({ hasMore, recipes, fetchRecipes, isLoadi
                     <Loading />
                 </div>
             ) : (
-                <div>No more recipes to load.</div>
+                <div style={{ padding: '30px', fontSize: '20px' }}>No more recipes to load.</div>
             )}
         </>
     );

@@ -26,7 +26,7 @@ export default function PopularRecipeData(): JSX.Element {
 
     useEffect(() => {
         fetchRecipes();
-    }, []);
+    }, [offset]);
 
     const fetchRecipes = async () => {
         if (isLoading) return;
@@ -37,20 +37,18 @@ export default function PopularRecipeData(): JSX.Element {
             if (response.data.code == 'OK') {
                 const totalRecipes = response.data.data.totalRecipes;
                 const newRecipes: RecipeProps[] = response.data.data.recipes;
-                const uniqueRecipes = newRecipes.filter(
-                    (newRecipe) => !recipes.some((existingRecipe) => existingRecipe.recipeId === newRecipe.recipeId),
-                );
-                const convertData = uniqueRecipes.map((recipe) => ({
+                const convertData = newRecipes.map((recipe) => ({
                     ...recipe,
                     recipeLevel: convertLevel(recipe.recipeLevel),
                     recipeCookingTime: convertTime(recipe.recipeCookingTime),
                 }));
-                setRecipes((prev) => [...prev, ...convertData]);
-                setOffset((prev) => prev + 1);
 
                 if (recipes.length + convertData.length >= totalRecipes) {
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
+                    return;
                 }
+                setRecipes((prev) => [...prev, ...convertData]);
+                setOffset((prev) => prev + 1);
             }
         } catch (err: any) {
             console.log(err);
