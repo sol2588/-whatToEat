@@ -41,6 +41,7 @@ export default function PopularRecipeData(): JSX.Element {
                     recipeLevel: convertLevel(recipe.recipeLevel),
                     recipeCookingTime: convertTime(recipe.recipeCookingTime),
                 }));
+
                 console.log('popular...', totalRecipes);
                 console.log('each,,,', recipes.length, newRecipes.length);
                 console.log('sum,,,', recipes.length + newRecipes.length);
@@ -49,6 +50,7 @@ export default function PopularRecipeData(): JSX.Element {
                 if (recipes.length + newRecipes.length >= totalRecipes) {
                     console.log('들어오는지 쳌크');
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
+                    
                 }
             }
         } catch (err: any) {
