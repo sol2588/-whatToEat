@@ -7,6 +7,7 @@ import recipePick from '../../assets/img/bookmarkRecipe.webp';
 import createRecipe from '../../assets/img/createRecipe.jpg';
 import recommend from '../../assets/img/recommend.jpg';
 import likes from '../../assets/img/likes.jpg';
+import Visited from '../Visited/Visited';
 
 export default function Home(): JSX.Element {
     const carouselLists = [
@@ -38,6 +39,9 @@ export default function Home(): JSX.Element {
                     <h2>자취생을 위한 만개의 레시피 추천</h2>
                     <p>자취생을 위한 레시피를 추천합니다.</p>
                     <StyledLink to="/recipes/recommended">추천 레시피</StyledLink>
+                    <VisitedContainer>
+                        <Visited />
+                    </VisitedContainer>
                 </HomeContent>
                 <Carousel carouselLists={carouselLists} />
             </HomeMain>
@@ -104,4 +108,8 @@ const StyledLink = styled(Link)`
     text-decoration: none;
     font-size: 14px;
     cursor: pointer;
+`;
+
+const VisitedContainer = styled.div`
+    margin-top: 20px;
 `;
