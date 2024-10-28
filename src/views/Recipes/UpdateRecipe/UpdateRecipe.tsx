@@ -40,6 +40,7 @@ const UpdateRecipe: React.FC = () => {
         <RecipeWriteContainer>
             <RecipeHeader>
                 <RecipeNameInput value={recipeName} onChange={(e) => setRecipeName(e.target.value)} placeholder="레시피 이름을 수정하세요." />
+                <StepsLabel>조리단계</StepsLabel>
                 <RecipeSteps>
                     {steps.map((step, index) => (
                         <RecipeStep key={index}>
@@ -144,6 +145,13 @@ const RecipeHeader = styled.div`
     width: 100%;
     margin-bottom: 20px;
 `;
+const StepsLabel = styled.h3`
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+    margin-top: 30px;
+    font-family: 'SUITE-Regular';
+`;
 
 const RecipeNameInput = styled.input`
     font-size: 1.5rem;
@@ -183,8 +191,9 @@ const RecipeStep = styled.div`
 
 const RecipeStepImage = styled.img`
     width: 100%;
-    height: 200px;
-    object-fit: contain;
+    height: 400px;
+    object-fit: cover;
+    object-position: center;
     border: 1px solid #ccc;
 `;
 
@@ -333,9 +342,9 @@ const ThumbnailPreviewContainer = styled.div`
 `;
 
 const ThumbnailPreview = styled.img`
-    width: 50%;
+    width: 100%;
     height: 200px;
-    object-fit: contain;
+    object-fit: cover;
     border: 1px solid #ccc;
     margin-bottom: 10px;
     border-radius: 8px;
