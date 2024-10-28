@@ -78,7 +78,7 @@ export default function SearchCondition(): JSX.Element {
                     return qs.stringify(params, { arrayFormat: 'repeat' });
                 },
             });
-            console.log('search response: ', response);
+
             if (response.data.code == 'OK') {
                 const totalRecipes = response.data.data.totalRecipes;
                 const newRecipes: RecipeProps[] = response.data.data.recipes.map((recipe: RecipeProps) => ({
@@ -86,9 +86,7 @@ export default function SearchCondition(): JSX.Element {
                     recipeLevel: convertLevel(recipe.recipeLevel),
                     recipeCookingTime: convertTime(recipe.recipeCookingTime),
                 }));
-                console.log('search...', totalRecipes);
-                console.log('each,,,', recipes.length, newRecipes.length);
-                console.log('sum,,,', recipes.length + newRecipes.length);
+
                 setRecipes((prev) => [...prev, ...newRecipes]);
                 setOffset((prev) => prev + 1);
                 setHasSearched(true);
@@ -107,7 +105,6 @@ export default function SearchCondition(): JSX.Element {
             dispatch(showModal({ isOpen: true, content: '검색 중 오류가 발생했습니다. 다시 시도해주세요.', onConfirm: null }));
         } finally {
             setIsLoading(false);
-            setSearchIngredients('');
         }
     };
 
