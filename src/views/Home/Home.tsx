@@ -2,17 +2,17 @@ import { Link } from 'react-router-dom';
 import Carousel from './Carousel';
 import styled from 'styled-components';
 import AllRecipesView from '../Recipes/AllRecipes/AllRecipesView';
-import whatoEat from '../../assets/img/question.jpeg';
-import recipePick from '../../assets/img/bookmarkRecipe.webp';
-import createRecipe from '../../assets/img/createRecipe.jpg';
-import recommend from '../../assets/img/recommend.jpg';
-import likes from '../../assets/img/likes.jpg';
+import question from '../../assets/img/main.jpeg';
+import all from '../../assets/img/all.jpeg';
+import createRecipe from '../../assets/img/create.jpeg';
+import recommend from '../../assets/img/recommend.jpeg';
+import bookmark from '../../assets/img/bookmark.jpeg';
 import Visited from '../../components/Visited/Visited';
 
 export default function Home(): JSX.Element {
     const carouselLists = [
         {
-            url: whatoEat,
+            url: question,
             content: '오늘 뭘 먹을지 고민되지 않으신가요?',
         },
         {
@@ -20,12 +20,12 @@ export default function Home(): JSX.Element {
             content: '하루에 3번, 오늘의 요리를 추천받아보세요.',
         },
         {
-            url: likes,
-            content: '먹고 싶은 요리를 직접 고를수도 있어요',
+            url: bookmark,
+            content: '나중에 도전하고 싶은 레시피를 저장할 수 있어요',
         },
         {
-            url: recipePick,
-            content: '나중에 도전하고 싶은 레시피를 저장할 수 있어요',
+            url: all,
+            content: '먹고 싶은 요리를 직접 고를수도 있어요',
         },
         {
             url: createRecipe,

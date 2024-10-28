@@ -183,7 +183,7 @@ export default function SearchCondition(): JSX.Element {
     );
 }
 const S_ConditionContainer = styled.div`
-    padding: 38px;
+    padding: 30px;
 `;
 const S_ConditionList = styled.ul`
     padding: 40px;
