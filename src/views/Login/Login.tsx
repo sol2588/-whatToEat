@@ -129,7 +129,7 @@ export default function Login(): JSX.Element {
                             backgroundColor: `${colors[300]}`,
                             color: 'white',
                             fontWeight: 'bold',
-                            ':hover': { backgroundColor: '#80cbc4' },
+                            ':hover': { backgroundColor: `${colors[200]}` },
                         }}
                         onClick={() => dispatch(showModal({ isOpen: true, content: modalContent, onConfirm: null }))}
                     >
