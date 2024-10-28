@@ -6,7 +6,7 @@ import { FiLogOut, FiUser, FiBell } from 'react-icons/fi';
 import { logoutSuccess } from '../../redux/reducer/userSlice';
 import Alarm from '../Alarm/Alarm';
 import styled from 'styled-components';
-import logo from '../../assets/img/logo.png';
+import logo from '../../assets/img/chef-logo.png';
 import colors from '../../styles/colors';
 import fetchSSEHandler from '../../handler/fetchSSEHandler';
 
@@ -94,7 +94,7 @@ const S_HeaderSection = styled.section`
 `;
 const S_Logo = styled.img`
     margin-top: 5px;
-    width: 150px;
+    width: 100px;
 `;
 const S_MenuList = styled.ul`
     padding: 0;

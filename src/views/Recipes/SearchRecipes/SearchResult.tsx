@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import RecipeList from '../../../components/Recipe/RecipeList';
 import useObserver from '../../../hooks/useObserver.js';
 import Loading from '../../../components/Loading/Loading.js';
@@ -32,7 +31,7 @@ export function SearchResult({ hasMore, recipes, isLoading, fetchRecipes, hasSea
     const target = useObserver(handleObserver);
 
     return (
-        <ResultContainer>
+        <>
             <RecipeList recipes={recipes} />
             {!isLoading ? (
                 <div></div>
@@ -43,8 +42,6 @@ export function SearchResult({ hasMore, recipes, isLoading, fetchRecipes, hasSea
             ) : (
                 <NoData />
             )}
-        </ResultContainer>
+        </>
     );
 }
-
-const ResultContainer = styled.section``;
