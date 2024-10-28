@@ -7,7 +7,7 @@ import recipePick from '../../assets/img/bookmarkRecipe.webp';
 import createRecipe from '../../assets/img/createRecipe.jpg';
 import recommend from '../../assets/img/recommend.jpg';
 import likes from '../../assets/img/likes.jpg';
-import Visited from '../Visited/Visited';
+import Visited from '../../components/Visited/Visited';
 
 export default function Home(): JSX.Element {
     const carouselLists = [
