@@ -71,7 +71,7 @@ const CreateRecipe: React.FC = () => {
                         <h3>레시피 난이도</h3>
                         <RecipeSelect value={recipeLevel} onChange={(e) => setRecipeLevel(e.target.value)}>
                             <option value="LOW">LOW</option>
-                            <option value="MIDDLE">MIDDLE</option>
+                            <option value="MEDIUM">MEDIUM</option>
                             <option value="HIGH">HIGH</option>
                         </RecipeSelect>
 
