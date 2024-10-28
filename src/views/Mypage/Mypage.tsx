@@ -515,6 +515,7 @@ const S_MyFigure = styled.figure`
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
+    min-height: 250px;
 
     &:hover {
         transform: translateY(-5px);
@@ -522,8 +523,11 @@ const S_MyFigure = styled.figure`
 `;
 
 const S_MyFigcaption = styled.figcaption`
-    margin-bottom: 16px;
+    margin-top: 12px;
     text-align: center;
+    font-size: 1rem;
+    font-weight: 500;
+    flex-grow: 1;
 `;
 
 const S_MyInfo = styled.div`
@@ -606,7 +610,7 @@ const S_defaultBox = styled.div`
 
 const S_thumbnail = styled.img`
     width: 100%;
-    height: 180px;
+    height: 150px;
     object-fit: cover;
     border-radius: 8px;
 `;
