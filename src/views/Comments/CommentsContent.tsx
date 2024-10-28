@@ -30,7 +30,7 @@ const S_CommentsText = styled.p`
     width: 100%;
     height: 70%;
     color: #181818;
-    background-color: lightgray;
+    background-color: #f2f2f2;
     border-radius: 16px;
 `;
 const S_CommentsTextarea = styled.textarea`
