@@ -498,10 +498,12 @@ const S_Content = styled.div`
 const S_MyScrap = styled.div`
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 `;
 const S_MyPosting = styled.div`
     display: flex;
     flex-direction: column;
+    flex-grow: 1;
 `;
 
 const S_Subtitle = styled(Typography)`
@@ -634,12 +636,14 @@ const S_button = styled.button`
 `;
 
 const S_PagenationWrapper = styled.div`
-    height: 70%;
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
 `;
 const S_ScrapWrapper = styled.div`
-    height: 30%;
+    flex-grow: 1;
 `;
 
 const S_MyRecipeWrapper = styled.div`
-    height: 70%;
+    flex-grow: 1;
 `;
