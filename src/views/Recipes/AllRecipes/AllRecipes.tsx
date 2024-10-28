@@ -2,6 +2,7 @@ import RecipeList from '../../../components/Recipe/RecipeList.js';
 import useObserver from '../../../hooks/useObserver.js';
 import Loading from '../../../components/Loading/Loading.js';
 import { RecipeProps } from './AllRecipesData.js';
+import NoData from '../../../components/Loading/NoData.js';
 
 interface RecipeLimitProps {
     limit?: number;
@@ -30,7 +31,7 @@ export default function AllRecipes({ limit, recipes, fetchRecipes, isLoading, ha
                     <Loading />
                 </div>
             ) : (
-                <div style={{ padding: '30px', fontSize: '20px' }}>No more recipes to load.</div>
+                <NoData />
             )}
         </>
     );

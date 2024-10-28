@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import RecipeList from '../../../components/Recipe/RecipeList';
 import useObserver from '../../../hooks/useObserver.js';
 import Loading from '../../../components/Loading/Loading.js';
+import NoData from '../../../components/Loading/NoData.js';
 
 interface RecipeProps {
     recipeId: number;
@@ -38,7 +39,7 @@ export function SearchResult({ hasMore, recipes, isLoading, fetchRecipes, hasSea
                     <Loading />
                 </div>
             ) : (
-                <div style={{ padding: '30px', fontSize: '20px' }}>No more recipes to load.</div>
+                <NoData />
             )}
         </ResultContainer>
     );
