@@ -11,6 +11,8 @@ import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import { useRecipeDelete } from '../../../hooks/useRecipeDelete';
 import colors from '../../../styles/colors';
+import Loading from '../../../components/Loading/Loading';
+
 interface Props {
     recipeId: number;
     recipeAuthor: string;
@@ -64,80 +66,93 @@ export default function DetailRecipe(): JSX.Element {
     console.log('detailPage message:', message);
 
     if (!recipe) {
-        return <div>Loading...</div>;
+        return <Loading />;
     }
 
     return (
-        <DetailRecipeContainer>
-            <DetailRecipeContents>
-                <DetailMain>
-                    <DetailRecipeName>{recipe.recipeName}</DetailRecipeName>
+        <S_DetailRecipeContainer>
+            {/* 요리명, 썸네일 */}
+            <S_DetailMain>
+                <S_DetailMainFigure>
                     <img src={recipe.recipeThumbnail} alt="썸네일 이미지" />
-                </DetailMain>
-                <DetailSubtitle>Directions</DetailSubtitle>
-                <DetailRecipeInstruction>
-                    {isAuthor && (
-                        <ButtonWrapper>
-                            <S_StyledLink to={`/recipes/update/${id}`}>수정</S_StyledLink>
-                            <S_StyledButton onClick={() => handleMyRecipeDelete(Number(id))}>삭제</S_StyledButton>
-                        </ButtonWrapper>
-                    )}
-                    {recipe.recipesManuals &&
-                        recipe.recipesManuals.map((step, idx) => (
-                            <DetailRecipeFigure key={idx}>
-                                <img src={`${step.recipeOrderImage}`} alt="단계별 이미지" />
-                                <DetailRecipeFigcapton>
-                                    {`step${idx + 1}`}
-                                    <br />
-                                    {`${step.recipeOrderContent}`}
-                                </DetailRecipeFigcapton>
-                            </DetailRecipeFigure>
-                        ))}
-                </DetailRecipeInstruction>
-            </DetailRecipeContents>
-            <DetailRecipeInfo>
-                <DetailIngredientsWrapper>
-                    <h3>Ingredients</h3>
-                    <DetailIngredientsTable>
-                        <thead>
-                            <tr>
-                                <th>재료</th>
-                                <th>개수</th>
-                                <th>구매</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {recipe.recipeIngredients &&
-                                recipe.recipeIngredients.map((ingredient, idx) => (
-                                    <tr key={`${ingredient.ingredientName}+${idx}`}>
-                                        <td>{ingredient.ingredientName}</td>
-                                        <td>{ingredient.ingredientQuantity}</td>
-                                        <td>
-                                            <Link to={`https://www.coupang.com/np/search?component=&q=${ingredient.ingredientName}`}>
-                                                <CartIcon />
-                                            </Link>
-                                        </td>
-                                    </tr>
-                                ))}
-                        </tbody>
-                    </DetailIngredientsTable>
-                </DetailIngredientsWrapper>
+                    <S_DetailMainFigcaption>{recipe.recipeName}</S_DetailMainFigcaption>
+                </S_DetailMainFigure>
+                <span>레시피 작성자 : {recipe.recipeAuthor}</span>
                 <RecipeMetaData time={recipe.recipeCookingTime} level={recipe.recipeLevel} rate={recipe.recipeRating} />
-            </DetailRecipeInfo>
+                {isAuthor && (
+                    <S_DetailBtnWrapper>
+                        <S_StyledLink to={`/recipes/update/${id}`}>수정</S_StyledLink>
+                        <S_StyledButton onClick={() => handleMyRecipeDelete(Number(id))}>삭제</S_StyledButton>
+                    </S_DetailBtnWrapper>
+                )}
+            </S_DetailMain>
+            {/* 요리방법 */}
+            <S_DetailRecipeInstruction>
+                <S_DetailSubtitle>Directions</S_DetailSubtitle>
+                {recipe.recipesManuals &&
+                    recipe.recipesManuals.map((step, idx) => (
+                        <S_DetailRecipeFigure key={idx}>
+                            <img src={`${step.recipeOrderImage}`} alt="단계별 이미지" />
+                            <S_DetailRecipeFigcapton>
+                                {`step${idx + 1}`}
+                                <br />
+                                {`${step.recipeOrderContent}`}
+                            </S_DetailRecipeFigcapton>
+                        </S_DetailRecipeFigure>
+                    ))}
+            </S_DetailRecipeInstruction>
 
+            <S_DetailIngredientsWrapper>
+                <S_DetailSubtitle>Ingredients</S_DetailSubtitle>
+                <DetailIngredientsTable>
+                    <thead>
+                        <tr>
+                            <th>재료</th>
+                            <th>개수</th>
+                            <th>구매</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {recipe.recipeIngredients &&
+                            recipe.recipeIngredients.map((ingredient, idx) => (
+                                <tr key={`${ingredient.ingredientName}+${idx}`}>
+                                    <td>{ingredient.ingredientName}</td>
+                                    <td>{ingredient.ingredientQuantity}</td>
+                                    <td>
+                                        <Link to={`https://www.coupang.com/np/search?component=&q=${ingredient.ingredientName}`}>
+                                            <S_CartIcon />
+                                        </Link>
+                                    </td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </DetailIngredientsTable>
+            </S_DetailIngredientsWrapper>
             <CommentsView />
-        </DetailRecipeContainer>
+        </S_DetailRecipeContainer>
     );
 }
 
-const DetailRecipeContainer = styled.section`
-    padding: 50px;
+const S_DetailRecipeContainer = styled.section`
+    margin-top: 50px;
     height: 100vh;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+    width: 80vw;
 `;
-const DetailMain = styled.div`
+const S_DetailMain = styled.div`
+    display: flex;
+    flex-direction: column;
+    position: relative;
+`;
+const S_DetailBtnWrapper = styled.div`
+    display: flex;
+    gap: 16px;
+    position: absolute;
+    top: 20%;
+    right: 20%;
+`;
+const S_DetailMainFigure = styled.figure`
+    display: flex;
+    align-items: flex-start;
     img {
         max-width: 50%;
         height: auto;
@@ -145,58 +160,45 @@ const DetailMain = styled.div`
         border: 0.8 solid #656565;
     }
 `;
-const DetailSubtitle = styled.h4`
+
+const S_DetailMainFigcaption = styled.figcaption`
+    font-size: 32px;
+    color: #622b18;
+    text-align: start;
+    order: -1;
+    flex-grow: 1;
+`;
+const S_DetailSubtitle = styled.h4`
     margin-top: 40px;
     font-size: 28px;
 `;
-const DetailRecipeName = styled.h2`
-    margin: auto;
-    color: #622b18;
-    font-size: 32px;
-    text-align: start;
-`;
-const DetailRecipeContents = styled.div`
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 16px;
-`;
-const DetailRecipeInstruction = styled.div`
+
+const S_DetailRecipeInstruction = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: 16px;
 `;
-const DetailRecipeFigure = styled.figure`
+const S_DetailRecipeFigure = styled.figure`
     width: 40%;
     flex-grow: 0;
+    display: flex;
+    flex-direction: column;
     img {
         display: block;
         height: 200px;
         border: 1px solid #656565;
     }
 `;
-const DetailRecipeFigcapton = styled.figcaption`
+const S_DetailRecipeFigcapton = styled.figcaption`
     margin-bottom: 16px;
     line-height: 2rem;
     order: -1;
 `;
-const DetailRecipeInfo = styled.div`
-    flex-shrink: 0;
-    width: 30%;
-    position: sticky;
-    height: auto;
-    top: 20px;
-`;
 
-const DetailIngredientsWrapper = styled.div`
+const S_DetailIngredientsWrapper = styled.div`
     margin: 16px;
     text-align: center;
-    h3 {
-        font-size: 24px;
-        font-weight: 400;
-    }
 `;
 
 const DetailIngredientsTable = styled.table`
@@ -226,16 +228,11 @@ const DetailIngredientsTable = styled.table`
     }
 `;
 
-const CartIcon = styled(BsCartCheckFill)`
+const S_CartIcon = styled(BsCartCheckFill)`
     &:hover {
         color: #efb63e;
     }
     cursor: pointer;
-`;
-
-const ButtonWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
 `;
 
 const S_StyledLink = styled(Link)`

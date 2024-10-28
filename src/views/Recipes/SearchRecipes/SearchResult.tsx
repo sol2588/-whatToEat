@@ -32,7 +32,7 @@ export function SearchResult({ hasMore, recipes, isLoading, fetchRecipes, hasSea
     const target = useObserver(handleObserver);
 
     return (
-        <ResultContainer>
+        <>
             <RecipeList recipes={recipes} />
             {!isLoading ? (
                 <div></div>
@@ -43,8 +43,6 @@ export function SearchResult({ hasMore, recipes, isLoading, fetchRecipes, hasSea
             ) : (
                 <NoData />
             )}
-        </ResultContainer>
+        </>
     );
 }
-
-const ResultContainer = styled.section``;
