@@ -40,15 +40,6 @@ const UpdateRecipe: React.FC = () => {
         <RecipeWriteContainer>
             <RecipeHeader>
                 <RecipeNameInput value={recipeName} onChange={(e) => setRecipeName(e.target.value)} placeholder="레시피 이름을 수정하세요." />
-                <ThumbnailUploadBox>
-                    <ThumbnailLabel>썸네일 이미지 업로드</ThumbnailLabel>
-                    <ThumbnailPreviewContainer>
-                        <ThumbnailPreview src={thumbnailPreview || DefaultImg} alt="Thumbnail Preview" />
-                        <ThumbnailFileInput type="file" onChange={(e) => handleThumbnailChange(e)} />
-                    </ThumbnailPreviewContainer>
-                </ThumbnailUploadBox>
-            </RecipeHeader>
-            <RecipeContent>
                 <RecipeSteps>
                     {steps.map((step, index) => (
                         <RecipeStep key={index}>
@@ -70,6 +61,17 @@ const UpdateRecipe: React.FC = () => {
                     ))}
                     <AddButton onClick={handleAddStep}>단계 추가</AddButton>
                 </RecipeSteps>
+            </RecipeHeader>
+
+            <RecipeContent>
+                <ThumbnailUploadBox>
+                    <ThumbnailLabel>썸네일 이미지 업로드</ThumbnailLabel>
+                    <ThumbnailPreviewContainer>
+                        <ThumbnailPreview src={thumbnailPreview || DefaultImg} alt="Thumbnail Preview" />
+                        <ThumbnailFileInput type="file" onChange={(e) => handleThumbnailChange(e)} />
+                    </ThumbnailPreviewContainer>
+                </ThumbnailUploadBox>
+
                 <RecipeSidebar>
                     <RecipeDetails>
                         <h3>레시피 수정</h3>
@@ -127,40 +129,50 @@ const UpdateRecipeWithAuth = withAuth(UpdateRecipe);
 export default UpdateRecipeWithAuth;
 
 const RecipeWriteContainer = styled.section`
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    gap: 50px;
     padding: 50px;
-    width: 100%;
+    width: 80vw;
+    margin: 0 auto;
 `;
 
 //헤더부분
 const RecipeHeader = styled.div`
     display: flex;
-    text-align: start;
+    flex-direction: column;
+    width: 100%;
     margin-bottom: 20px;
 `;
 
 const RecipeNameInput = styled.input`
-    font-size: 32px;
-    width: 80%;
-    height: 100px;
+    font-size: 1.5rem;
+    width: 100%;
+    height: 60px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 8px;
+    font-family: 'SUITE-Regular';
 `;
 
 //컨텐츠부분
 const RecipeContent = styled.div`
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     gap: 16px;
+    width: 100%;
 `;
 
 const RecipeSteps = styled.div`
     flex-grow: 1;
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 16px;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 `;
 
 const RecipeStep = styled.div`
@@ -194,13 +206,14 @@ const StepFileInput = styled.input`
 `;
 
 const RecipeSidebar = styled.div`
-    width: 30%;
+    width: 55%;
     display: flex;
     flex-direction: column;
     gap: 20px;
     position: sticky;
     top: 50px;
     flex-shrink: 0;
+    margin-top: 50px;
 `;
 
 const RecipeDetails = styled.div`
@@ -246,6 +259,7 @@ const AddButton = styled.button`
     cursor: pointer;
     width: 100%;
     height: 50px;
+    font-family: 'SUITE-Regular';
     &:hover {
         background-color: ${colors[400]};
     }
@@ -259,6 +273,7 @@ const DeleteButton = styled.button`
     border-radius: 8px;
     cursor: pointer;
     margin-top: 10px;
+    font-family: 'SUITE-Regular';
     &:hover {
         background-color: #c0392b;
     }
@@ -271,6 +286,7 @@ const SubmitButton = styled.button`
     border: none;
     color: black;
     border-radius: 8px;
+    font-family: 'SUITE-Regular';
     cursor: pointer;
     &:hover {
         background-color: ${colors[400]};
@@ -291,6 +307,7 @@ const CustomStyledSelect = styled.div`
         background-color: white;
         border-radius: 8px;
         outline: none;
+        font-family: 'SUITE-Regular';
     }
 `;
 
@@ -298,7 +315,8 @@ const ThumbnailUploadBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 40%;
+    width: 55%;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 `;
 
 const ThumbnailLabel = styled.h3`
