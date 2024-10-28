@@ -221,9 +221,8 @@ const NicknameWrapper = styled.div`
 
 // `visible` : 에러메세지가 있을 때 boolean으로 style적용
 const ErrorMessage = styled.p<{ visible: boolean }>`
-    min-height: 20px;
-    margin-top: 5px;
-    color: red;
+    margin-left: 14px;
+    color: #d32f2f;
     font-size: 0.8rem;
     text-align: start;
     visibility: ${(props) => (props.visible ? 'visible' : 'none')}; /* 에러가 없을 때는 숨김 */
