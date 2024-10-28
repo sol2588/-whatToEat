@@ -1,4 +1,4 @@
-import axios from 'axios';
+import instance from '../utils/api/instance';
 import { useState, useEffect } from 'react';
 export const useFetchAnalytics = () => {
     const [visitedInfo, setVisitedInfo] = useState({
@@ -7,7 +7,7 @@ export const useFetchAnalytics = () => {
     });
 
     const fetchAnalyticsDailyHandler = async () => {
-        const dailyResponse = await axios.get(`${import.meta.env.VITE_BASE_URL}/statistics/daily`);
+        const dailyResponse = await instance.get('/statistics/daily');
         console.log('일별 방문자 response :', dailyResponse);
 
         setVisitedInfo((prevInfo) => ({
@@ -17,7 +17,7 @@ export const useFetchAnalytics = () => {
     };
 
     const fetchAnalyticsMonthlyHandler = async () => {
-        const momthlyResponse = await axios.get(`${import.meta.env.VITE_BASE_URL}/statistics/monthly`);
+        const momthlyResponse = await instance.get('/statistics/monthly');
         console.log('월별 방문자 response : ', momthlyResponse);
         setVisitedInfo((prevInfo) => ({
             ...prevInfo,
