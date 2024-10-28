@@ -50,9 +50,18 @@ instance.interceptors.response.use(
                 const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
                 const userData = JSON.parse(parsedData.user);
                 const parsedProvider = userData.value.provider;
+                const duration = 10 * 60 * 1000; // 10분
                 console.log('instace에서 err.뭐있니: ', err.response.data);
 
-                store.dispatch(loginSuccess({ isLoggedIn: true, token: newAccessToken, nickname: err.response.data.data, provider: parsedProvider }));
+                store.dispatch(
+                    loginSuccess({
+                        isLoggedIn: true,
+                        token: newAccessToken,
+                        nickname: err.response.data.data,
+                        provider: parsedProvider,
+                        expiredIn: Date.now() + duration,
+                    }),
+                );
                 err.config.headers['access-token'] = `Bearer ${newAccessToken}`;
                 return instance(err.config); // 중단된 요청을 갱신된 토큰으로 재요청
             } else {

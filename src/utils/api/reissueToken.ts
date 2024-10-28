@@ -1,6 +1,13 @@
+import { RootState } from '../../redux/store/store';
 import instance from './instance';
+import { useSelector } from 'react-redux';
 
+const tokenExpired = useSelector((state: RootState) => state.user.value.expiredIn);
 const reissueToken = async () => {
+    if (tokenExpired && tokenExpired > Date.now()) {
+        console.log('토큰이 아직 유효합니다.');
+        return null;
+    }
     try {
         const response = await instance.get('/auth/token/refresh');
         console.log('reissue 문제야...:', response);

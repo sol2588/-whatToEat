@@ -13,10 +13,10 @@ export default function AuthKaKao() {
         const token = params.get('access-token');
         const nickname = params.get('nickname');
         const provider = params.get('provider');
-        console.log(token, nickname);
+        const duration = 10 * 60 * 1000; // 10분
 
         if (token && nickname) {
-            dispatch(loginSuccess({ isLoggedIn: true, token: token, nickname: nickname, provider: provider }));
+            dispatch(loginSuccess({ isLoggedIn: true, token: token, nickname: nickname, provider: provider, expiredIn: Date.now() + duration }));
             navigate('/');
         }
     }, [navigate]);
