@@ -63,13 +63,10 @@ export default function Visited(): JSX.Element {
 
     return (
         <Container maxWidth="md">
-            {/* 상단 요약 카드 */}
             <Box display="flex" justifyContent="space-between" mb={4}>
                 <SummaryCard title="오늘 방문자" value={visitedInfo.Today} color={colors[200]} />
                 <SummaryCard title="월간 방문자" value={visitedInfo.Monthly} color={colors[300]} />
             </Box>
-
-            {/* 차트 */}
             <Box>
                 <Typography variant="h5" gutterBottom color={colors[400]}>
                     Activity
@@ -82,7 +79,6 @@ export default function Visited(): JSX.Element {
     );
 }
 
-// 상단 요약 카드 컴포넌트
 function SummaryCard({ title, value, color }: SummaryCardProps): JSX.Element {
     return (
         <Card sx={{ minWidth: 120, backgroundColor: color, color: '#fff', textAlign: 'center' }}>
