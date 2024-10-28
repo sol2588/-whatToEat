@@ -1,9 +1,8 @@
-import { RootState } from '../../redux/store/store';
 import instance from './instance';
-import { useSelector } from 'react-redux';
+import { store } from '../../redux/store/store';
 
 const reissueToken = async () => {
-    const tokenExpired = useSelector((state: RootState) => state.user.value.expiredIn);
+    const tokenExpired = store.getState().user.value.expiredIn;
     if (tokenExpired && tokenExpired > Date.now()) {
         console.log('토큰이 아직 유효합니다.');
         return null;
