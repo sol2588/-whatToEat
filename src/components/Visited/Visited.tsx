@@ -63,7 +63,7 @@ export default function Visited(): JSX.Element {
 
     return (
         <Container maxWidth="md">
-            <Box display="flex" justifyContent="space-between" mb={4}>
+            <Box display="flex" justifyContent="space-between" mb={3}>
                 <SummaryCard title="오늘 방문자" value={visitedInfo.Today} color={colors[200]} />
                 <SummaryCard title="월간 방문자" value={visitedInfo.Monthly} color={colors[300]} />
             </Box>
@@ -81,10 +81,12 @@ export default function Visited(): JSX.Element {
 
 function SummaryCard({ title, value, color }: SummaryCardProps): JSX.Element {
     return (
-        <Card sx={{ minWidth: 120, backgroundColor: color, color: '#fff', textAlign: 'center' }}>
-            <CardContent>
+        <Card sx={{ minWidth: 100, maxWidth: 140, minHeight: 40, maxHeight: 75, backgroundColor: color, color: '#fff', textAlign: 'center' }}>
+            <CardContent sx={{ textAlign: 'center' }}>
                 <Typography variant="h6">{value.toLocaleString()}</Typography>
-                <Typography variant="body2">{title}</Typography>
+                <Typography variant="body2" sx={{ fontSize: '1rem' }}>
+                    {title}
+                </Typography>
             </CardContent>
         </Card>
     );

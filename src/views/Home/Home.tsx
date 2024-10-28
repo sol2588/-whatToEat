@@ -101,7 +101,7 @@ const RecipesList = styled.section`
 const StyledLink = styled(Link)`
     display: inline-block;
     padding: 12px 35px;
-    margin: 40px 0;
+    margin: 20px 0;
     background-color: #3f51b5;
     color: #fff;
     border-radius: 50px;

@@ -84,6 +84,7 @@ const Container = styled.div`
     display: flex;
     width: 100%;
     background-color: #d8dced;
+    align-items: center;
 `;
 const CarouselWrapper = styled.div`
     width: 100%;
