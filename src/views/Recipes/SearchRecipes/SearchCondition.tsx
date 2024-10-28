@@ -63,7 +63,7 @@ export default function SearchCondition(): JSX.Element {
     };
 
     const fetchRecipes = async () => {
-        if (isLoading) return;
+        if (isLoading || !hasMore) return;
         setIsLoading(true);
         try {
             const response: any = await instance.get(`/recipes/search`, {
@@ -81,20 +81,22 @@ export default function SearchCondition(): JSX.Element {
             console.log('search response: ', response);
             if (response.data.code == 'OK') {
                 const totalRecipes = response.data.data.totalRecipes;
-                const newRecipes: RecipeProps[] = response.data.data.recipes;
-                const convertData = newRecipes.map((recipe) => ({
+                const newRecipes: RecipeProps[] = response.data.data.recipes.map((recipe: RecipeProps) => ({
                     ...recipe,
                     recipeLevel: convertLevel(recipe.recipeLevel),
                     recipeCookingTime: convertTime(recipe.recipeCookingTime),
                 }));
-                if (recipes.length + convertData.length >= totalRecipes) {
+                console.log('search...', totalRecipes);
+                console.log('each,,,', recipes.length, newRecipes.length);
+                console.log('sum,,,', recipes.length + newRecipes.length);
+                setRecipes((prev) => [...prev, ...newRecipes]);
+                setOffset((prev) => prev + 1);
+                setHasSearched(true);
+                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
+
+                if (recipes.length + newRecipes.length >= totalRecipes) {
+                    console.log('들어오는지 check');
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
-                    return;
-                } else {
-                    setRecipes((prev) => [...prev, ...convertData]);
-                    setOffset((prev) => prev + 1);
-                    setHasSearched(true);
-                    dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
                 }
             } else {
                 console.log('code ok 아닐때');
