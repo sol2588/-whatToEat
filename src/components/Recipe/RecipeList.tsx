@@ -1,4 +1,3 @@
-// import RecipeCard from './RecipeCard';
 import RecipeNewCard from './RecipeNewCard';
 import styled from 'styled-components';
 
@@ -33,5 +32,5 @@ const S_RecipeUlList = styled.ul`
     display: grid;
     gap: 30px;
     padding: 30px;
-    grid-template-columns: repeat(3, minmax(345px, auto));
+    grid-template-columns: repeat(3, minmax(345px, 1fr));
 `;

@@ -7,6 +7,8 @@ import useAuthToken from '../../hooks/useAuthToken';
 import instance from '../../utils/api/instance';
 import useHeaderLogic from '../../hooks/useHeaderLogic';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { showModal } from '../../redux/reducer/modalSlice';
 
 // ! main 페이지가 아닌 all isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, all, recipeList, recipeCard인듯
 
@@ -30,8 +32,7 @@ export default function RecipeNewCard({
     recipeRating,
 }: CardProps): JSX.Element {
     const [marked, setMarked] = useState<boolean>(false);
-    const [message, setMessage] = useState<string>('');
-
+    const dispatch = useDispatch();
     const token = useAuthToken();
 
     const { isActive } = useHeaderLogic();
@@ -47,18 +48,17 @@ export default function RecipeNewCard({
             if (response.data.code == 'OK') {
                 if (response.data.data == 'CANCELED') {
                     setMarked(false);
+                    dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
                 } else if (response.data.data == 'SCRAPED') {
                     setMarked(true);
+                    dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
                 }
-                setMessage(response.data.message);
-                alert(response.data.message);
             }
         } catch (err: any) {
             console.log(err);
-            setMessage(marked ? '찜한 레시피에서 삭제하였습니다.' : '레시피를 찜하지 못했습니다.');
         }
     };
-    console.log(message);
+
     return (
         <S_CardFigure>
             <S_CardImg alt="레시피이미지" src={recipeThumbnail} />
