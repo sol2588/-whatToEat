@@ -69,12 +69,6 @@ export default function DetailRecipe(): JSX.Element {
 
     return (
         <DetailRecipeContainer>
-            {isAuthor && (
-                <ButtonWrapper>
-                    <S_StyledLink to={`/recipes/update/${id}`}>수정</S_StyledLink>
-                    <S_StyledButton onClick={() => handleMyRecipeDelete(Number(id))}>삭제</S_StyledButton>
-                </ButtonWrapper>
-            )}
             <DetailRecipeContents>
                 <DetailMain>
                     <DetailRecipeName>{recipe.recipeName}</DetailRecipeName>
@@ -82,6 +76,12 @@ export default function DetailRecipe(): JSX.Element {
                 </DetailMain>
                 <DetailSubtitle>Directions</DetailSubtitle>
                 <DetailRecipeInstruction>
+                    {isAuthor && (
+                        <ButtonWrapper>
+                            <S_StyledLink to={`/recipes/update/${id}`}>수정</S_StyledLink>
+                            <S_StyledButton onClick={() => handleMyRecipeDelete(Number(id))}>삭제</S_StyledButton>
+                        </ButtonWrapper>
+                    )}
                     {recipe.recipesManuals &&
                         recipe.recipesManuals.map((step, idx) => (
                             <DetailRecipeFigure key={idx}>

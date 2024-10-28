@@ -264,7 +264,7 @@ export default function Mypage(): JSX.Element {
                                     ? myRecipes.map((myRecipe) => (
                                           <Grid item xs={12} sm={6} md={6} key={myRecipe.myRecipeId}>
                                               <S_MyFigure>
-                                                  <Button onClick={() => handleMyRecipeDelete(myRecipe.myRecipeId)}>삭제</Button>
+                                                  <S_button onClick={() => handleMyRecipeDelete(myRecipe.myRecipeId)}>삭제</S_button>
                                                   <S_thumbnail src={myRecipe.myRecipeThumbnail} alt="작성 레시피 이미지" />
                                                   <M_Linked to={`/recipes/${myRecipe.myRecipeId}`}>
                                                       <S_MyFigcaption>{myRecipe.myRecipeName}</S_MyFigcaption>
@@ -625,6 +625,13 @@ const S_thumbnail = styled.img`
     object-fit: cover;
     border-radius: 8px;
     flex-shrink: 0;
+`;
+
+const S_button = styled.button`
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: ${colors[400]};
 `;
 
 const SkeletonMypage: React.FC = () => {
