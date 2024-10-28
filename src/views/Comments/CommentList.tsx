@@ -4,6 +4,7 @@ import CommentRating from './CommentRating';
 import CommentsContent from './CommentsContent';
 import CommentEditBtn from './CommentEditBtn';
 import styled from 'styled-components';
+import chef from '../../assets/img/chef-hat.png';
 
 interface UpdateProps {
     commentId: number;
@@ -31,7 +32,7 @@ interface CommentsListProps {
     handleUpdateComment: (e: ChangeEvent<HTMLTextAreaElement>) => void;
     handleUpdateRate: (rate: number) => void;
 }
-// ! commentId! 강제로 넣어놓은 부분 데이터 연동 후 확인 & 다른 방식으로 구현할것
+
 export default function CommentList({
     isEditing,
     handleClickEdit,
@@ -59,31 +60,23 @@ export default function CommentList({
         <>
             <S_CommentsContainer>
                 <h4>Comments</h4>
-                {commentDataList.map((comment) => (
-                    <S_CommentsWrapper>
-                        <S_ReviewerFigure>
-                            <img src="" alt="유저이미지" />
-                            <S_ReviewerFigcaption date={false}>{comment.commentAuthor}</S_ReviewerFigcaption>
-                            <S_ReviewerFigcaption date={true}>{comment.createdAt.split('T')[0]}</S_ReviewerFigcaption>
-                        </S_ReviewerFigure>
-                        <S_CommentsDataWrapper>
-                            <CommentsContent
-                                isEditing={isEditing}
-                                reviewId={comment.commentId}
-                                commentId={commentId}
-                                content={comment.commentContent}
-                                updateComment={updateComment}
-                                handleUpdateComment={handleUpdateComment}
-                            />
+                {commentDataList.length > 0 ? (
+                    commentDataList.map((comment) => (
+                        <S_CommentsWrapper>
                             <S_CommentsSelectWrapper>
-                                <CommentRating
-                                    isEditing={isEditing}
-                                    commentId={commentId}
-                                    reviewId={comment.commentId}
-                                    rating={comment.rating}
-                                    updateRate={updateRate ?? 0}
-                                    handleUpdateRate={handleUpdateRate}
-                                />
+                                <S_ReviewerFigure>
+                                    <img src={chef} alt="워터마크" />
+                                    <S_ReviewerFigcaption date={false}>{comment.commentAuthor}</S_ReviewerFigcaption>
+                                    <S_ReviewerFigcaption date={true}>{comment.createdAt.split('T')[0]}</S_ReviewerFigcaption>
+                                    <CommentRating
+                                        isEditing={isEditing}
+                                        commentId={commentId}
+                                        reviewId={comment.commentId}
+                                        rating={comment.rating}
+                                        updateRate={updateRate ?? 0}
+                                        handleUpdateRate={handleUpdateRate}
+                                    />
+                                </S_ReviewerFigure>
                                 <CommentEditBtn
                                     isEditing={isEditing}
                                     commentId={commentId}
@@ -96,9 +89,21 @@ export default function CommentList({
                                     recipeId={id}
                                 />
                             </S_CommentsSelectWrapper>
-                        </S_CommentsDataWrapper>
-                    </S_CommentsWrapper>
-                ))}
+                            <S_CommentsDataWrapper>
+                                <CommentsContent
+                                    isEditing={isEditing}
+                                    reviewId={comment.commentId}
+                                    commentId={commentId}
+                                    content={comment.commentContent}
+                                    updateComment={updateComment}
+                                    handleUpdateComment={handleUpdateComment}
+                                />
+                            </S_CommentsDataWrapper>
+                        </S_CommentsWrapper>
+                    ))
+                ) : (
+                    <S_CommentsEmpty>아직 남겨진 Comments가 없습니다. 첫번째로 Comment를 달아주세요!</S_CommentsEmpty>
+                )}
             </S_CommentsContainer>
         </>
     );
@@ -111,20 +116,19 @@ const S_CommentsContainer = styled.section`
     }
 `;
 const S_CommentsWrapper = styled.div`
-    padding: 16px;
     height: auto;
 `;
 const S_ReviewerFigure = styled.figure`
     display: flex;
     gap: 16px;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
 
     img {
         display: inline-block;
         width: 50px;
         height: 50px;
-        border: 2px solid;
+        border: 1px solid lightgray;
         border-radius: 50%;
     }
 `;
@@ -133,6 +137,7 @@ const S_ReviewerFigcaption = styled.figcaption<{ date: boolean }>`
     color: ${(props) => (props.date ? '#575757' : '#000')};
 `;
 const S_CommentsDataWrapper = styled.div`
+    margin-left: 56px;
     width: 95%;
     display: flex;
     flex-wrap: wrap;
@@ -141,4 +146,8 @@ const S_CommentsDataWrapper = styled.div`
 const S_CommentsSelectWrapper = styled.div`
     display: flex;
     justify-content: space-between;
+`;
+const S_CommentsEmpty = styled.div`
+    font-size: 20px;
+    margin: 16px 0 30px;
 `;

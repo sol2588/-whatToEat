@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/store';
+import styled from 'styled-components';
 
 interface Props {
     commentAuthor: string;
@@ -45,7 +46,7 @@ export default function CommentEditBtn({
                 ? commentId == review.commentId && (
                       <>
                           {commentId !== undefined && updateRate != undefined && recipeId !== undefined && (
-                              <button
+                              <S_EditDoneBtn
                                   onClick={() =>
                                       updateCommentHandler(
                                           {
@@ -58,13 +59,13 @@ export default function CommentEditBtn({
                                   }
                               >
                                   완료
-                              </button>
+                              </S_EditDoneBtn>
                           )}
                       </>
                   )
                 : nickname == review.commentAuthor && (
                       <div>
-                          <button
+                          <S_EditBtn
                               onClick={() => {
                                   handleClickEdit({
                                       comments: review.commentContent,
@@ -74,18 +75,50 @@ export default function CommentEditBtn({
                               }}
                           >
                               수정
-                          </button>
+                          </S_EditBtn>
                           {recipeId !== undefined && (
-                              <button
+                              <S_DeleteBtn
                                   onClick={() => {
                                       deleteCommentHandler(review.commentId, recipeId);
                                   }}
                               >
                                   삭제
-                              </button>
+                              </S_DeleteBtn>
                           )}
                       </div>
                   )}
         </>
     );
 }
+
+const S_EditBtn = styled.button`
+    margin-right: 8px;
+    font-size: 16px;
+    width: 50px;
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    background-color: #0173f6;
+    cursor: pointer;
+`;
+const S_DeleteBtn = styled.button`
+    font-size: 16px;
+    width: 50px;
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    background-color: #ff6b6b;
+    cursor: pointer;
+`;
+const S_EditDoneBtn = styled.button`
+    font-size: 16px;
+    width: 50px;
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    background-color: #0173f6;
+    cursor: pointer;
+`;

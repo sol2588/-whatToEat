@@ -33,5 +33,5 @@ const S_RecipeUlList = styled.ul`
     display: grid;
     gap: 30px;
     padding: 30px;
-    grid-template-columns: repeat(3, 345px);
+    grid-template-columns: repeat(3, minmax(345px, auto));
 `;
