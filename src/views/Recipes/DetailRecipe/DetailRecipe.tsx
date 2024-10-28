@@ -87,8 +87,8 @@ export default function DetailRecipe(): JSX.Element {
                 )}
             </S_DetailMain>
             {/* 요리방법 */}
+            <S_DetailSubtitle>Directions</S_DetailSubtitle>
             <S_DetailRecipeInstruction>
-                <S_DetailSubtitle>Directions</S_DetailSubtitle>
                 {recipe.recipesManuals &&
                     recipe.recipesManuals.map((step, idx) => (
                         <S_DetailRecipeFigure key={idx}>
@@ -134,7 +134,7 @@ export default function DetailRecipe(): JSX.Element {
 }
 
 const S_DetailRecipeContainer = styled.section`
-    margin-top: 50px;
+    margin: 50px auto;
     height: 100vh;
     width: 80vw;
 `;
@@ -151,8 +151,6 @@ const S_DetailBtnWrapper = styled.div`
     right: 20%;
 `;
 const S_DetailMainFigure = styled.figure`
-    display: flex;
-    align-items: flex-start;
     img {
         max-width: 50%;
         height: auto;
@@ -169,7 +167,7 @@ const S_DetailMainFigcaption = styled.figcaption`
     flex-grow: 1;
 `;
 const S_DetailSubtitle = styled.h4`
-    margin-top: 40px;
+    margin-top: 50px;
     font-size: 28px;
 `;
 
@@ -193,7 +191,6 @@ const S_DetailRecipeFigure = styled.figure`
 const S_DetailRecipeFigcapton = styled.figcaption`
     margin-bottom: 16px;
     line-height: 2rem;
-    order: -1;
 `;
 
 const S_DetailIngredientsWrapper = styled.div`
