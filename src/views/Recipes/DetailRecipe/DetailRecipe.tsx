@@ -77,8 +77,10 @@ export default function DetailRecipe(): JSX.Element {
                     <img src={recipe.recipeThumbnail} alt="썸네일 이미지" />
                     <S_DetailMainFigcaption>{recipe.recipeName}</S_DetailMainFigcaption>
                 </S_DetailMainFigure>
-                <span>레시피 작성자 : {recipe.recipeAuthor}</span>
-                <RecipeMetaData time={recipe.recipeCookingTime} level={recipe.recipeLevel} rate={recipe.recipeRating} />
+                <S_DetailMainInfo>
+                    <span>레시피 작성자 : {recipe.recipeAuthor}</span>
+                    <RecipeMetaData time={recipe.recipeCookingTime} level={recipe.recipeLevel} rate={recipe.recipeRating} />
+                </S_DetailMainInfo>
                 {isAuthor && (
                     <S_DetailBtnWrapper>
                         <S_StyledLink to={`/recipes/update/${id}`}>수정</S_StyledLink>
@@ -87,8 +89,8 @@ export default function DetailRecipe(): JSX.Element {
                 )}
             </S_DetailMain>
             {/* 요리방법 */}
-            <S_DetailSubtitle>Directions</S_DetailSubtitle>
             <S_DetailRecipeInstruction>
+                <S_DetailSubtitle>Directions</S_DetailSubtitle>
                 {recipe.recipesManuals &&
                     recipe.recipesManuals.map((step, idx) => (
                         <S_DetailRecipeFigure key={idx}>
@@ -134,14 +136,20 @@ export default function DetailRecipe(): JSX.Element {
 }
 
 const S_DetailRecipeContainer = styled.section`
-    margin: 50px auto;
-    height: 100vh;
+    margin-top: 50px;
     width: 80vw;
+    height: 100vh;
 `;
 const S_DetailMain = styled.div`
     display: flex;
     flex-direction: column;
     position: relative;
+    align-items: center;
+`;
+const S_DetailMainInfo = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `;
 const S_DetailBtnWrapper = styled.div`
     display: flex;
@@ -151,11 +159,16 @@ const S_DetailBtnWrapper = styled.div`
     right: 20%;
 `;
 const S_DetailMainFigure = styled.figure`
+    display: flex;
+    align-items: flex-start;
     img {
         max-width: 50%;
         height: auto;
         object-fit: cover;
         border: 0.8 solid #656565;
+        border-top-left-radius: 50%;
+        border-top-right-radius: 50%;
+        border-bottom-left-radius: 10%;
     }
 `;
 
@@ -163,18 +176,17 @@ const S_DetailMainFigcaption = styled.figcaption`
     font-size: 32px;
     color: #622b18;
     text-align: start;
-    order: -1;
     flex-grow: 1;
 `;
 const S_DetailSubtitle = styled.h4`
-    margin-top: 50px;
+    margin-top: 40px;
     font-size: 28px;
 `;
 
 const S_DetailRecipeInstruction = styled.div`
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 16px;
 `;
 const S_DetailRecipeFigure = styled.figure`
@@ -191,6 +203,7 @@ const S_DetailRecipeFigure = styled.figure`
 const S_DetailRecipeFigcapton = styled.figcaption`
     margin-bottom: 16px;
     line-height: 2rem;
+    order: -1;
 `;
 
 const S_DetailIngredientsWrapper = styled.div`
@@ -200,7 +213,6 @@ const S_DetailIngredientsWrapper = styled.div`
 
 const DetailIngredientsTable = styled.table`
     border-collapse: collapse;
-    width: 100%;
     th,
     td {
         text-align: center;

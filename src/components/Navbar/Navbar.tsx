@@ -31,6 +31,9 @@ const S_BarContainer = styled.div`
     top: 15%;
     left: 50%;
     transform: translate(-50%, -50%);
+    @media screen and (min-width: 1249px) {
+        top: 14%;
+    }
 `;
 const S_BarWrapper = styled.div`
     padding: 14px 12px;
