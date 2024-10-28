@@ -3,8 +3,7 @@ import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import useAuthToken from '../hooks/useAuthToken';
 import reissueToken from '../utils/api/reissueToken';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
-import { loginSuccess, logoutSuccess } from '../redux/reducer/userSlice';
+import { loginSuccess } from '../redux/reducer/userSlice';
 
 export interface SSEProps {
     recipeName: string;
@@ -104,56 +103,40 @@ export default function fetchSSEHandler() {
                 }
             };
 
-            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/token/refresh`, {
-                headers: {
-                    'access-token': `Bearer ${token}`,
-                },
-                withCredentials: true,
-            });
-
-            if (response.status == 401) {
-                console.log('401 response in SSE', response);
-                const newToken = await reissueToken();
-                const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
-                const userData = JSON.parse(parsedData.user);
-                const parsedProvider = userData.value.provider;
-                if (newToken) {
-                    token = newToken;
-                    dispatch(loginSuccess({ isLoggedIn: true, token: newToken, nickname: response.data.data, provider: parsedProvider }));
-                    fetchSSE();
-                }
-                return;
-            } else if (response.status == 410) {
-                dispatch(logoutSuccess());
-                alert('다시 로그인해주시기 바랍니다.');
-                window.location.href = '/login';
-                console.error('412 expired refreshtoken');
-            }
-
             // 종료시 onerror로 처리
             eventSource.current.onerror = async (err: any) => {
                 console.log('SSE connection error', err);
 
-                setSseState((prev) => {
-                    const newState = {
-                        ...prev,
-                        isConnected: false,
-                        error: err as Error,
-                        reconnectionCount: prev.reconnectCount + 1,
-                    };
+                const newToken = await reissueToken();
 
-                    if (newState.reconnectCount < MAX_RECONNECT_ATTEMPTS) {
-                        setTimeout(() => {
-                            console.log(`Attempting to reconnect (${newState.reconnectCount}/${MAX_RECONNECT_ATTEMPTS})`);
-                            fetchSSE();
-                        }, 5000);
-                    } else {
-                        console.error('Max reconnection attempts reached');
-                        closeConnection();
-                    }
+                if (newToken) {
+                    const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
+                    const userData = JSON.parse(parsedData.user);
+                    const parsedProvider = userData.value.provider;
+                    dispatch(loginSuccess({ isLoggedIn: true, token: newToken, nickname: err.response.data.data, provider: parsedProvider }));
+                    fetchSSE();
+                } else {
+                    setSseState((prev) => {
+                        const newState = {
+                            ...prev,
+                            isConnected: false,
+                            error: err as Error,
+                            reconnectionCount: prev.reconnectCount + 1,
+                        };
 
-                    return newState;
-                });
+                        if (newState.reconnectCount < MAX_RECONNECT_ATTEMPTS) {
+                            setTimeout(() => {
+                                console.log(`Attempting to reconnect (${newState.reconnectCount}/${MAX_RECONNECT_ATTEMPTS})`);
+                                fetchSSE();
+                            }, 5000);
+                        } else {
+                            console.error('Max reconnection attempts reached');
+                            closeConnection();
+                        }
+
+                        return newState;
+                    });
+                }
             };
         } catch (err) {
             console.error('Error initializing SSE:', err);
