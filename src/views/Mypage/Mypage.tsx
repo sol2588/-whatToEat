@@ -631,7 +631,9 @@ const S_button = styled.button`
     position: absolute;
     top: 10px;
     right: 10px;
-    color: ${colors[400]};
+    background-color: ${colors[400]};
+    color: white;
+    border: none;
 `;
 
 const SkeletonMypage: React.FC = () => {
