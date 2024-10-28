@@ -86,18 +86,15 @@ export default function SearchCondition(): JSX.Element {
                     recipeLevel: convertLevel(recipe.recipeLevel),
                     recipeCookingTime: convertTime(recipe.recipeCookingTime),
                 }));
-
                 setRecipes((prev) => [...prev, ...newRecipes]);
                 setOffset((prev) => prev + 1);
                 setHasSearched(true);
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
 
                 if (recipes.length + newRecipes.length >= totalRecipes) {
-                    console.log('들어오는지 check');
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
                 }
             } else {
-                console.log('code ok 아닐때');
                 dispatch(showModal({ isOpen: true, content: '재료명을 다시 입력해주시기 바랍니다.', onConfirm: null }));
             }
         } catch (err) {
@@ -107,6 +104,7 @@ export default function SearchCondition(): JSX.Element {
             setIsLoading(false);
         }
     };
+    console.log(ingredientsList);
 
     // 재료 입력후 enter 키를 누른 경우 handleSumbit 호출
     const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
