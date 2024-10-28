@@ -28,7 +28,7 @@ export default function Mypage(): JSX.Element {
 
     //로그인확인
     useEffect(() => {
-        if (isLoggedIn) {
+        if (!isLoggedIn) {
             navigate('/');
         }
     }, [isLoggedIn, navigate]);
