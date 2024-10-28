@@ -5,7 +5,7 @@ import { useModal } from '../../hooks/useModal';
 import { useUpdateForm } from '../../hooks/useUpdateForm';
 import { useGetMyRecipes } from '../../hooks/useGetMyRecipes';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
-import { Button, Typography, Avatar, Grid, Pagination, Box } from '@mui/material';
+import { Button, Typography, Avatar, Grid, Pagination, Box, Skeleton } from '@mui/material';
 import { useUserUpdate } from '../../hooks/useUserUpdate';
 import { useRecipeDelete } from '../../hooks/useRecipeDelete';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
@@ -20,15 +20,34 @@ import { useDeleteUser } from '../../hooks/useDeleteUser';
 import { useSelector, useDispatch } from 'react-redux';
 import { hideModal, showModal } from '../../redux/reducer/modalSlice';
 import { RootState } from '../../redux/store/store';
+
 export default function Mypage(): JSX.Element {
+    const [isLoading, setIsLoading] = useState(true);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const isLoggedIn = useSelector((state: RootState) => state.user.value.isLoggedIn);
+
+    //로그인확인
     useEffect(() => {
         if (!isLoggedIn) {
             navigate('/');
         }
     }, [isLoggedIn, navigate]);
+
+    useEffect(() => {
+        setIsLoading(true);
+        async function fetchData() {
+            try {
+                await refetchUserInfo();
+                setIsLoading(false);
+            } catch (error) {
+                console.log(error);
+                setIsLoading(false);
+            }
+        }
+        fetchData();
+    }, [isLoggedIn, navigate]);
+
     const { handleDeleteUser } = useDeleteUser();
 
     //provider에서 kakao or 일반유저 확인하기위해 사용.
@@ -187,262 +206,283 @@ export default function Mypage(): JSX.Element {
         }
     }, [scrapedRecipes, setBookmarkRecipes]);
 
+    const renderPlaceholderItems = (count: number) =>
+        Array.from({ length: count }).map((_, index) => (
+            <Grid item xs={12} sm={6} md={6} key={index}>
+                <S_defaultBox />
+            </Grid>
+        ));
+
     return (
         <S_MyContainer>
-            <S_Content>
-                <S_MyScrap>
-                    <S_Subtitle variant="h5">찜한 레시피</S_Subtitle>
-                    <Grid container spacing={2}>
-                        {scrapedRecipes.map((scrapedRecipe) => (
-                            <Grid item xs={12} sm={6} md={6} key={scrapedRecipe.recipeId}>
-                                <S_MyFigure>
-                                    <img src={scrapedRecipe.recipeThumbnail} alt="스크랩 이미지" style={{ width: '100%', borderRadius: '8px' }} />
-                                    <M_Linked to={`/recipes/${scrapedRecipe.recipeId}`}>
-                                        <S_MyFigcaption>{scrapedRecipe.recipeName}</S_MyFigcaption>
-                                    </M_Linked>
-                                    <M_BookmarkIcons
-                                        onClick={() => handleClickBookmark(scrapedRecipe.recipeId)}
-                                        mark={bookmarkRecipes[scrapedRecipe.recipeId] ?? false}
-                                    >
-                                        {bookmarkRecipes[scrapedRecipe.recipeId] ? <FaBookmark /> : <FaRegBookmark />}
-                                    </M_BookmarkIcons>
-                                </S_MyFigure>
+            {isLoading ? (
+                <SkeletonMypage />
+            ) : (
+                <>
+                    <S_Content>
+                        <S_MyScrap>
+                            <S_Subtitle variant="h5">찜한 레시피</S_Subtitle>
+                            <Grid container spacing={2}>
+                                {scrapedRecipes.length > 0
+                                    ? scrapedRecipes.map((scrapedRecipe) => (
+                                          <Grid item xs={12} sm={6} md={6} key={scrapedRecipe.recipeId}>
+                                              <S_MyFigure>
+                                                  <S_thumbnail src={scrapedRecipe.recipeThumbnail} alt="스크랩 이미지" />
+                                                  <M_Linked to={`/recipes/${scrapedRecipe.recipeId}`}>
+                                                      <S_MyFigcaption>{scrapedRecipe.recipeName}</S_MyFigcaption>
+                                                  </M_Linked>
+                                                  <M_BookmarkIcons
+                                                      onClick={() => handleClickBookmark(scrapedRecipe.recipeId)}
+                                                      mark={bookmarkRecipes[scrapedRecipe.recipeId] ?? false}
+                                                  >
+                                                      {bookmarkRecipes[scrapedRecipe.recipeId] ? <FaBookmark /> : <FaRegBookmark />}
+                                                  </M_BookmarkIcons>
+                                              </S_MyFigure>
+                                          </Grid>
+                                      ))
+                                    : renderPlaceholderItems(4)}
                             </Grid>
-                        ))}
-                    </Grid>
 
-                    <S_PaginationContainer>
-                        <Pagination
-                            count={totalScrapedRecipesPages} // 스크랩 레시피 총 페이지 수
-                            page={scrapedRecipesPage}
-                            onChange={(_, page) => setScrapedRecipesPage(page)} // 페이지 변경
-                            variant="outlined"
-                            color="primary"
-                            shape="rounded"
-                            size="large"
-                            sx={{ mt: 2 }}
-                        />
-                    </S_PaginationContainer>
-                </S_MyScrap>
+                            <S_PaginationContainer>
+                                <Pagination
+                                    count={totalScrapedRecipesPages} // 스크랩 레시피 총 페이지 수
+                                    page={scrapedRecipesPage}
+                                    onChange={(_, page) => setScrapedRecipesPage(page)} // 페이지 변경
+                                    variant="outlined"
+                                    color="primary"
+                                    shape="rounded"
+                                    size="large"
+                                    sx={{ mt: 2 }}
+                                />
+                            </S_PaginationContainer>
+                        </S_MyScrap>
 
-                <S_MyPosting>
-                    <S_Subtitle variant="h5">작성한 레시피</S_Subtitle>
-                    <Grid container spacing={2}>
-                        {myRecipes.map((myRecipe) => (
-                            <Grid item xs={12} sm={6} md={6} key={myRecipe.myRecipeId}>
-                                <S_MyFigure>
-                                    <Button onClick={() => handleMyRecipeDelete(myRecipe.myRecipeId)}>삭제</Button>
-                                    <img src={myRecipe.myRecipeThumbnail} alt="작성 레시피 이미지" style={{ width: '100%', borderRadius: '8px' }} />
-                                    <M_Linked to={`/recipes/${myRecipe.myRecipeId}`}>
-                                        <S_MyFigcaption>{myRecipe.myRecipeName}</S_MyFigcaption>
-                                    </M_Linked>
-                                </S_MyFigure>
+                        <S_MyPosting>
+                            <S_Subtitle variant="h5">작성한 레시피</S_Subtitle>
+                            <Grid container spacing={2}>
+                                {myRecipes.length > 0
+                                    ? myRecipes.map((myRecipe) => (
+                                          <Grid item xs={12} sm={6} md={6} key={myRecipe.myRecipeId}>
+                                              <S_MyFigure>
+                                                  <Button onClick={() => handleMyRecipeDelete(myRecipe.myRecipeId)}>삭제</Button>
+                                                  <S_thumbnail src={myRecipe.myRecipeThumbnail} alt="작성 레시피 이미지" />
+                                                  <M_Linked to={`/recipes/${myRecipe.myRecipeId}`}>
+                                                      <S_MyFigcaption>{myRecipe.myRecipeName}</S_MyFigcaption>
+                                                  </M_Linked>
+                                              </S_MyFigure>
+                                          </Grid>
+                                      ))
+                                    : renderPlaceholderItems(4)}
                             </Grid>
-                        ))}
-                    </Grid>
-                    <S_PaginationContainer>
-                        <Pagination
-                            count={totalMyRecipesPages} // 작성한 레시피 총 페이지 수
-                            page={myRecipesPage}
-                            onChange={(_, page) => setMyRecipesPage(page)} // 페이지 변경
-                            variant="outlined"
-                            color="primary"
-                            shape="rounded"
-                            size="large"
-                            sx={{ mt: 2 }}
-                        />
-                    </S_PaginationContainer>
-                </S_MyPosting>
-            </S_Content>
+                            <S_PaginationContainer>
+                                <Pagination
+                                    count={totalMyRecipesPages} // 작성한 레시피 총 페이지 수
+                                    page={myRecipesPage}
+                                    onChange={(_, page) => setMyRecipesPage(page)} // 페이지 변경
+                                    variant="outlined"
+                                    color="primary"
+                                    shape="rounded"
+                                    size="large"
+                                    sx={{ mt: 2 }}
+                                />
+                            </S_PaginationContainer>
+                        </S_MyPosting>
+                    </S_Content>
 
-            <S_MyInfo>
-                <S_Subtitle variant="h5">내 정보</S_Subtitle>
-                <S_MyInfoText>
-                    <Avatar
-                        alt="user-profile"
-                        src={userInfo.img}
-                        sx={{ width: 150, height: 150, mb: 4, boxShadow: 3, border: '3px solid #3f51b5' }}
-                    />
-                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#3f51b5', mb: 1 }}>
-                        이메일: {userInfo.email}
-                    </Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
-                        닉네임: {userInfo.nickname}
-                    </Typography>
-                </S_MyInfoText>
-                <S_ButtonWrapper>
-                    {parsedProvider === 'kakao' ? (
-                        <>
-                            <Button
-                                variant="contained"
-                                color="error"
-                                sx={{
-                                    width: '100%',
-                                    mb: 2,
-                                    boxShadow: 3,
-                                }}
-                                onClick={handleDelUserOpen}
-                            >
-                                회원탈퇴
-                            </Button>
-                            {isDelUserModal && (
-                                <Modal
-                                    visible={isDelUserModal}
-                                    onClose={handleDelUserClose}
-                                    buttons={[
-                                        { label: '확인', onClick: handleDeleteUser },
-                                        { label: '취소', onClick: handleDelUserClose },
-                                    ]}
-                                >
-                                    <h2>회원탈퇴</h2>
-                                    <p>정말 탈퇴하시겠습니까? </p>
-                                </Modal>
-                            )}
-                        </>
-                    ) : (
-                        <>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={() => setIsModalVisible(true)}
-                                sx={{
-                                    width: '100%',
-                                    mb: 2,
-                                    boxShadow: 3,
-                                }}
-                            >
-                                회원정보 수정
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="error"
-                                sx={{
-                                    width: '100%',
-                                    mb: 2,
-                                    boxShadow: 3,
-                                }}
-                                onClick={handleDelUserOpen}
-                            >
-                                회원탈퇴
-                            </Button>
-                            {isDelUserModal && (
-                                <Modal
-                                    visible={isDelUserModal}
-                                    onClose={handleDelUserClose}
-                                    buttons={[
-                                        { label: '확인', onClick: handleDeleteUser },
-                                        { label: '취소', onClick: handleDelUserClose },
-                                    ]}
-                                >
-                                    <h2>회원탈퇴</h2>
-                                    <p>정말 탈퇴하시겠습니까?</p>
-                                </Modal>
-                            )}
-                            {isModalVisible && (
-                                <Modal
-                                    visible={isModalVisible}
-                                    onClose={closeModal}
-                                    buttons={[
-                                        { label: '수정', onClick: handleUpdate, disabled: !(nicknameCheck && passowordInfoCheck) },
-                                        { label: '취소', onClick: closeModal },
-                                    ]}
-                                >
-                                    <h1>회원정보 수정</h1>
-                                    <S_Input
-                                        value={nickname}
-                                        placeholder="변경할 닉네임을 입력하세요"
-                                        onChange={(e) => setNickname(e.target.value)}
-                                        isError={!!errors.nickname && touched.nickname}
-                                        onFocus={() => clearFieldError('nickname')}
-                                        onBlur={() => handleBlur('nickname')}
-                                    />
+                    <S_MyInfo>
+                        <S_Subtitle variant="h5">내 정보</S_Subtitle>
+                        <S_MyInfoText>
+                            <Avatar
+                                alt="user-profile"
+                                src={userInfo.img}
+                                sx={{ width: 150, height: 150, mb: 4, boxShadow: 3, border: '3px solid #3f51b5' }}
+                            />
+                            <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#3f51b5', mb: 1 }}>
+                                이메일: {userInfo.email}
+                            </Typography>
+                            <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#3f51b5' }}>
+                                닉네임: {userInfo.nickname}
+                            </Typography>
+                        </S_MyInfoText>
+                        <S_ButtonWrapper>
+                            {parsedProvider === 'kakao' ? (
+                                <>
                                     <Button
-                                        type="button"
-                                        onClick={() => {
-                                            handleCheckNickname();
+                                        variant="contained"
+                                        color="error"
+                                        sx={{
+                                            width: '100%',
+                                            mb: 2,
+                                            boxShadow: 3,
                                         }}
+                                        onClick={handleDelUserOpen}
                                     >
-                                        중복확인
+                                        회원탈퇴
                                     </Button>
-                                    {isCheckModal && (
+                                    {isDelUserModal && (
                                         <Modal
-                                            visible={isCheckModal}
-                                            onClose={handleCheckModalClose}
-                                            buttons={[{ label: '확인', onClick: handleCheckModalClose }]}
+                                            visible={isDelUserModal}
+                                            onClose={handleDelUserClose}
+                                            buttons={[
+                                                { label: '확인', onClick: handleDeleteUser },
+                                                { label: '취소', onClick: handleDelUserClose },
+                                            ]}
                                         >
-                                            <h2>중복 확인</h2>
-                                            <p> {checkFailMessage} </p>
+                                            <h2>회원탈퇴</h2>
+                                            <p>정말 탈퇴하시겠습니까? </p>
                                         </Modal>
                                     )}
-                                    {nicknameCheck ? (
-                                        <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>
-                                            {inputMessage.nickname}
-                                        </ErrorMessage>
-                                    ) : (
-                                        <ErrorMessage visible={true}>{checkFailMessage}</ErrorMessage>
-                                    )}
-                                    <S_ErrorMessage visible={!!errors.nickname && touched.nickname}>{errors.nickname}</S_ErrorMessage>
-                                    <S_Input
-                                        value={password}
-                                        placeholder="기존 비밀번호를 입력하세요"
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        isError={!!errors.password && touched.password}
-                                        onFocus={() => clearFieldError('password')}
-                                        onBlur={() => handleBlur('password')}
-                                        type="password"
-                                    />
+                                </>
+                            ) : (
+                                <>
                                     <Button
-                                        type="button"
-                                        onClick={() => {
-                                            handlePasswordCheck();
+                                        variant="contained"
+                                        color="secondary"
+                                        onClick={() => setIsModalVisible(true)}
+                                        sx={{
+                                            width: '100%',
+                                            mb: 2,
+                                            boxShadow: 3,
                                         }}
                                     >
-                                        비밀번호 확인
+                                        회원정보 수정
                                     </Button>
-                                    {isPasswordModal && (
+                                    <Button
+                                        variant="contained"
+                                        color="error"
+                                        sx={{
+                                            width: '100%',
+                                            mb: 2,
+                                            boxShadow: 3,
+                                        }}
+                                        onClick={handleDelUserOpen}
+                                    >
+                                        회원탈퇴
+                                    </Button>
+                                    {isDelUserModal && (
                                         <Modal
-                                            visible={isPasswordModal}
-                                            onClose={handlePasswordModalClose}
-                                            buttons={[{ label: '확인', onClick: handlePasswordModalClose }]}
+                                            visible={isDelUserModal}
+                                            onClose={handleDelUserClose}
+                                            buttons={[
+                                                { label: '확인', onClick: handleDeleteUser },
+                                                { label: '취소', onClick: handleDelUserClose },
+                                            ]}
                                         >
-                                            <h2>비밀번호 확인</h2>
-                                            <p> {checkFailMsg} </p>
+                                            <h2>회원탈퇴</h2>
+                                            <p>정말 탈퇴하시겠습니까?</p>
                                         </Modal>
                                     )}
-                                    {passowordInfoCheck ? (
-                                        <ErrorMessage visible={!!inputMessage.password && clickedButEmpty.password}>
-                                            {inputMessage.password}
-                                        </ErrorMessage>
-                                    ) : (
-                                        <ErrorMessage visible={true}>{checkFailMsg}</ErrorMessage>
+                                    {isModalVisible && (
+                                        <Modal
+                                            visible={isModalVisible}
+                                            onClose={closeModal}
+                                            buttons={[
+                                                { label: '수정', onClick: handleUpdate, disabled: !(nicknameCheck && passowordInfoCheck) },
+                                                { label: '취소', onClick: closeModal },
+                                            ]}
+                                        >
+                                            <h1>회원정보 수정</h1>
+                                            <S_Input
+                                                value={nickname}
+                                                placeholder="변경할 닉네임을 입력하세요"
+                                                onChange={(e) => setNickname(e.target.value)}
+                                                isError={!!errors.nickname && touched.nickname}
+                                                onFocus={() => clearFieldError('nickname')}
+                                                onBlur={() => handleBlur('nickname')}
+                                            />
+                                            <Button
+                                                type="button"
+                                                onClick={() => {
+                                                    handleCheckNickname();
+                                                }}
+                                            >
+                                                중복확인
+                                            </Button>
+                                            {isCheckModal && (
+                                                <Modal
+                                                    visible={isCheckModal}
+                                                    onClose={handleCheckModalClose}
+                                                    buttons={[{ label: '확인', onClick: handleCheckModalClose }]}
+                                                >
+                                                    <h2>중복 확인</h2>
+                                                    <p> {checkFailMessage} </p>
+                                                </Modal>
+                                            )}
+                                            {nicknameCheck ? (
+                                                <ErrorMessage visible={!!inputMessage.nickname && clickedButEmpty.nickname}>
+                                                    {inputMessage.nickname}
+                                                </ErrorMessage>
+                                            ) : (
+                                                <ErrorMessage visible={true}>{checkFailMessage}</ErrorMessage>
+                                            )}
+                                            <S_ErrorMessage visible={!!errors.nickname && touched.nickname}>{errors.nickname}</S_ErrorMessage>
+                                            <S_Input
+                                                value={password}
+                                                placeholder="기존 비밀번호를 입력하세요"
+                                                onChange={(e) => setPassword(e.target.value)}
+                                                isError={!!errors.password && touched.password}
+                                                onFocus={() => clearFieldError('password')}
+                                                onBlur={() => handleBlur('password')}
+                                                type="password"
+                                            />
+                                            <Button
+                                                type="button"
+                                                onClick={() => {
+                                                    handlePasswordCheck();
+                                                }}
+                                            >
+                                                비밀번호 확인
+                                            </Button>
+                                            {isPasswordModal && (
+                                                <Modal
+                                                    visible={isPasswordModal}
+                                                    onClose={handlePasswordModalClose}
+                                                    buttons={[{ label: '확인', onClick: handlePasswordModalClose }]}
+                                                >
+                                                    <h2>비밀번호 확인</h2>
+                                                    <p> {checkFailMsg} </p>
+                                                </Modal>
+                                            )}
+                                            {passowordInfoCheck ? (
+                                                <ErrorMessage visible={!!inputMessage.password && clickedButEmpty.password}>
+                                                    {inputMessage.password}
+                                                </ErrorMessage>
+                                            ) : (
+                                                <ErrorMessage visible={true}>{checkFailMsg}</ErrorMessage>
+                                            )}
+                                            <S_ErrorMessage visible={!!errors.password && touched.password}>{errors.password}</S_ErrorMessage>
+                                            <S_Input
+                                                value={newPassword}
+                                                placeholder="변경할 비밀번호를 입력하세요"
+                                                onChange={(e) => setNewPassword(e.target.value)}
+                                                isError={!!errors.newPassword && touched.newPassword}
+                                                onFocus={() => clearFieldError('newpassword')}
+                                                onBlur={() => handleBlur('newpassword')}
+                                                type="password"
+                                            />
+                                            <S_ErrorMessage visible={!!errors.newpassword && touched.newpassword}>
+                                                {errors.newpassword}
+                                            </S_ErrorMessage>
+                                            <S_Input
+                                                value={passwordCheck}
+                                                placeholder="변경할 비밀번호를 한번 더 입력하세요"
+                                                onChange={(e) => setPasswordCheck(e.target.value)}
+                                                isError={!!errors.passwordCheck && touched.passwordCheck}
+                                                onFocus={() => clearFieldError('passwordCheck')}
+                                                onBlur={() => handleBlur('passwordCheck')}
+                                                type="password"
+                                            />
+                                            <S_ErrorMessage visible={!!errors.passwordCheck && touched.passwordCheck}>
+                                                {errors.passwordCheck}
+                                            </S_ErrorMessage>
+                                        </Modal>
                                     )}
-                                    <S_ErrorMessage visible={!!errors.password && touched.password}>{errors.password}</S_ErrorMessage>
-                                    <S_Input
-                                        value={newPassword}
-                                        placeholder="변경할 비밀번호를 입력하세요"
-                                        onChange={(e) => setNewPassword(e.target.value)}
-                                        isError={!!errors.newPassword && touched.newPassword}
-                                        onFocus={() => clearFieldError('newpassword')}
-                                        onBlur={() => handleBlur('newpassword')}
-                                        type="password"
-                                    />
-                                    <S_ErrorMessage visible={!!errors.newpassword && touched.newpassword}>{errors.newpassword}</S_ErrorMessage>
-                                    <S_Input
-                                        value={passwordCheck}
-                                        placeholder="변경할 비밀번호를 한번 더 입력하세요"
-                                        onChange={(e) => setPasswordCheck(e.target.value)}
-                                        isError={!!errors.passwordCheck && touched.passwordCheck}
-                                        onFocus={() => clearFieldError('passwordCheck')}
-                                        onBlur={() => handleBlur('passwordCheck')}
-                                        type="password"
-                                    />
-                                    <S_ErrorMessage visible={!!errors.passwordCheck && touched.passwordCheck}>{errors.passwordCheck}</S_ErrorMessage>
-                                </Modal>
+                                </>
                             )}
-                        </>
-                    )}
-                </S_ButtonWrapper>
-            </S_MyInfo>
+                        </S_ButtonWrapper>
+                    </S_MyInfo>
+                </>
+            )}
         </S_MyContainer>
     );
 }
@@ -556,3 +596,27 @@ const M_Linked = styled(Link)({
         cursor: 'pointer',
     },
 });
+
+const S_defaultBox = styled.div`
+    width: 100%;
+    height: 180px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+`;
+
+const S_thumbnail = styled.img`
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+`;
+
+const SkeletonMypage: React.FC = () => {
+    return (
+        <Box>
+            <Skeleton variant="rectangular" width="100%" height={200} />
+            <Skeleton variant="text" width="60%" height={30} />
+            <Skeleton variant="text" width="40%" height={30} />
+        </Box>
+    );
+};
