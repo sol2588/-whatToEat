@@ -5,7 +5,7 @@ import DefaultImg from '../../../assets/img/defaultImg.jpeg';
 import { useUpdateRecipes } from '../../../hooks/useUpdateRecipe';
 import withAuth from '../../../hooks/withAuth';
 import CustomSelect from '../../../ui/Select/CustomSelect';
-import { levelOptions } from '../../../common/options';
+import { timeOption } from '../../../common/options';
 import colors from '../../../styles/colors';
 
 const UpdateRecipe: React.FC = () => {
@@ -85,7 +85,7 @@ const UpdateRecipe: React.FC = () => {
                         <CustomStyledSelect>
                             <CustomSelect
                                 id="recipeTime"
-                                options={levelOptions}
+                                options={timeOption}
                                 value={recipeCookingTime}
                                 label=""
                                 handleChange={(e) => setRecipeCookingTime(e.target.value)}
