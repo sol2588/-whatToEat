@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import RecipeList from '../../../components/Recipe/RecipeList';
 import useObserver from '../../../hooks/useObserver.js';
 import Loading from '../../../components/Loading/Loading.js';
