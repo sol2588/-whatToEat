@@ -515,7 +515,12 @@ const S_MyFigure = styled.figure`
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
-    min-height: 250px;
+    width: 100%;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 
     &:hover {
         transform: translateY(-5px);
@@ -528,6 +533,12 @@ const S_MyFigcaption = styled.figcaption`
     font-size: 1rem;
     font-weight: 500;
     flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    width: 100%;
+    word-break: keep-all;
 `;
 
 const S_MyInfo = styled.div`
@@ -613,6 +624,7 @@ const S_thumbnail = styled.img`
     height: 150px;
     object-fit: cover;
     border-radius: 8px;
+    flex-shrink: 0;
 `;
 
 const SkeletonMypage: React.FC = () => {
