@@ -78,7 +78,7 @@ export default function SearchCondition(): JSX.Element {
                     return qs.stringify(params, { arrayFormat: 'repeat' });
                 },
             });
-            console.log('search response: ', response);
+
             if (response.data.code == 'OK') {
                 const totalRecipes = response.data.data.totalRecipes;
                 const newRecipes: RecipeProps[] = response.data.data.recipes.map((recipe: RecipeProps) => ({
@@ -86,20 +86,15 @@ export default function SearchCondition(): JSX.Element {
                     recipeLevel: convertLevel(recipe.recipeLevel),
                     recipeCookingTime: convertTime(recipe.recipeCookingTime),
                 }));
-                console.log('search...', totalRecipes);
-                console.log('each,,,', recipes.length, newRecipes.length);
-                console.log('sum,,,', recipes.length + newRecipes.length);
                 setRecipes((prev) => [...prev, ...newRecipes]);
                 setOffset((prev) => prev + 1);
                 setHasSearched(true);
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
 
                 if (recipes.length + newRecipes.length >= totalRecipes) {
-                    console.log('들어오는지 check');
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
                 }
             } else {
-                console.log('code ok 아닐때');
                 dispatch(showModal({ isOpen: true, content: '재료명을 다시 입력해주시기 바랍니다.', onConfirm: null }));
             }
         } catch (err) {
@@ -107,9 +102,9 @@ export default function SearchCondition(): JSX.Element {
             dispatch(showModal({ isOpen: true, content: '검색 중 오류가 발생했습니다. 다시 시도해주세요.', onConfirm: null }));
         } finally {
             setIsLoading(false);
-            setSearchIngredients('');
         }
     };
+    console.log(ingredientsList);
 
     // 재료 입력후 enter 키를 누른 경우 handleSumbit 호출
     const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
