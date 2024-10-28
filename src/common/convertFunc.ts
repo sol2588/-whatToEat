@@ -21,7 +21,7 @@ function convertLevel(level: string) {
     switch (level) {
         case 'LOW':
             return '하';
-        case 'MIDDLE':
+        case 'MEDIUM':
             return '중';
         case 'HIGH':
             return '상';

@@ -5,6 +5,7 @@ import DefaultImg from '../../../assets/img/defaultImg.jpeg';
 import CustomSelect from '../../../ui/Select/CustomSelect';
 import { levelOptions } from '../../../common/options';
 import withAuth from '../../../hooks/withAuth';
+import colors from '../../../styles/colors';
 
 const CreateRecipe: React.FC = () => {
     const {
@@ -71,7 +72,7 @@ const CreateRecipe: React.FC = () => {
                         <h3>레시피 난이도</h3>
                         <RecipeSelect value={recipeLevel} onChange={(e) => setRecipeLevel(e.target.value)}>
                             <option value="LOW">LOW</option>
-                            <option value="MIDDLE">MIDDLE</option>
+                            <option value="MEDIUM">MEDIUM</option>
                             <option value="HIGH">HIGH</option>
                         </RecipeSelect>
 
@@ -249,7 +250,7 @@ const AddButton = styled.button`
     width: 100%;
     height: 50px;
     &:hover {
-        background-color: #fa7602;
+        background-color: ${colors[400]};
     }
 `;
 
@@ -275,7 +276,7 @@ const SubmitButton = styled.button`
     border-radius: 8px;
     cursor: pointer;
     &:hover {
-        background-color: #fa7602;
+        background-color: ${colors[400]};
     }
 `;
 

@@ -35,14 +35,16 @@ export default function Visited(): JSX.Element {
                 position: 'top' as const,
                 labels: {
                     color: colors[400],
+                    font: { family: 'SUITE-Regular' },
                 },
             },
             title: {
                 display: true,
-                text: 'Activity',
+                text: '방문자',
                 color: colors[400],
                 font: {
                     size: 18,
+                    family: 'SUITE-Regular',
                 },
             },
         },
@@ -68,9 +70,6 @@ export default function Visited(): JSX.Element {
                 <SummaryCard title="월간 방문자" value={visitedInfo.Monthly} color={colors[300]} />
             </Box>
             <Box>
-                <Typography variant="h5" gutterBottom color={colors[400]}>
-                    Activity
-                </Typography>
                 <Box p={3} bgcolor="#f5f5f5" borderRadius="8px">
                     <Bar data={data} options={options} />
                 </Box>
@@ -83,8 +82,10 @@ function SummaryCard({ title, value, color }: SummaryCardProps): JSX.Element {
     return (
         <Card sx={{ minWidth: 100, maxWidth: 140, minHeight: 40, maxHeight: 75, backgroundColor: color, color: '#fff', textAlign: 'center' }}>
             <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">{value.toLocaleString()}</Typography>
-                <Typography variant="body2" sx={{ fontSize: '1rem' }}>
+                <Typography variant="h6" sx={{ fontFamily: 'SUITE-Regular' }}>
+                    {value.toLocaleString()}
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '1rem', fontFamily: 'SUITE-Regular' }}>
                     {title}
                 </Typography>
             </CardContent>
