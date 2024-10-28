@@ -41,11 +41,11 @@ export default function PopularRecipeData(): JSX.Element {
                     recipeLevel: convertLevel(recipe.recipeLevel),
                     recipeCookingTime: convertTime(recipe.recipeCookingTime),
                 }));
-
                 setRecipes((prev) => [...prev, ...newRecipes]);
                 setOffset((prev) => prev + 1);
                 if (recipes.length + newRecipes.length >= totalRecipes) {
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
+                    
                 }
             }
         } catch (err: any) {
