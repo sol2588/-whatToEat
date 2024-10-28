@@ -204,79 +204,86 @@ export default function Mypage(): JSX.Element {
             <>
                 <S_Content>
                     <S_MyScrap>
-                        <S_Subtitle variant="h5">찜한 레시피</S_Subtitle>
-                        <Grid container spacing={2}>
-                            {scrapedRecipes.length > 0
-                                ? scrapedRecipes.map((scrapedRecipe) => (
-                                      <Grid item xs={12} sm={6} md={6} key={scrapedRecipe.recipeId}>
-                                          <S_MyFigure>
-                                              <S_thumbnail src={scrapedRecipe.recipeThumbnail} alt="스크랩 이미지" />
-                                              <M_Linked to={`/recipes/${scrapedRecipe.recipeId}`}>
-                                                  <S_MyFigcaption>{scrapedRecipe.recipeName}</S_MyFigcaption>
-                                              </M_Linked>
-                                              <M_BookmarkIcons
-                                                  onClick={() => handleClickBookmark(scrapedRecipe.recipeId)}
-                                                  mark={bookmarkRecipes[scrapedRecipe.recipeId] ?? false}
-                                              >
-                                                  {bookmarkRecipes[scrapedRecipe.recipeId] ? <FaBookmark /> : <FaRegBookmark />}
-                                              </M_BookmarkIcons>
-                                          </S_MyFigure>
-                                      </Grid>
-                                  ))
-                                : renderPlaceholderItems()}
-                        </Grid>
-
-                        {scrapedRecipes.length > 0 ? (
-                            <S_PaginationContainer>
-                                <Pagination
-                                    count={totalScrapedRecipesPages} // 스크랩 레시피 총 페이지 수
-                                    page={scrapedRecipesPage}
-                                    onChange={(_, page) => setScrapedRecipesPage(page)} // 페이지 변경
-                                    variant="outlined"
-                                    color="primary"
-                                    shape="rounded"
-                                    size="large"
-                                    sx={{ mt: 2 }}
-                                />
-                            </S_PaginationContainer>
-                        ) : (
-                            <Box></Box>
-                        )}
+                        <S_ScrapWrapper>
+                            <S_Subtitle variant="h5">찜한 레시피</S_Subtitle>
+                            <Grid container spacing={2}>
+                                {scrapedRecipes.length > 0
+                                    ? scrapedRecipes.map((scrapedRecipe) => (
+                                          <Grid item xs={12} sm={6} md={6} key={scrapedRecipe.recipeId}>
+                                              <S_MyFigure>
+                                                  <S_thumbnail src={scrapedRecipe.recipeThumbnail} alt="스크랩 이미지" />
+                                                  <M_Linked to={`/recipes/${scrapedRecipe.recipeId}`}>
+                                                      <S_MyFigcaption>{scrapedRecipe.recipeName}</S_MyFigcaption>
+                                                  </M_Linked>
+                                                  <M_BookmarkIcons
+                                                      onClick={() => handleClickBookmark(scrapedRecipe.recipeId)}
+                                                      mark={bookmarkRecipes[scrapedRecipe.recipeId] ?? false}
+                                                  >
+                                                      {bookmarkRecipes[scrapedRecipe.recipeId] ? <FaBookmark /> : <FaRegBookmark />}
+                                                  </M_BookmarkIcons>
+                                              </S_MyFigure>
+                                          </Grid>
+                                      ))
+                                    : renderPlaceholderItems()}
+                            </Grid>
+                        </S_ScrapWrapper>
+                        <S_PagenationWrapper>
+                            {scrapedRecipes.length > 0 ? (
+                                <S_PaginationContainer>
+                                    <Pagination
+                                        count={totalScrapedRecipesPages} // 스크랩 레시피 총 페이지 수
+                                        page={scrapedRecipesPage}
+                                        onChange={(_, page) => setScrapedRecipesPage(page)} // 페이지 변경
+                                        variant="outlined"
+                                        color="primary"
+                                        shape="rounded"
+                                        size="large"
+                                        sx={{ mt: 2 }}
+                                    />
+                                </S_PaginationContainer>
+                            ) : (
+                                <Box></Box>
+                            )}
+                        </S_PagenationWrapper>
                     </S_MyScrap>
 
                     <S_MyPosting>
-                        <S_Subtitle variant="h5">작성한 레시피</S_Subtitle>
-                        <Grid container spacing={2}>
-                            {myRecipes.length > 0
-                                ? myRecipes.map((myRecipe) => (
-                                      <Grid item xs={12} sm={6} md={6} key={myRecipe.myRecipeId}>
-                                          <S_MyFigure>
-                                              <S_button onClick={() => handleMyRecipeDelete(myRecipe.myRecipeId)}>X</S_button>
-                                              <S_thumbnail src={myRecipe.myRecipeThumbnail} alt="작성 레시피 이미지" />
-                                              <M_Linked to={`/recipes/${myRecipe.myRecipeId}`}>
-                                                  <S_MyFigcaption>{myRecipe.myRecipeName}</S_MyFigcaption>
-                                              </M_Linked>
-                                          </S_MyFigure>
-                                      </Grid>
-                                  ))
-                                : renderPlaceholderItems()}
-                        </Grid>
-                        {myRecipes.length > 0 ? (
-                            <S_PaginationContainer>
-                                <Pagination
-                                    count={totalMyRecipesPages} // 작성한 레시피 총 페이지 수
-                                    page={myRecipesPage}
-                                    onChange={(_, page) => setMyRecipesPage(page)} // 페이지 변경
-                                    variant="outlined"
-                                    color="primary"
-                                    shape="rounded"
-                                    size="large"
-                                    sx={{ mt: 2 }}
-                                />
-                            </S_PaginationContainer>
-                        ) : (
-                            <Box></Box>
-                        )}
+                        <S_MyRecipeWrapper>
+                            <S_Subtitle variant="h5">작성한 레시피</S_Subtitle>
+                            <Grid container spacing={2}>
+                                {myRecipes.length > 0
+                                    ? myRecipes.map((myRecipe) => (
+                                          <Grid item xs={12} sm={6} md={6} key={myRecipe.myRecipeId}>
+                                              <S_MyFigure>
+                                                  <S_button onClick={() => handleMyRecipeDelete(myRecipe.myRecipeId)}>X</S_button>
+                                                  <S_thumbnail src={myRecipe.myRecipeThumbnail} alt="작성 레시피 이미지" />
+                                                  <M_Linked to={`/recipes/${myRecipe.myRecipeId}`}>
+                                                      <S_MyFigcaption>{myRecipe.myRecipeName}</S_MyFigcaption>
+                                                  </M_Linked>
+                                              </S_MyFigure>
+                                          </Grid>
+                                      ))
+                                    : renderPlaceholderItems()}
+                            </Grid>
+                        </S_MyRecipeWrapper>
+                        <S_PagenationWrapper>
+                            {myRecipes.length > 0 ? (
+                                <S_PaginationContainer>
+                                    <Pagination
+                                        count={totalMyRecipesPages} // 작성한 레시피 총 페이지 수
+                                        page={myRecipesPage}
+                                        onChange={(_, page) => setMyRecipesPage(page)} // 페이지 변경
+                                        variant="outlined"
+                                        color="primary"
+                                        shape="rounded"
+                                        size="large"
+                                        sx={{ mt: 2 }}
+                                    />
+                                </S_PaginationContainer>
+                            ) : (
+                                <Box></Box>
+                            )}
+                        </S_PagenationWrapper>
                     </S_MyPosting>
                 </S_Content>
 
@@ -488,8 +495,14 @@ const S_Content = styled.div`
     gap: 40px;
 `;
 
-const S_MyScrap = styled.div``;
-const S_MyPosting = styled.div``;
+const S_MyScrap = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+const S_MyPosting = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
 
 const S_Subtitle = styled(Typography)`
     font-size: 20px;
@@ -618,4 +631,15 @@ const S_button = styled.button`
         color: ${colors[400]};
         font-weight: bold;
     }
+`;
+
+const S_PagenationWrapper = styled.div`
+    height: 70%;
+`;
+const S_ScrapWrapper = styled.div`
+    height: 30%;
+`;
+
+const S_MyRecipeWrapper = styled.div`
+    height: 70%;
 `;
