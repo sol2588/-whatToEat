@@ -28,7 +28,7 @@ export default function Mypage(): JSX.Element {
 
     //로그인확인
     useEffect(() => {
-        if (!isLoggedIn) {
+        if (isLoggedIn) {
             navigate('/');
         }
     }, [isLoggedIn, navigate]);
@@ -193,8 +193,8 @@ export default function Mypage(): JSX.Element {
 
     const renderPlaceholderItems = () => {
         return (
-            <Box>
-                <Typography>게시물이 존재하지 않습니다.</Typography>
+            <Box sx={{ marginTop: '150px', marginLeft: '20px' }}>
+                <Typography sx={{ fontSize: '2rem', fontFamily: 'SUITE-Regular' }}>게시물이 존재하지 않습니다.</Typography>
             </Box>
         );
     };
