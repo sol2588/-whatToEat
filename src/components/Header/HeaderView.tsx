@@ -7,7 +7,7 @@ export default function HeaderView(): JSX.Element {
     const { pathname } = useLocation();
     const { handleClickMenu, isActive, menuItems } = useHeaderLogic();
 
-    let pageTitle = isActive;
+    let pageTitle = isActive + ' Recipes';
     if (pathname === '/login') {
         pageTitle = 'Login';
     } else if (pathname === '/signup') {

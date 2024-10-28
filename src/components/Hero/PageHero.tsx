@@ -9,7 +9,7 @@ export default function PageHero({ title }: TitleProps): JSX.Element {
     return (
         <>
             <S_TitleHeader>
-                <S_Title>{title} Recipes</S_Title>
+                <S_Title>{title}</S_Title>
             </S_TitleHeader>
         </>
     );
