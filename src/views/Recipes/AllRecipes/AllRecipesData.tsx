@@ -39,19 +39,16 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
 
             if (response.data.code == 'OK') {
                 const totalRecipes = response.data.data.totalRecipes;
-                const newRecipes: RecipeProps[] = response.data.data.recipes;
-
-                const convertData = newRecipes.map((recipe) => ({
+                const newRecipes: RecipeProps[] = response.data.data.recipes.map((recipe: RecipeProps) => ({
                     ...recipe,
                     recipeLevel: convertLevel(recipe.recipeLevel),
                     recipeCookingTime: convertTime(recipe.recipeCookingTime),
                 }));
+                setRecipes((prev) => [...prev, ...newRecipes]);
+                setOffset((prev) => prev + 1);
                 // 현재 레시피의 총 개수와 전체 레시피 개수를 비교하여 hasMore 업데이트
-                if (recipes.length + convertData.length >= totalRecipes) {
+                if (recipes.length + newRecipes.length >= totalRecipes) {
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
-                } else {
-                    setRecipes((prev) => [...prev, ...convertData]);
-                    setOffset((prev) => prev + 1);
                 }
             }
         } catch (err: any) {
