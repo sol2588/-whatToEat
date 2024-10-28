@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import Carousel from './Carousel';
 import styled from 'styled-components';
 import AllRecipesView from '../Recipes/AllRecipes/AllRecipesView';
-import whatoEat from '../../assets/img/whatoEat.webp';
+import whatoEat from '../../assets/img/question.jpeg';
 import recipePick from '../../assets/img/bookmarkRecipe.webp';
 import createRecipe from '../../assets/img/createRecipe.jpg';
 import recommend from '../../assets/img/recommend.jpg';
@@ -13,31 +13,31 @@ export default function Home(): JSX.Element {
     const carouselLists = [
         {
             url: whatoEat,
-            content: '자취할때 어떻게 요리를 선택하시나요 ?',
+            content: '오늘 뭘 먹을지 고민되지 않으신가요?',
         },
         {
             url: recommend,
-            content: '좋아하는 요리를 선택해 오늘의 요리를 추천받아보세요.',
+            content: '하루에 3번, 오늘의 요리를 추천받아보세요.',
         },
         {
             url: likes,
-            content: '나중에 도전하고 싶은 요리는 저장해 놓을 수 있어요',
+            content: '먹고 싶은 요리를 직접 고를수도 있어요',
         },
         {
             url: recipePick,
-            content: ' 원하는 요리를 직접 고를수도 있어요',
+            content: '나중에 도전하고 싶은 레시피를 저장할 수 있어요',
         },
         {
             url: createRecipe,
-            content: '직접 레시피를 작성할수도 있어요',
+            content: '직접 레시피를 작성할수 있어요',
         },
     ];
     return (
         <HomeContainer>
             <HomeMain>
                 <HomeContent>
-                    <h2>자취생을 위한 만개의 레시피 추천</h2>
-                    <p>자취생을 위한 레시피를 추천합니다.</p>
+                    <h2>오늘의 레시피 추천</h2>
+                    <p>아침, 점심, 저녁 메뉴를 추천받아보세요.</p>
                     <StyledLink to="/recipes/recommended">추천 레시피</StyledLink>
                     <VisitedContainer>
                         <Visited />
