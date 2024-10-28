@@ -26,7 +26,7 @@ export default function PopularRecipeData(): JSX.Element {
 
     useEffect(() => {
         fetchRecipes();
-    }, [offset]);
+    }, []);
 
     const fetchRecipes = async () => {
         if (isLoading) return;
@@ -45,10 +45,10 @@ export default function PopularRecipeData(): JSX.Element {
 
                 if (recipes.length + convertData.length >= totalRecipes) {
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
-                    return;
+                } else {
+                    setRecipes((prev) => [...prev, ...convertData]);
+                    setOffset((prev) => prev + 1);
                 }
-                setRecipes((prev) => [...prev, ...convertData]);
-                setOffset((prev) => prev + 1);
             }
         } catch (err: any) {
             console.log(err);
