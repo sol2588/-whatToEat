@@ -35,14 +35,16 @@ export default function Visited(): JSX.Element {
                 position: 'top' as const,
                 labels: {
                     color: colors[400],
+                    font: { family: 'SUITE-Regular' },
                 },
             },
             title: {
                 display: true,
-                text: 'Activity',
+                text: '방문자',
                 color: colors[400],
                 font: {
                     size: 18,
+                    family: 'SUITE-Regular',
                 },
             },
         },
@@ -56,6 +58,7 @@ export default function Visited(): JSX.Element {
                         }
                         return value;
                     },
+                    font: { family: 'SUITE-Regular' },
                 },
             },
         },
@@ -68,9 +71,6 @@ export default function Visited(): JSX.Element {
                 <SummaryCard title="월간 방문자" value={visitedInfo.Monthly} color={colors[300]} />
             </Box>
             <Box>
-                <Typography variant="h5" gutterBottom color={colors[400]}>
-                    Activity
-                </Typography>
                 <Box p={3} bgcolor="#f5f5f5" borderRadius="8px">
                     <Bar data={data} options={options} />
                 </Box>
