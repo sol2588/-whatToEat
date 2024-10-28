@@ -82,8 +82,10 @@ function SummaryCard({ title, value, color }: SummaryCardProps): JSX.Element {
     return (
         <Card sx={{ minWidth: 100, maxWidth: 140, minHeight: 40, maxHeight: 75, backgroundColor: color, color: '#fff', textAlign: 'center' }}>
             <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6">{value.toLocaleString()}</Typography>
-                <Typography variant="body2" sx={{ fontSize: '1rem' }}>
+                <Typography variant="h6" sx={{ fontFamily: 'SUITE-Regular' }}>
+                    {value.toLocaleString()}
+                </Typography>
+                <Typography variant="body2" sx={{ fontSize: '1rem', fontFamily: 'SUITE-Regular' }}>
                     {title}
                 </Typography>
             </CardContent>
