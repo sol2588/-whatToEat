@@ -80,7 +80,14 @@ export default function Signup(): JSX.Element {
     }, [emailCheck, nicknameCheck]);
 
     return (
-        <Container maxWidth="sm">
+        <Container
+            maxWidth="sm"
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
             <Box
                 sx={{
                     display: 'flex',
@@ -225,5 +232,5 @@ const ErrorMessage = styled.p<{ visible: boolean }>`
     color: #d32f2f;
     font-size: 0.8rem;
     text-align: start;
-    visibility: ${(props) => (props.visible ? 'visible' : 'none')}; /* 에러가 없을 때는 숨김 */
+    visibility: ${(props) => (props.visible ? 'visible' : 'none')};
 `;
