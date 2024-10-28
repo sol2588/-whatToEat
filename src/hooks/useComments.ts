@@ -43,7 +43,6 @@ export default function useComments() {
         try {
             const response: any = await instance.get(`/comments/${recipeId}`);
             if (response.data.code === 'OK') {
-                console.log('response.data.data: ', response.data.data);
                 setCommentDataList(response.data.data.comments);
             }
         } catch (err) {

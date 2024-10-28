@@ -50,7 +50,6 @@ export default function CommentList({
 
     // fetchCommentsList : recipeId 기준 코멘트 조회 & recipeId가 바뀔때마다 fetchCommentHandler 호출
     useEffect(() => {
-        console.log('commentList : ', commentDataList);
         if (id) {
             fetchCommentHandler(id);
         }
@@ -109,7 +108,8 @@ export default function CommentList({
     );
 }
 const S_CommentsContainer = styled.section`
-    margin-top: 36px;
+    margin: 36px 0;
+
     h4 {
         font-size: 24px;
         font-weight: 500;
@@ -117,11 +117,12 @@ const S_CommentsContainer = styled.section`
 `;
 const S_CommentsWrapper = styled.div`
     height: auto;
+    margin-top: 16px;
 `;
 const S_ReviewerFigure = styled.figure`
     display: flex;
     gap: 16px;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
 
     img {
@@ -133,7 +134,7 @@ const S_ReviewerFigure = styled.figure`
     }
 `;
 const S_ReviewerFigcaption = styled.figcaption<{ date: boolean }>`
-    margin: 16px 0 0px;
+    margin: 0;
     color: ${(props) => (props.date ? '#575757' : '#000')};
 `;
 const S_CommentsDataWrapper = styled.div`
@@ -149,5 +150,5 @@ const S_CommentsSelectWrapper = styled.div`
 `;
 const S_CommentsEmpty = styled.div`
     font-size: 20px;
-    margin: 16px 0 30px;
+    margin: 16px 0;
 `;

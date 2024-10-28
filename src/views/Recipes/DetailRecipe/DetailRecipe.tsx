@@ -37,7 +37,6 @@ export default function DetailRecipe(): JSX.Element {
         const fetchData = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
-                console.log('response 값 :', response);
                 if (response.data.code === 'OK') {
                     const data = response.data.data;
                     const convertData = {
@@ -45,7 +44,7 @@ export default function DetailRecipe(): JSX.Element {
                         recipeLevel: convertLevel(data.recipeLevel),
                         recipeCookingTime: convertTime(data.recipeCookingTime),
                     };
-                    console.log(convertData);
+
                     setRecipe(convertData);
                     setMessage(response.data.message);
                 }
@@ -81,8 +80,8 @@ export default function DetailRecipe(): JSX.Element {
                     <DetailRecipeName>{recipe.recipeName}</DetailRecipeName>
                     <img src={recipe.recipeThumbnail} alt="썸네일 이미지" />
                 </DetailMain>
+                <DetailSubtitle>Directions</DetailSubtitle>
                 <DetailRecipeInstruction>
-                    <h4>Directions</h4>
                     {recipe.recipesManuals &&
                         recipe.recipesManuals.map((step, idx) => (
                             <DetailRecipeFigure key={idx}>
@@ -135,6 +134,7 @@ const DetailRecipeContainer = styled.section`
     padding: 50px;
     height: 100vh;
     width: 100%;
+    display: grid;
     grid-template-columns: 2fr 1fr;
 `;
 const DetailMain = styled.div`
@@ -144,6 +144,10 @@ const DetailMain = styled.div`
         object-fit: cover;
         border: 0.8 solid #656565;
     }
+`;
+const DetailSubtitle = styled.h4`
+    margin-top: 40px;
+    font-size: 28px;
 `;
 const DetailRecipeName = styled.h2`
     margin: auto;
@@ -163,11 +167,6 @@ const DetailRecipeInstruction = styled.div`
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: 16px;
-
-    h4 {
-        margin-top: 40px;
-        font-size: 28px;
-    }
 `;
 const DetailRecipeFigure = styled.figure`
     width: 40%;
