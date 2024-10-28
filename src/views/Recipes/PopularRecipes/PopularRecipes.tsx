@@ -2,6 +2,7 @@ import RecipeList from '../../../components/Recipe/RecipeList.js';
 import useObserver from '../../../hooks/useObserver.js';
 import Loading from '../../../components/Loading/Loading.js';
 import { RecipeProps } from './PopularRecipeData.js';
+import NoData from '../../../components/Loading/NoData.js';
 // import { debounce } from 'lodash';
 
 interface RecipeLimitProps {
@@ -28,7 +29,7 @@ export default function PopularRecipes({ hasMore, recipes, fetchRecipes, isLoadi
                     <Loading />
                 </div>
             ) : (
-                <div style={{ padding: '30px', fontSize: '20px' }}>No more recipes to load.</div>
+                <NoData />
             )}
         </>
     );

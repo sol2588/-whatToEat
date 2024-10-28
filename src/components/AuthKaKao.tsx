@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../redux/reducer/userSlice';
+import Loading from './Loading/Loading';
 
 export default function AuthKaKao() {
     const navigate = useNavigate();
@@ -20,9 +21,5 @@ export default function AuthKaKao() {
         }
     }, [navigate]);
 
-    return (
-        <div>
-            <h1>로그인 중입니다.</h1>
-        </div>
-    );
+    return <Loading />;
 }
