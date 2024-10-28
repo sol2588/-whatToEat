@@ -65,7 +65,7 @@ export default function Visited(): JSX.Element {
 
     return (
         <Container maxWidth="md">
-            <Box display="flex" justifyContent="space-between" mb={3}>
+            <Box width="100%" display="flex" gap={10} mb={3}>
                 <SummaryCard title="오늘 방문자" value={visitedInfo.Today} color={colors[200]} />
                 <SummaryCard title="월간 방문자" value={visitedInfo.Monthly} color={colors[300]} />
             </Box>
