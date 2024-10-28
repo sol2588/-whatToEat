@@ -106,6 +106,7 @@ export default function SearchCondition(): JSX.Element {
         }
     };
     console.log(ingredientsList);
+    console.log(level);
 
     // 재료 입력후 enter 키를 누른 경우 handleSumbit 호출
     const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
@@ -149,18 +150,18 @@ export default function SearchCondition(): JSX.Element {
                 </S_SearchItem>
                 <S_SearchTimeLevelWrapper>
                     <S_SearchItem>
-                        <S_SearchItemTitle>난이도를 선택해 주세요.</S_SearchItemTitle>
-                        {timeOption.map((timeData) => (
-                            <S_SelectBtn key={timeData.value} value={timeData.value} onClick={handleTime} active={time == timeData.value}>
-                                {timeData.label}
+                        <S_SearchItemTitle>난이도를 선택해주세요</S_SearchItemTitle>
+                        {levelOptions.map((levelData) => (
+                            <S_SelectBtn key={levelData.value} value={levelData.value} onClick={handleLevel} active={level == levelData.value}>
+                                {levelData.label}
                             </S_SelectBtn>
                         ))}
                     </S_SearchItem>
                     <S_SearchItem>
-                        <S_SearchItemTitle>조리시간을 선택해주세요</S_SearchItemTitle>
-                        {levelOptions.map((levelData) => (
-                            <S_SelectBtn key={levelData.value} value={levelData.value} onClick={handleLevel} active={level == levelData.value}>
-                                {levelData.label}
+                        <S_SearchItemTitle>조리시간을 선택해 주세요.</S_SearchItemTitle>
+                        {timeOption.map((timeData) => (
+                            <S_SelectBtn key={timeData.value} value={timeData.value} onClick={handleTime} active={time == timeData.value}>
+                                {timeData.label}
                             </S_SelectBtn>
                         ))}
                     </S_SearchItem>
