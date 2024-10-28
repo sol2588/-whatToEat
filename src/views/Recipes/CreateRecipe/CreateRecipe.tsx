@@ -5,6 +5,7 @@ import DefaultImg from '../../../assets/img/defaultImg.jpeg';
 import CustomSelect from '../../../ui/Select/CustomSelect';
 import { levelOptions } from '../../../common/options';
 import withAuth from '../../../hooks/withAuth';
+import colors from '../../../styles/colors';
 
 const CreateRecipe: React.FC = () => {
     const {
@@ -249,7 +250,7 @@ const AddButton = styled.button`
     width: 100%;
     height: 50px;
     &:hover {
-        background-color: #fa7602;
+        background-color: ${colors[400]};
     }
 `;
 
@@ -275,7 +276,7 @@ const SubmitButton = styled.button`
     border-radius: 8px;
     cursor: pointer;
     &:hover {
-        background-color: #fa7602;
+        background-color: ${colors[400]};
     }
 `;
 
