@@ -207,7 +207,7 @@ const DetailIngredientsTable = styled.table`
     td {
         text-align: center;
         padding: 10px;
-        border: 1px solid;
+        border: 1px solid #656565;
     }
     th {
         background-color: #f2f2f2;
