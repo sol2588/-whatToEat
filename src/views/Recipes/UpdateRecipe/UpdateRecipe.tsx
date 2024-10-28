@@ -206,7 +206,7 @@ const StepFileInput = styled.input`
 `;
 
 const RecipeSidebar = styled.div`
-    width: 55%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -315,7 +315,7 @@ const ThumbnailUploadBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 55%;
+    width: 60%;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 `;
 

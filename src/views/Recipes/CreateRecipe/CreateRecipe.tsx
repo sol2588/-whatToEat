@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useRecipeCreate } from '../../../hooks/useRecipeCreate';
 import DefaultImg from '../../../assets/img/defaultImg.jpeg';
 import CustomSelect from '../../../ui/Select/CustomSelect';
-import { levelOptions } from '../../../common/options';
+import { timeOption } from '../../../common/options';
 import withAuth from '../../../hooks/withAuth';
 import colors from '../../../styles/colors';
 
@@ -79,7 +79,7 @@ const CreateRecipe: React.FC = () => {
                         <CustomStyledSelect>
                             <CustomSelect
                                 id="recipeTime"
-                                options={levelOptions}
+                                options={timeOption}
                                 value={recipeCookingTime}
                                 label=""
                                 handleChange={(e) => setRecipeCookingTime(e.target.value)}
@@ -208,7 +208,7 @@ const StepFileInput = styled.input`
 `;
 
 const RecipeSidebar = styled.div`
-    width: 55%;
+    width: 60%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -316,7 +316,7 @@ const ThumbnailUploadBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 55%;
+    width: 60%;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 `;
 
