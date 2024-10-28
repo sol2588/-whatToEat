@@ -86,16 +86,13 @@ export default function SearchCondition(): JSX.Element {
                     recipeLevel: convertLevel(recipe.recipeLevel),
                     recipeCookingTime: convertTime(recipe.recipeCookingTime),
                 }));
-                console.log('search...', totalRecipes);
-                console.log('each,,,', recipes.length, newRecipes.length);
-                console.log('sum,,,', recipes.length + newRecipes.length);
+
                 setRecipes((prev) => [...prev, ...newRecipes]);
                 setOffset((prev) => prev + 1);
                 setHasSearched(true);
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
 
                 if (recipes.length + newRecipes.length >= totalRecipes) {
-                    console.log('들어오는지 check');
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
                 }
             } else {

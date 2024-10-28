@@ -12,6 +12,8 @@ export default function HeaderView(): JSX.Element {
         pageTitle = 'Login';
     } else if (pathname === '/signup') {
         pageTitle = 'Signup';
+    } else if (pathname == '/mypage') {
+        pageTitle == 'Mypage';
     }
 
     return (
