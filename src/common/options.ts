@@ -9,7 +9,7 @@ const levelOptions = [
 ];
 const timeOption = [
     { label: '하', value: 'LOW' },
-    { label: '중', value: 'MIDDLE' },
+    { label: '중', value: 'MEDIUM' },
     { label: '상', value: 'HIGH' },
 ];
 

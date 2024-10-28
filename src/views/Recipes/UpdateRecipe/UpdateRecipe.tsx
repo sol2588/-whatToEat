@@ -6,6 +6,7 @@ import { useUpdateRecipes } from '../../../hooks/useUpdateRecipe';
 import withAuth from '../../../hooks/withAuth';
 import CustomSelect from '../../../ui/Select/CustomSelect';
 import { levelOptions } from '../../../common/options';
+import colors from '../../../styles/colors';
 
 const UpdateRecipe: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -74,7 +75,7 @@ const UpdateRecipe: React.FC = () => {
                         <h3>레시피 수정</h3>
                         <RecipeSelect value={recipeLevel} onChange={(e) => setRecipeLevel(e.target.value)}>
                             <option value="LOW">LOW</option>
-                            <option value="MIDDLE">MIDDLE</option>
+                            <option value="MEDIUM">MEDIUM</option>
                             <option value="HIGH">HIGH</option>
                         </RecipeSelect>
                         <h3>요리 시간 (분)</h3>
@@ -246,7 +247,7 @@ const AddButton = styled.button`
     width: 100%;
     height: 50px;
     &:hover {
-        background-color: #fa7602;
+        background-color: ${colors[400]};
     }
 `;
 
@@ -272,7 +273,7 @@ const SubmitButton = styled.button`
     border-radius: 8px;
     cursor: pointer;
     &:hover {
-        background-color: #fa7602;
+        background-color: ${colors[400]};
     }
 `;
 
