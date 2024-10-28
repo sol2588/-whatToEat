@@ -5,7 +5,10 @@ import useAuthToken from './useAuthToken';
 import instance from '../utils/api/instance';
 import DefaultImg from '../assets/img/defaultImg.jpeg';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { showModal } from '../redux/reducer/modalSlice';
 export const useUpdateRecipes = (id: string | undefined) => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const token = useAuthToken();
     const [userNickname, setUserNickname] = useState(''); // 로그인된 유저의 닉네임
@@ -77,7 +80,7 @@ export const useUpdateRecipes = (id: string | undefined) => {
 
                 // API에서 반환된 `recipeAuthor`와 로그인된 유저의 닉네임을 비교
                 if (recipeData.recipeAuthor !== userNickname) {
-                    alert('이 레시피를 수정할 권한이 없습니다.');
+                    dispatch(showModal({ isOpen: true, content: '이 레시피를 수정할 권한이 없습니다.', onConfirm: null }));
                     navigate(`/recipes/${id}`);
                     return;
                 }
@@ -149,11 +152,11 @@ export const useUpdateRecipes = (id: string | undefined) => {
     // 3. 레시피 수정 요청
     const handleUpdateRecipe = async () => {
         if (!isAuthor) {
-            alert('이 레시피를 수정할 권한이 없습니다.');
+            dispatch(showModal({ isOpen: true, content: '이 레시피를 수정할 권한이 없습니다.', onConfirm: null }));
             return;
         }
         if (!id) {
-            alert('레시피 ID가 없습니다.');
+            dispatch(showModal({ isOpen: true, content: '레시피 ID가 없습니다.', onConfirm: null }));
             return;
         }
         try {
@@ -238,12 +241,12 @@ export const useUpdateRecipes = (id: string | undefined) => {
             console.log('레시피수정 최종 response : ', response);
             console.log('레시피수정 최종 response.data : ', response.data);
             if (response.data.code === 'OK') {
-                alert('레시피가 성공적으로 수정되었습니다.');
+                dispatch(showModal({ isOpen: true, content: '레시피가 성공적으로 수정되었습니다.', onConfirm: null }));
                 navigate(`/recipes/${id}`);
             }
         } catch (error) {
             console.error('레시피 수정 실패 :', error);
-            alert('레시피 수정에 실패했습니다. 다시 시도해주세요.');
+            dispatch(showModal({ isOpen: true, content: '레시피 수정에 실패했습니다. 다시 시도해주세요.', onConfirm: null }));
         }
     };
     return {

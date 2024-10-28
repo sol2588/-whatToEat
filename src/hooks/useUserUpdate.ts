@@ -29,7 +29,7 @@ export const useUserUpdate = (
         // hasMessage가 false인 경우(모든 validation 통과한 경우)
         console.log('에러메세지들 : ', hasErrors);
         if (hasErrors) {
-            alert('모든 필드값을 입력해주시기 바랍니다.');
+            dispatch(showModal({ isOpen: true, content: '모든 필드값을 입력해주시기 바랍니다.', onConfirm: null }));
             return;
         }
 
@@ -53,7 +53,7 @@ export const useUserUpdate = (
             closeModal();
         } catch (error) {
             console.error('회원정보 수정 실패', error);
-            alert('회원정보 수정에 실패했습니다.');
+            dispatch(showModal({ isOpen: true, content: '회원정보 수정에 실패했습니다.', onConfirm: null }));
         }
     };
 

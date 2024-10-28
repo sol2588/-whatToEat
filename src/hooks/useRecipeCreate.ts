@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuthToken from './useAuthToken';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { showModal } from '../redux/reducer/modalSlice';
 
 export const useRecipeCreate = () => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const token = useAuthToken();
     //steps의 객체는 각각 타입이다르므로 인터페이스로 타입정의.
@@ -73,24 +76,24 @@ export const useRecipeCreate = () => {
 
         // 유효성 검사
         if (!recipeName || recipeName.trim() === '') {
-            alert('레시피명을 입력해주세요.');
+            dispatch(showModal({ isOpen: true, content: '레시피명을 입력해주세요.', onConfirm: null }));
             return;
         }
 
         if (!recipeCookingTime) {
-            alert('요리 시간을 입력해주세요.');
+            dispatch(showModal({ isOpen: true, content: '요리 시간을 입력해주세요.', onConfirm: null }));
             return;
         }
 
         const invalidIngredients = ingredients.some((ingredient) => !ingredient.ingredientName || !ingredient.ingredientQuantity);
         if (invalidIngredients) {
-            alert('모든 재료의 이름과 양을 입력해주세요.');
+            dispatch(showModal({ isOpen: true, content: '모든 재료의 이름과 양을 입력해주세요.', onConfirm: null }));
             return;
         }
 
         const invalidSteps = steps.some((step) => !step.content);
         if (invalidSteps) {
-            alert('조리 과정을 입력해주세요.');
+            dispatch(showModal({ isOpen: true, content: '조리 과정을 입력해주세요.', onConfirm: null }));
             return;
         }
 
@@ -173,12 +176,12 @@ export const useRecipeCreate = () => {
 
             //! 레시피등록 최종 response보고 수정
             if (response.data.code === 'CREATED') {
-                alert('레시피가 성공적으로 등록되었습니다!');
+                dispatch(showModal({ isOpen: true, content: '레시피가 성공적으로 등록되었습니다!', onConfirm: null }));
                 navigate('/recipes/all');
             }
         } catch (error) {
             console.error('레시피 등록 실패:', error);
-            alert('레시피 등록에 실패했습니다. 다시 시도해주세요.');
+            dispatch(showModal({ isOpen: true, content: '레시피 등록에 실패했습니다. 다시 시도해주세요.', onConfirm: null }));
         }
     };
 
