@@ -58,7 +58,6 @@ export default function Visited(): JSX.Element {
                         }
                         return value;
                     },
-                    font: { family: 'SUITE-Regular' },
                 },
             },
         },
