@@ -9,7 +9,7 @@ export default function NavBar() {
                 <S_BarList>
                     <S_BarItem>
                         <HiListBullet />
-                        <Link to="/recipes/create">게시글 작성</Link>
+                        <Link to="/recipes/create">레시피 작성</Link>
                     </S_BarItem>
                     <S_BarItem>
                         <HiOutlineHeart />
@@ -17,7 +17,7 @@ export default function NavBar() {
                     </S_BarItem>
                     <S_BarItem>
                         <HiOutlinePencilSquare />
-                        <Link to="/mypage">작성글 보기</Link>
+                        <Link to="/mypage">작성레시피 보기</Link>
                     </S_BarItem>
                 </S_BarList>
             </S_BarWrapper>

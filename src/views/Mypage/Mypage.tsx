@@ -20,6 +20,8 @@ import { useDeleteUser } from '../../hooks/useDeleteUser';
 import { useSelector, useDispatch } from 'react-redux';
 import { hideModal, showModal } from '../../redux/reducer/modalSlice';
 import { RootState } from '../../redux/store/store';
+import ToggleAlarm from '../../components/Alarm/ToggleAlarm';
+import useNotify from '../../hooks/useNotify';
 
 export default function Mypage(): JSX.Element {
     const dispatch = useDispatch();
@@ -199,6 +201,8 @@ export default function Mypage(): JSX.Element {
         );
     };
 
+    const { notifyList } = useNotify();
+
     return (
         <S_MyContainer>
             <>
@@ -255,6 +259,7 @@ export default function Mypage(): JSX.Element {
                                     ? myRecipes.map((myRecipe) => (
                                           <Grid item xs={12} sm={6} md={6} key={myRecipe.myRecipeId}>
                                               <S_MyFigure>
+                                                  {notifyList && <ToggleAlarm id={myRecipe.myRecipeId} />}
                                                   <S_button onClick={() => handleMyRecipeDelete(myRecipe.myRecipeId)}>X</S_button>
                                                   <S_thumbnail src={myRecipe.myRecipeThumbnail} alt="작성 레시피 이미지" />
                                                   <M_Linked to={`/recipes/${myRecipe.myRecipeId}`}>
