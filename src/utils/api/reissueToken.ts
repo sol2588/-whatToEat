@@ -9,17 +9,16 @@ const reissueToken = async () => {
     }
     try {
         const response = await instance.get('/auth/token/refresh');
-        console.log('reissue 문제야...:', response);
 
         if (response.data.code == 'OK') {
-            console.log('response reissue', response.data);
+            console.log('토큰발급 성공', response.data);
             const token = response.headers['access-token'];
             const accessToken = token?.replace('Bearer ', '');
-            return accessToken;
+            const nickname = response.data.data;
+            return { accessToken, nickname };
         }
     } catch (err: any) {
         console.log('reissue access token error', err);
-        console.log('reissue access erro.response:', err.response);
     }
 };
 

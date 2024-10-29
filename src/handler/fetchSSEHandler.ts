@@ -117,8 +117,8 @@ export default function fetchSSEHandler() {
                     dispatch(
                         loginSuccess({
                             isLoggedIn: true,
-                            token: newToken,
-                            nickname: err.response.data.data,
+                            token: newToken.accessToken,
+                            nickname: newToken.nickname,
                             provider: parsedProvider,
                             expiredIn: Date.now() + duration,
                         }),
