@@ -12,7 +12,7 @@ export default function withAuth<P extends object>(Component: ComponentType<P>) 
 
         useEffect(() => {
             if (!token) {
-                dispatch(showModal({ isOpen: true, content: '로그인 후 이용 가능합니다.', onConfirm: navigate('/login') }));
+                dispatch(showModal({ isOpen: true, content: '로그인 후 이용 가능합니다.', onConfirm: () => navigate('/login') }));
             }
         }, []);
         return <Component {...props} />;

@@ -86,7 +86,7 @@ export default function SearchCondition(): JSX.Element {
                     recipeLevel: convertLevel(recipe.recipeLevel),
                     recipeCookingTime: convertTime(recipe.recipeCookingTime),
                 }));
-
+                console.log(totalRecipes);
                 setRecipes((prev) => [...prev, ...newRecipes]);
                 setOffset((prev) => prev + 1);
                 setHasSearched(true);
@@ -168,6 +168,7 @@ export default function SearchCondition(): JSX.Element {
         setHasSearched(false);
         setHasMore(true);
     };
+    console.log(isLoading, hasMore, hasSearched);
 
     return (
         <S_ConditionContainer>

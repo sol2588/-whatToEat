@@ -17,7 +17,7 @@ export default function NavBar() {
                     </S_BarItem>
                     <S_BarItem>
                         <HiOutlinePencilSquare />
-                        <Link to="/mypage">작성글 보기</Link>
+                        <Link to="/mypage">작성레시피 보기</Link>
                     </S_BarItem>
                 </S_BarList>
             </S_BarWrapper>

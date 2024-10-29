@@ -35,7 +35,7 @@ export function SearchResult({ hasMore, recipes, isLoading, fetchRecipes, hasSea
             <RecipeList recipes={recipes} />
             {!isLoading ? (
                 <div></div>
-            ) : hasSearched && recipes.length > 0 && hasMore ? (
+            ) : isLoading && hasSearched && recipes.length > 0 && hasMore ? (
                 <div ref={target}>
                     <Loading />
                 </div>

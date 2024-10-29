@@ -76,7 +76,7 @@ export default function useComments() {
             }
         } catch (err: any) {
             if (err.message == 'No token') {
-                dispatch(showModal({ isOpen: true, content: '로그인 후 이용바랍니다.', onConfirm: navigate('/login') }));
+                dispatch(showModal({ isOpen: true, content: '로그인 후 이용바랍니다.', onConfirm: () => navigate('/login') }));
             } else {
                 console.log('댓글작성 error: ', err);
                 if (createComment == '') {
