@@ -121,7 +121,7 @@ const S_StyledLink = styled(Link)`
     margin: 10px;
     color: inherit;
     @media screen and (min-width: 1500px) {
-        font-size: 30px;
+        font-size: 28px;
     }
 `;
 const S_BellIconWrapper = styled.div`
@@ -132,7 +132,7 @@ const S_BellIcon = styled.div`
     cursor: pointer;
     position: relative;
     @media screen and (min-width: 1500px) {
-        font-size: 30px;
+        font-size: 28px;
     }
 `;
 const S_UserAction = styled.div`

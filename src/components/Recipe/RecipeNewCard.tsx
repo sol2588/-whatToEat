@@ -126,7 +126,7 @@ const S_CardCategory = styled(S_CardText)`
     color: #202020;
 
     @media screen and (min-width: 1500px) {
-        font-size: 16px;
+        font-size: 14px;
     }
 `;
 
@@ -135,7 +135,7 @@ const S_CardDescription = styled(S_CardText)`
     color: #626264;
 
     @media screen and (min-width: 1500px) {
-        font-size: 18px;
+        font-size: 16px;
     }
 `;
 
@@ -159,7 +159,7 @@ const S_Link = styled(Link)`
     }
 
     @media screen and (min-width: 1500px) {
-        font-size: 24px;
+        font-size: 20px;
     }
 `;
 const S_BookmarkIcons = styled.div<{ mark: boolean }>`
