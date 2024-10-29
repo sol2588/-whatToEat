@@ -2,6 +2,7 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import instance from '../utils/api/instance';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../redux/reducer/modalSlice';
+import { useNavigate } from 'react-router-dom';
 
 interface CreateHandlerProps {
     recipeId: number;
@@ -37,6 +38,7 @@ export default function useComments() {
     const [currentRate, setCurrentRate] = useState<number>(0);
     const [updateRate, setupdateRate] = useState<number>(0);
 
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     // get : recipeId
     const fetchCommentHandler = async (recipeId: string) => {
@@ -74,8 +76,7 @@ export default function useComments() {
             }
         } catch (err: any) {
             if (err.message == 'No token') {
-                dispatch(showModal({ isOpen: true, content: '로그인 후 이용바랍니다.', onConfirm: null }));
-                window.location.href = '/login';
+                dispatch(showModal({ isOpen: true, content: '로그인 후 이용바랍니다.', onConfirm: navigate('/login') }));
             } else {
                 console.log('댓글작성 error: ', err);
                 if (createComment == '') {

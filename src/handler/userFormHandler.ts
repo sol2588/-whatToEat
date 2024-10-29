@@ -81,8 +81,7 @@ export const userFormHandler = () => {
         try {
             const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/signup`, { email, password, nickname });
             if (response.status == 201) {
-                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null })); // 회원가입 성공 modal
-                navigate('/login');
+                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: navigate('/login') })); // 회원가입 성공 modal
             }
         } catch (err: any) {
             console.log('회원가입 에러: ', err);
@@ -112,8 +111,7 @@ export const userFormHandler = () => {
                     expiredIn: Date.now() + duration,
                 };
                 dispatch(loginSuccess(userDispatchData));
-                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null })); // 로그인 성공 modal
-                navigate('/');
+                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: navigate('/') })); // 로그인 성공 modal
             }
         } catch (err: any) {
             if (err.response) {
