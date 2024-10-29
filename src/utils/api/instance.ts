@@ -56,13 +56,13 @@ instance.interceptors.response.use(
                 store.dispatch(
                     loginSuccess({
                         isLoggedIn: true,
-                        token: newAccessToken,
-                        nickname: err.response.data.data,
+                        token: newAccessToken.accessToken,
+                        nickname: newAccessToken.nickname,
                         provider: parsedProvider,
                         expiredIn: Date.now() + duration,
                     }),
                 );
-                err.config.headers['access-token'] = `Bearer ${newAccessToken}`;
+                err.config.headers['access-token'] = `Bearer ${newAccessToken.accessToken}`;
                 return instance(err.config); // 중단된 요청을 갱신된 토큰으로 재요청
             } else {
                 // 재발급 실패 시 처리
