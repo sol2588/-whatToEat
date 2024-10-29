@@ -34,7 +34,7 @@ const CreateRecipe: React.FC = () => {
             <RecipeNameInput value={recipeName} onChange={(e) => setRecipeName(e.target.value)} placeholder="레시피 이름을 입력하세요." />
             <RecipeContainer>
                 <LeftContainer>
-                    <StepsLabel>조리단계</StepsLabel>
+                    <TextLabel>조리단계</TextLabel>
                     <RecipeSteps>
                         {steps.map((step, index) => (
                             <RecipeStep key={index}>
@@ -60,7 +60,7 @@ const CreateRecipe: React.FC = () => {
 
                 <RightContainer>
                     <ThumbnailUploadBox>
-                        <ThumbnailLabel>썸네일 이미지 업로드</ThumbnailLabel>
+                        <TextLabel>썸네일 이미지 업로드</TextLabel>
                         <ThumbnailPreviewContainer>
                             <ThumbnailPreview src={thumbnailPreview} alt="Thumbnail Preview" />
                             <ThumbnailFileInput type="file" onChange={(e) => handleThumbnailChange(e)} />
@@ -69,14 +69,14 @@ const CreateRecipe: React.FC = () => {
 
                     <RecipeSidebar>
                         <RecipeDetails>
-                            <h3>레시피 난이도</h3>
+                            <TextLabel>레시피 난이도</TextLabel>
                             <RecipeSelect value={recipeLevel} onChange={(e) => setRecipeLevel(e.target.value)}>
                                 <option value="LOW">LOW</option>
                                 <option value="MEDIUM">MEDIUM</option>
                                 <option value="HIGH">HIGH</option>
                             </RecipeSelect>
 
-                            <h3>요리 시간 (분)</h3>
+                            <TextLabel>요리 시간 (분)</TextLabel>
                             <CustomStyledSelect>
                                 <StyledCustomSelect
                                     id="recipeTime"
@@ -89,7 +89,7 @@ const CreateRecipe: React.FC = () => {
                         </RecipeDetails>
 
                         <RecipeIngredients>
-                            <h3>재료</h3>
+                            <TextLabel>재료</TextLabel>
                             {ingredients.map((ingredient, index) => (
                                 <Ingredient key={index}>
                                     <RecipeInput
@@ -166,7 +166,7 @@ const RightContainer = styled.div`
     width: 100%;
 `;
 
-const StepsLabel = styled.h3`
+const TextLabel = styled.h3`
     font-size: 1.5rem;
     margin-bottom: 10px;
     color: #333;
@@ -205,6 +205,7 @@ const RecipeStepContent = styled.div`
 `;
 
 const StepInput = styled.textarea`
+    font-size: 1rem;
     width: 100%;
     height: 100px;
     padding: 10px;
@@ -245,6 +246,7 @@ const RecipeSelect = styled.select`
 `;
 
 const RecipeInput = styled.input`
+    font-size: 1rem;
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -272,6 +274,7 @@ const AddButton = styled.button`
     cursor: pointer;
     width: 100%;
     height: 50px;
+    font-size: 1.1rem;
     font-family: 'SUITE-Regular';
     &:hover {
         background-color: ${colors[400]};
@@ -287,6 +290,7 @@ const DeleteButton = styled.button`
     cursor: pointer;
     width: 100%;
     margin-top: 10px;
+    font-size: 1.1rem;
     font-family: 'SUITE-Regular';
     &:hover {
         background-color: #c0392b;
@@ -314,6 +318,7 @@ const CustomStyledSelect = styled.div`
     border: none;
     border-radius: 8px;
     margin-bottom: 20px;
+    font-size: 1rem;
     select {
         width: 100%;
         height: 100%;
@@ -322,6 +327,7 @@ const CustomStyledSelect = styled.div`
         border-radius: 8px;
         outline: none;
         font-family: 'SUITE-Regular';
+        font-size: 1rem;
     }
 `;
 
@@ -332,12 +338,6 @@ const ThumbnailUploadBox = styled.div`
     width: 60%;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     padding: 40px;
-`;
-
-const ThumbnailLabel = styled.h3`
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #333;
 `;
 
 const ThumbnailPreviewContainer = styled.div`
@@ -363,7 +363,7 @@ const ThumbnailFileInput = styled.input`
 
 const StyledCustomSelect = styled(CustomSelect)`
     height: 50px;
-    font-size: 16px;
+    font-size: 1rem;
 `;
 
 const CreateRecipeWithAuth = withAuth(CreateRecipe);

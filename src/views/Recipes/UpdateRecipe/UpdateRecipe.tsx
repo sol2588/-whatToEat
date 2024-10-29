@@ -41,7 +41,7 @@ const UpdateRecipe: React.FC = () => {
             <RecipeNameInput value={recipeName} onChange={(e) => setRecipeName(e.target.value)} placeholder="레시피 이름을 수정하세요." />
             <RecipeContainer>
                 <LeftContainer>
-                    <StepsLabel>조리단계</StepsLabel>
+                    <TextLabel>조리단계</TextLabel>
                     <RecipeSteps>
                         {steps.map((step, index) => (
                             <RecipeStep key={index}>
@@ -67,7 +67,7 @@ const UpdateRecipe: React.FC = () => {
 
                 <RightContainer>
                     <ThumbnailUploadBox>
-                        <ThumbnailLabel>썸네일 이미지 업로드</ThumbnailLabel>
+                        <TextLabel>썸네일 이미지 업로드</TextLabel>
                         <ThumbnailPreviewContainer>
                             <ThumbnailPreview src={thumbnailPreview || DefaultImg} alt="Thumbnail Preview" />
                             <ThumbnailFileInput type="file" onChange={(e) => handleThumbnailChange(e)} />
@@ -76,13 +76,13 @@ const UpdateRecipe: React.FC = () => {
 
                     <RecipeSidebar>
                         <RecipeDetails>
-                            <h3>레시피 수정</h3>
+                            <TextLabel>레시피 수정</TextLabel>
                             <RecipeSelect value={recipeLevel} onChange={(e) => setRecipeLevel(e.target.value)}>
                                 <option value="LOW">LOW</option>
                                 <option value="MEDIUM">MEDIUM</option>
                                 <option value="HIGH">HIGH</option>
                             </RecipeSelect>
-                            <h3>요리 시간 (분)</h3>
+                            <TextLabel>요리 시간 (분)</TextLabel>
                             <CustomStyledSelect>
                                 <StyledCustomSelect
                                     id="recipeTime"
@@ -94,7 +94,7 @@ const UpdateRecipe: React.FC = () => {
                             </CustomStyledSelect>
                         </RecipeDetails>
                         <RecipeIngredients>
-                            <h3>재료</h3>
+                            <TextLabel>재료</TextLabel>
                             {ingredients.map((ingredient, index) => (
                                 <Ingredient key={index}>
                                     <RecipeInput
@@ -146,13 +146,6 @@ const LeftContainer = styled.div`
     flex-direction: column;
     width: 100%;
     margin-bottom: 20px;
-`;
-const StepsLabel = styled.h3`
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #333;
-    margin-top: 30px;
-    font-family: 'SUITE-Regular';
 `;
 
 const RecipeNameInput = styled.input`
@@ -334,12 +327,6 @@ const ThumbnailUploadBox = styled.div`
     padding: 40px;
 `;
 
-const ThumbnailLabel = styled.h3`
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #333;
-`;
-
 const ThumbnailPreviewContainer = styled.div`
     width: 100%;
     display: flex;
@@ -370,4 +357,12 @@ const RecipeContainer = styled.section`
 const StyledCustomSelect = styled(CustomSelect)`
     height: 50px;
     font-size: 16px;
+`;
+
+const TextLabel = styled.h3`
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+    margin-top: 30px;
+    font-family: 'SUITE-Regular';
 `;
