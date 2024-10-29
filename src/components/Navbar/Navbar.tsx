@@ -32,7 +32,7 @@ const S_BarContainer = styled.div`
     left: 50%;
     transform: translate(-50%, -50%);
     @media screen and (min-width: 1249px) {
-        top: 14%;
+        top: 12%;
     }
 `;
 const S_BarWrapper = styled.div`
@@ -63,5 +63,8 @@ const S_BarItem = styled.li`
         margin-left: 5px;
         text-decoration: none;
         color: #1f2532;
+        @media screen and (min-width: 1500px) {
+            font-size: 20px;
+        }
     }
 `;

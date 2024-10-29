@@ -200,6 +200,10 @@ const S_ConditionList = styled.ul`
         font-weight: 900;
         font-size: 12px;
         color: #f66767;
+
+        @media screen and (min-width: 1500px) {
+            font-size: 16px;
+        }
     }
 `;
 const S_SearchItem = styled.li`
@@ -208,6 +212,10 @@ const S_SearchItem = styled.li`
 const S_SearchItemTitle = styled.h4`
     font-size: 18px;
     padding: 0 8px 8px;
+
+    @media screen and (min-width: 1500px) {
+        font-size: 24px;
+    }
 `;
 const S_SearchTimeLevelWrapper = styled.div`
     margin-top: 30px;
@@ -261,6 +269,9 @@ const S_SearchButton = styled.button<{ searchBtn: boolean }>`
         background-color: lightgray;
         color: #999;
         cursor: not-allowed;
+    }
+    @media screen and (min-width: 1500px) {
+        font-size: 18px;
     }
 `;
 const S_SelectBtn = styled.button<{ active: boolean }>`

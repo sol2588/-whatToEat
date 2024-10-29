@@ -194,7 +194,7 @@ export default function Mypage(): JSX.Element {
     const renderPlaceholderItems = () => {
         return (
             <Box sx={{ marginTop: '150px', marginLeft: '20px' }}>
-                <Typography sx={{ fontSize: '2rem', fontFamily: 'SUITE-Regular' }}>게시물이 존재하지 않습니다.</Typography>
+                <Typography sx={{ fontSize: '1.25rem', fontFamily: 'SUITE-Regular' }}>게시물이 존재하지 않습니다.</Typography>
             </Box>
         );
     };

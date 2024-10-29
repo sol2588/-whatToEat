@@ -85,12 +85,16 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
 const S_HeaderSection = styled.section`
     margin: 0 auto;
     padding: 16px;
-    width: 90vw;
+    width: 80vw;
     height: 100px;
     font-size: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @media screen and (min-width: 1500px) {
+        font-size: 24px;
+    }
 `;
 const S_Logo = styled.img`
     margin-top: 5px;
@@ -116,6 +120,9 @@ const S_StyledLink = styled(Link)`
     text-decoration: none;
     margin: 10px;
     color: inherit;
+    @media screen and (min-width: 1500px) {
+        font-size: 30px;
+    }
 `;
 const S_BellIconWrapper = styled.div`
     position: relative;
@@ -124,6 +131,9 @@ const S_BellIcon = styled.div`
     margin: 10px;
     cursor: pointer;
     position: relative;
+    @media screen and (min-width: 1500px) {
+        font-size: 30px;
+    }
 `;
 const S_UserAction = styled.div`
     flex-grow: 1;
@@ -144,6 +154,9 @@ const S_HeaderButton = styled.div`
         color: #000;
         text-decoration: none;
     }
+    @media screen and (min-width: 1500px) {
+        font-size: 24px;
+    }
 `;
 const S_AlaramBadge = styled.span`
     width: 15px;
@@ -156,4 +169,9 @@ const S_AlaramBadge = styled.span`
     position: absolute;
     top: -5px;
     right: -5px;
+    @media screen and (min-width: 1500px) {
+        width: 20px;
+        height: 20px;
+        font-size: 16px;
+    }
 `;
