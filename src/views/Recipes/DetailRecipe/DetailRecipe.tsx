@@ -89,8 +89,8 @@ export default function DetailRecipe(): JSX.Element {
                 )}
             </S_DetailMain>
             {/* 요리방법 */}
+            <S_DetailSubtitle>Directions</S_DetailSubtitle>
             <S_DetailRecipeInstruction>
-                <S_DetailSubtitle>Directions</S_DetailSubtitle>
                 {recipe.recipesManuals &&
                     recipe.recipesManuals.map((step, idx) => (
                         <S_DetailRecipeFigure key={idx}>
@@ -136,9 +136,9 @@ export default function DetailRecipe(): JSX.Element {
 }
 
 const S_DetailRecipeContainer = styled.section`
-    margin-top: 50px;
+    margin: 50px auto;
     width: 80vw;
-    height: 100vh;
+    height: 100%;
 `;
 const S_DetailMain = styled.div`
     display: flex;
@@ -148,6 +148,7 @@ const S_DetailMain = styled.div`
 `;
 const S_DetailMainInfo = styled.div`
     display: flex;
+    gap: 16px;
     justify-content: space-between;
     align-items: center;
 `;
@@ -160,15 +161,14 @@ const S_DetailBtnWrapper = styled.div`
 `;
 const S_DetailMainFigure = styled.figure`
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     img {
-        max-width: 50%;
+        max-width: 40%;
         height: auto;
         object-fit: cover;
         border: 0.8 solid #656565;
-        border-top-left-radius: 50%;
-        border-top-right-radius: 50%;
-        border-bottom-left-radius: 10%;
     }
 `;
 
@@ -186,7 +186,6 @@ const S_DetailSubtitle = styled.h4`
 const S_DetailRecipeInstruction = styled.div`
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
     gap: 16px;
 `;
 const S_DetailRecipeFigure = styled.figure`
@@ -198,16 +197,18 @@ const S_DetailRecipeFigure = styled.figure`
         display: block;
         height: 200px;
         border: 1px solid #656565;
+        border-top-left-radius: 50%;
+        border-top-right-radius: 50%;
+        border-bottom-left-radius: 10%;
     }
 `;
 const S_DetailRecipeFigcapton = styled.figcaption`
     margin-bottom: 16px;
     line-height: 2rem;
-    order: -1;
 `;
 
 const S_DetailIngredientsWrapper = styled.div`
-    margin: 16px;
+    margin: 16pxa auto;
     text-align: center;
 `;
 
