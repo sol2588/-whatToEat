@@ -34,8 +34,9 @@ export default function Signup(): JSX.Element {
             return;
         }
 
-        if (!validateEmail(email)) {
-            dispatch(showModal({ isOpen: true, content: '유효한 이메일 형식을 입력해주세요.', onConfirm: null }));
+        const emailError = validateEmail(email);
+        if (emailError) {
+            dispatch(showModal({ isOpen: true, content: emailError, onConfirm: null }));
             return;
         }
         try {

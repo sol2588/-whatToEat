@@ -31,108 +31,116 @@ const CreateRecipe: React.FC = () => {
 
     return (
         <RecipeWriteContainer>
-            <RecipeHeader>
-                <RecipeNameInput value={recipeName} onChange={(e) => setRecipeName(e.target.value)} placeholder="레시피 이름을 입력하세요." />
-                <StepsLabel>조리단계</StepsLabel>
-                <RecipeSteps>
-                    {steps.map((step, index) => (
-                        <RecipeStep key={index}>
-                            <RecipeStepImage src={imagePreviews[index] || DefaultImg} alt={`Step ${index + 1}`} />
-                            <RecipeStepContent>
-                                <StepInput
-                                    value={step.content}
-                                    onChange={(e) => {
-                                        const newSteps = [...steps];
-                                        newSteps[index].content = e.target.value;
-                                        setSteps(newSteps);
-                                    }}
-                                    placeholder={`Step ${index + 1}`}
-                                />
-                                <StepFileInput type="file" onChange={(e) => handleImageChange(e, index)} />
-                                <DeleteButton onClick={() => handleDeleteStep(index)}>단계 삭제</DeleteButton>
-                            </RecipeStepContent>
-                        </RecipeStep>
-                    ))}
-                    <AddButton onClick={handleAddStep}>단계 추가</AddButton>
-                </RecipeSteps>
-            </RecipeHeader>
-
-            <RecipeContent>
-                <ThumbnailUploadBox>
-                    <ThumbnailLabel>썸네일 이미지 업로드</ThumbnailLabel>
-                    <ThumbnailPreviewContainer>
-                        <ThumbnailPreview src={thumbnailPreview} alt="Thumbnail Preview" />
-                        <ThumbnailFileInput type="file" onChange={(e) => handleThumbnailChange(e)} />
-                    </ThumbnailPreviewContainer>
-                </ThumbnailUploadBox>
-
-                <RecipeSidebar>
-                    <RecipeDetails>
-                        <h3>레시피 난이도</h3>
-                        <RecipeSelect value={recipeLevel} onChange={(e) => setRecipeLevel(e.target.value)}>
-                            <option value="LOW">LOW</option>
-                            <option value="MEDIUM">MEDIUM</option>
-                            <option value="HIGH">HIGH</option>
-                        </RecipeSelect>
-
-                        <h3>요리 시간 (분)</h3>
-                        <CustomStyledSelect>
-                            <CustomSelect
-                                id="recipeTime"
-                                options={timeOption}
-                                value={recipeCookingTime}
-                                label=""
-                                handleChange={(e) => setRecipeCookingTime(e.target.value)}
-                            />
-                        </CustomStyledSelect>
-                    </RecipeDetails>
-
-                    <RecipeIngredients>
-                        <h3>재료</h3>
-                        {ingredients.map((ingredient, index) => (
-                            <Ingredient key={index}>
-                                <RecipeInput
-                                    value={ingredient.ingredientName}
-                                    onChange={(e) => {
-                                        const newIngredients = [...ingredients];
-                                        newIngredients[index].ingredientName = e.target.value;
-                                        setIngredients(newIngredients);
-                                    }}
-                                    placeholder="재료 이름"
-                                />
-                                <RecipeInput
-                                    value={ingredient.ingredientQuantity}
-                                    onChange={(e) => {
-                                        const newIngredients = [...ingredients];
-                                        newIngredients[index].ingredientQuantity = e.target.value;
-                                        setIngredients(newIngredients);
-                                    }}
-                                    placeholder="재료 양"
-                                />
-                                <DeleteButton onClick={() => handleDeleteIngredient(index)}>재료 삭제</DeleteButton>
-                            </Ingredient>
+            <RecipeNameInput value={recipeName} onChange={(e) => setRecipeName(e.target.value)} placeholder="레시피 이름을 입력하세요." />
+            <RecipeContainer>
+                <LeftContainer>
+                    <TextLabel>조리단계</TextLabel>
+                    <RecipeSteps>
+                        {steps.map((step, index) => (
+                            <RecipeStep key={index}>
+                                <RecipeStepImage src={imagePreviews[index] || DefaultImg} alt={`Step ${index + 1}`} />
+                                <RecipeStepContent>
+                                    <StepInput
+                                        value={step.content}
+                                        onChange={(e) => {
+                                            const newSteps = [...steps];
+                                            newSteps[index].content = e.target.value;
+                                            setSteps(newSteps);
+                                        }}
+                                        placeholder={`Step ${index + 1}`}
+                                    />
+                                    <StepFileInput type="file" onChange={(e) => handleImageChange(e, index)} />
+                                    <DeleteButton onClick={() => handleDeleteStep(index)}>단계 삭제</DeleteButton>
+                                </RecipeStepContent>
+                            </RecipeStep>
                         ))}
-                        <AddButton onClick={handleAddIngredient}>재료 추가</AddButton>
-                    </RecipeIngredients>
+                        <AddButton onClick={handleAddStep}>단계 추가</AddButton>
+                    </RecipeSteps>
+                </LeftContainer>
 
-                    <SubmitButton onClick={(e) => handleSubmit(e)}>레시피 등록</SubmitButton>
-                </RecipeSidebar>
-            </RecipeContent>
+                <RightContainer>
+                    <ThumbnailUploadBox>
+                        <TextLabel>썸네일 이미지 업로드</TextLabel>
+                        <ThumbnailPreviewContainer>
+                            <ThumbnailPreview src={thumbnailPreview} alt="Thumbnail Preview" />
+                            <ThumbnailFileInput type="file" onChange={(e) => handleThumbnailChange(e)} />
+                        </ThumbnailPreviewContainer>
+                    </ThumbnailUploadBox>
+
+                    <RecipeSidebar>
+                        <RecipeDetails>
+                            <TextLabel>레시피 난이도</TextLabel>
+                            <RecipeSelect value={recipeLevel} onChange={(e) => setRecipeLevel(e.target.value)}>
+                                <option value="LOW">LOW</option>
+                                <option value="MEDIUM">MEDIUM</option>
+                                <option value="HIGH">HIGH</option>
+                            </RecipeSelect>
+
+                            <TextLabel>요리 시간 (분)</TextLabel>
+                            <CustomStyledSelect>
+                                <StyledCustomSelect
+                                    id="recipeTime"
+                                    options={timeOption}
+                                    value={recipeCookingTime}
+                                    label=""
+                                    handleChange={(e) => setRecipeCookingTime(e.target.value)}
+                                />
+                            </CustomStyledSelect>
+                        </RecipeDetails>
+
+                        <RecipeIngredients>
+                            <TextLabel>재료</TextLabel>
+                            {ingredients.map((ingredient, index) => (
+                                <Ingredient key={index}>
+                                    <RecipeInput
+                                        value={ingredient.ingredientName}
+                                        onChange={(e) => {
+                                            const newIngredients = [...ingredients];
+                                            newIngredients[index].ingredientName = e.target.value;
+                                            setIngredients(newIngredients);
+                                        }}
+                                        placeholder="재료 이름"
+                                    />
+                                    <RecipeInput
+                                        value={ingredient.ingredientQuantity}
+                                        onChange={(e) => {
+                                            const newIngredients = [...ingredients];
+                                            newIngredients[index].ingredientQuantity = e.target.value;
+                                            setIngredients(newIngredients);
+                                        }}
+                                        placeholder="재료 양"
+                                    />
+                                    <DeleteButton onClick={() => handleDeleteIngredient(index)}>재료 삭제</DeleteButton>
+                                </Ingredient>
+                            ))}
+                            <AddButton onClick={handleAddIngredient}>재료 추가</AddButton>
+                        </RecipeIngredients>
+
+                        <SubmitButton onClick={(e) => handleSubmit(e)}>레시피 등록</SubmitButton>
+                    </RecipeSidebar>
+                </RightContainer>
+            </RecipeContainer>
         </RecipeWriteContainer>
     );
 };
 
 const RecipeWriteContainer = styled.section`
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 0.5fr 3fr;
     gap: 50px;
     padding: 50px;
     width: 80vw;
     margin: 0 auto;
 `;
 
+const RecipeContainer = styled.section`
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 100px;
+`;
+
 //헤더부분
-const RecipeHeader = styled.div`
+const LeftContainer = styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
@@ -140,8 +148,9 @@ const RecipeHeader = styled.div`
 `;
 
 const RecipeNameInput = styled.input`
+    margin: 0 auto;
     font-size: 1.5rem;
-    width: 100%;
+    width: 70%;
     height: 60px;
     padding: 10px;
     border: 1px solid #ccc;
@@ -150,14 +159,14 @@ const RecipeNameInput = styled.input`
 `;
 
 //컨텐츠부분
-const RecipeContent = styled.div`
+const RightContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 16px;
     width: 100%;
 `;
 
-const StepsLabel = styled.h3`
+const TextLabel = styled.h3`
     font-size: 1.5rem;
     margin-bottom: 10px;
     color: #333;
@@ -196,6 +205,7 @@ const RecipeStepContent = styled.div`
 `;
 
 const StepInput = styled.textarea`
+    font-size: 1rem;
     width: 100%;
     height: 100px;
     padding: 10px;
@@ -205,11 +215,11 @@ const StepInput = styled.textarea`
 `;
 
 const StepFileInput = styled.input`
-    margin-top: 10px;
+    padding: 20px 0;
 `;
 
 const RecipeSidebar = styled.div`
-    width: 60%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -221,20 +231,22 @@ const RecipeSidebar = styled.div`
 
 const RecipeDetails = styled.div`
     background: #fff;
-    padding: 20px;
+    padding: 40px;
     border-radius: 8px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 `;
 
 const RecipeSelect = styled.select`
     width: 100%;
-    padding: 10px;
+    padding: 16px;
     border: 1px solid #ccc;
     border-radius: 8px;
     margin-bottom: 20px;
+    font-size: 1rem;
 `;
 
 const RecipeInput = styled.input`
+    font-size: 1rem;
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -244,7 +256,7 @@ const RecipeInput = styled.input`
 
 const RecipeIngredients = styled.div`
     background: #fff;
-    padding: 20px;
+    padding: 40px;
     border-radius: 8px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 `;
@@ -262,6 +274,7 @@ const AddButton = styled.button`
     cursor: pointer;
     width: 100%;
     height: 50px;
+    font-size: 1.1rem;
     font-family: 'SUITE-Regular';
     &:hover {
         background-color: ${colors[400]};
@@ -275,7 +288,9 @@ const DeleteButton = styled.button`
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    width: 100%;
     margin-top: 10px;
+    font-size: 1.1rem;
     font-family: 'SUITE-Regular';
     &:hover {
         background-color: #c0392b;
@@ -298,33 +313,31 @@ const SubmitButton = styled.button`
 
 const CustomStyledSelect = styled.div`
     width: 100%;
-    padding: 10px;
+    height: 50px;
+    padding: 0;
     border: none;
     border-radius: 8px;
     margin-bottom: 20px;
-
+    font-size: 1rem;
     select {
         width: 100%;
-        padding: 10px;
+        height: 100%;
         border: none;
         background-color: white;
         border-radius: 8px;
         outline: none;
         font-family: 'SUITE-Regular';
+        font-size: 1rem;
     }
 `;
+
 const ThumbnailUploadBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 60%;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-`;
-
-const ThumbnailLabel = styled.h3`
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #333;
+    padding: 40px;
 `;
 
 const ThumbnailPreviewContainer = styled.div`
@@ -337,7 +350,7 @@ const ThumbnailPreviewContainer = styled.div`
 const ThumbnailPreview = styled.img`
     width: 100%;
     height: 200px;
-    object-fit: cover;
+    object-fit: contain;
     border: 1px solid #ccc;
     margin-bottom: 10px;
     border-radius: 8px;
@@ -345,6 +358,12 @@ const ThumbnailPreview = styled.img`
 
 const ThumbnailFileInput = styled.input`
     width: 50%;
+    margin-top: 20px;
+`;
+
+const StyledCustomSelect = styled(CustomSelect)`
+    height: 50px;
+    font-size: 1rem;
 `;
 
 const CreateRecipeWithAuth = withAuth(CreateRecipe);
