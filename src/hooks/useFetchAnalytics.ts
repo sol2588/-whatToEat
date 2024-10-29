@@ -12,7 +12,7 @@ export const useFetchAnalytics = () => {
 
         setVisitedInfo((prevInfo) => ({
             ...prevInfo,
-            Today: dailyResponse.data,
+            Today: dailyResponse.data.data,
         }));
     };
 
@@ -21,7 +21,7 @@ export const useFetchAnalytics = () => {
         console.log('월별 방문자 response : ', momthlyResponse);
         setVisitedInfo((prevInfo) => ({
             ...prevInfo,
-            Monthly: momthlyResponse.data,
+            Monthly: momthlyResponse.data.data,
         }));
     };
 
