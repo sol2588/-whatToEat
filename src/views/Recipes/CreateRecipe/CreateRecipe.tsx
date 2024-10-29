@@ -126,7 +126,7 @@ const CreateRecipe: React.FC = () => {
 
 const RecipeWriteContainer = styled.section`
     display: grid;
-    grid-template-rows: 0.5fr 3fr;
+    grid-template-rows: 0.1fr 3fr;
     gap: 50px;
     padding: 50px;
     width: 80vw;
@@ -273,7 +273,7 @@ const AddButton = styled.button`
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
-    height: 50px;
+    height: 40px;
     font-size: 1.1rem;
     font-family: 'SUITE-Regular';
     &:hover {
@@ -289,6 +289,7 @@ const DeleteButton = styled.button`
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
+    height: 40px;
     margin-top: 10px;
     font-size: 1.1rem;
     font-family: 'SUITE-Regular';
@@ -335,7 +336,7 @@ const ThumbnailUploadBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 60%;
+    width: 70%;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     padding: 40px;
 `;
