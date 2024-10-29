@@ -81,7 +81,7 @@ export default function Visited(): JSX.Element {
 
 function SummaryCard({ title, value, color }: SummaryCardProps): JSX.Element {
     return (
-        <Card sx={{ minWidth: 100, maxWidth: 140, minHeight: 40, maxHeight: 75, backgroundColor: color, color: '#fff', textAlign: 'center' }}>
+        <Card sx={{ minWidth: 120, maxWidth: 140, minHeight: 40, maxHeight: 75, backgroundColor: color, color: '#fff', textAlign: 'center' }}>
             <CardContent sx={{ textAlign: 'center' }}>
                 <S_TitleText>{value.toLocaleString()}</S_TitleText>
                 <S_SubtitleText>{title}</S_SubtitleText>
