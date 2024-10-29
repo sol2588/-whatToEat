@@ -131,7 +131,9 @@ const CarouselItem = styled.li<{ active: boolean }>`
         object-fit: fill;
     }
     p {
-        font-size: 15px;
+        margin: 10px 30px 15px;
+        max-width: 250px;
+        font-size: 20px;
         line-height: 24px;
         font-weight: 500;
         opacity: 0.8;

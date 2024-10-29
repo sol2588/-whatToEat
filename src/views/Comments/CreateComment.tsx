@@ -58,25 +58,16 @@ export default function CreateComment({
 
 const S_ReviewContainer = styled.section`
     margin: 44px 0px;
-    position: relative;
+
     h4 {
         font-size: 24px;
         font-weight: 500;
-    }
-
-    &::after {
-        content: '';
-        width: 100%;
-        position: absolute;
-        top: -10%;
-        border: 0.8px solid lightgray;
     }
 `;
 
 const S_ReviewForm = styled.form`
     margin: 16px 0px;
     padding: 16px;
-    width: 95%;
     height: 70%;
     background-color: #f2f2f2;
     border-radius: 8px;

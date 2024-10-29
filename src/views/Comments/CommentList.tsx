@@ -108,7 +108,7 @@ export default function CommentList({
     );
 }
 const S_CommentsContainer = styled.section`
-    margin: 36px 0;
+    padding: 0 0 36px;
 
     h4 {
         font-size: 24px;
@@ -139,7 +139,6 @@ const S_ReviewerFigcaption = styled.figcaption<{ date: boolean }>`
 `;
 const S_CommentsDataWrapper = styled.div`
     margin-left: 56px;
-    width: 95%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -149,6 +148,6 @@ const S_CommentsSelectWrapper = styled.div`
     justify-content: space-between;
 `;
 const S_CommentsEmpty = styled.div`
-    font-size: 20px;
+    font-size: 18px;
     margin: 16px 0;
 `;

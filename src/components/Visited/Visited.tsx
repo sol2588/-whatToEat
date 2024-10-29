@@ -1,8 +1,9 @@
 import { useFetchAnalytics } from '../../hooks/useFetchAnalytics';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ChartOptions } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { Box, Card, CardContent } from '@mui/material';
 import colors from '../../styles/colors';
-import { Container, Box, Typography, Card, CardContent } from '@mui/material';
+import styled from 'styled-components';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
@@ -64,17 +65,17 @@ export default function Visited(): JSX.Element {
     };
 
     return (
-        <Container maxWidth="md">
-            <Box width="100%" display="flex" gap={10} mb={3}>
-                <SummaryCard title="오늘 방문자" value={visitedInfo.Today} color={colors[200]} />
-                <SummaryCard title="월간 방문자" value={visitedInfo.Monthly} color={colors[300]} />
-            </Box>
-            <Box>
+        <S_Container>
+            <S_SummaryWrapper>
+                <SummaryCard title="Today" value={visitedInfo.Today} color={colors[200]} />
+                <SummaryCard title="Month" value={visitedInfo.Monthly} color={colors[300]} />
+            </S_SummaryWrapper>
+            <S_ChartWrapper>
                 <Box p={3} bgcolor="#f5f5f5" borderRadius="8px">
                     <Bar data={data} options={options} />
                 </Box>
-            </Box>
-        </Container>
+            </S_ChartWrapper>
+        </S_Container>
     );
 }
 
@@ -82,13 +83,33 @@ function SummaryCard({ title, value, color }: SummaryCardProps): JSX.Element {
     return (
         <Card sx={{ minWidth: 100, maxWidth: 140, minHeight: 40, maxHeight: 75, backgroundColor: color, color: '#fff', textAlign: 'center' }}>
             <CardContent sx={{ textAlign: 'center' }}>
-                <Typography variant="h6" sx={{ fontFamily: 'SUITE-Regular' }}>
-                    {value.toLocaleString()}
-                </Typography>
-                <Typography variant="body2" sx={{ fontSize: '1rem', fontFamily: 'SUITE-Regular' }}>
-                    {title}
-                </Typography>
+                <S_TitleText>{value.toLocaleString()}</S_TitleText>
+                <S_SubtitleText>{title}</S_SubtitleText>
             </CardContent>
         </Card>
     );
 }
+
+const S_Container = styled.div`
+    max-width: 400px;
+`;
+
+const S_SummaryWrapper = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+`;
+const S_ChartWrapper = styled.div`
+    background-color: #f5f5f5;
+    border-radius: 8px;
+`;
+
+const S_TitleText = styled.h6`
+    font-family: 'SUITE-Regular';
+`;
+
+const S_SubtitleText = styled.p`
+    font-size: 1rem;
+    font-family: 'SUITE-Regular';
+`;

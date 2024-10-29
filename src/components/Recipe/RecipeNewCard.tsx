@@ -107,6 +107,7 @@ const S_CardFigcaption = styled.figcaption`
     gap: 4px;
     position: relative;
     justify-content: space-between;
+    align-items: flex-start;
 
     &:last-child {
         padding-bottom: 16px;
@@ -123,11 +124,19 @@ const S_CardText = styled.p`
 const S_CardCategory = styled(S_CardText)`
     font-size: 12px;
     color: #202020;
+
+    @media screen and (min-width: 1500px) {
+        font-size: 16px;
+    }
 `;
 
 const S_CardDescription = styled(S_CardText)`
     font-size: 14px;
     color: #626264;
+
+    @media screen and (min-width: 1500px) {
+        font-size: 18px;
+    }
 `;
 
 const S_CardTitle = styled(S_CardText)`
@@ -143,10 +152,14 @@ const S_Link = styled(Link)`
     display: block;
     text-decoration: none;
     color: #000;
-
+    text-align: left;
     &:hover {
         color: ${colors[400]};
         cursor: pointer;
+    }
+
+    @media screen and (min-width: 1500px) {
+        font-size: 24px;
     }
 `;
 const S_BookmarkIcons = styled.div<{ mark: boolean }>`

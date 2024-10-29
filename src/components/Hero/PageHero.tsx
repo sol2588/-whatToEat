@@ -24,6 +24,9 @@ const S_TitleHeader = styled.div`
 `;
 
 const S_Title = styled.h3`
-    font-size: 32px;
+    font-size: 40px;
     color: ${colors[900]};
+    @media screen and (min-width: 1500px) {
+        font-size: 44px;
+    }
 `;
