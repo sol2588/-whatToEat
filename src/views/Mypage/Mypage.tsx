@@ -313,7 +313,17 @@ export default function Mypage(): JSX.Element {
                                         mb: 2,
                                         boxShadow: 3,
                                     }}
-                                    onClick={handleDelUserOpen}
+                                    onClick={() =>
+                                        dispatch(
+                                            showModal({
+                                                isOpen: true,
+                                                content: '정말 탈퇴하시겠습니까?',
+                                                onConfirm: () => {
+                                                    handleDeleteUser();
+                                                },
+                                            }),
+                                        )
+                                    }
                                 >
                                     회원탈퇴
                                 </Button>
