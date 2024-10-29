@@ -199,6 +199,7 @@ const RecipeStepImage = styled.img`
     object-fit: cover;
     object-position: center;
     border: 1px solid #ccc;
+    border-radius: 8px;
 `;
 
 const RecipeStepContent = styled.div`
