@@ -100,7 +100,7 @@ export default function SearchCondition(): JSX.Element {
             }
         } catch (err) {
             console.log('레시피 검색 error : ', err);
-            dispatch(showModal({ isOpen: true, content: '검색 중 오류가 발생했습니다. 다시 시도해주세요.', onConfirm: null }));
+            dispatch(showModal({ isOpen: true, content: '일치하는 레시피가 없습니다. 다시 시도해주세요.', onConfirm: null }));
         } finally {
             setIsLoading(false);
         }
@@ -117,21 +117,56 @@ export default function SearchCondition(): JSX.Element {
 
     // 난이도를 변경하는 핸들러
     const handleLevel = (e: MouseEvent<HTMLButtonElement>) => {
+        if (recipes.length > 0) {
+            setTime('');
+            setLevel('');
+            setOffset(0);
+            setSearchIngredients('');
+            setIngredientsList([]);
+            setRecipes([]);
+            setIsLoading(false);
+            setHasSearched(false);
+            setHasMore(true);
+        }
         const { value } = e.currentTarget;
-        setLevel(value);
+        if (level == value) {
+            setLevel('');
+        } else {
+            setLevel(value);
+        }
     };
 
     // 소요시간을 변경하는 핸들러
     const handleTime = (e: MouseEvent<HTMLButtonElement>) => {
+        if (recipes.length > 0) {
+            setTime('');
+            setLevel('');
+            setOffset(0);
+            setSearchIngredients('');
+            setIngredientsList([]);
+            setRecipes([]);
+            setIsLoading(false);
+            setHasSearched(false);
+            setHasMore(true);
+        }
         const { value } = e.currentTarget;
-        setTime(value);
+        if (time == value) {
+            setTime('');
+        } else {
+            setTime(value);
+        }
     };
 
     const handleInit = () => {
         setTime('');
         setLevel('');
-        setIngredientsList([]);
+        setOffset(0);
         setSearchIngredients('');
+        setIngredientsList([]);
+        setRecipes([]);
+        setIsLoading(false);
+        setHasSearched(false);
+        setHasMore(true);
     };
 
     return (
