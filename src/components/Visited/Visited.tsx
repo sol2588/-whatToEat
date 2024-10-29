@@ -55,7 +55,7 @@ export default function Visited(): JSX.Element {
                 ticks: {
                     callback: (value: string | number) => {
                         if (typeof value === 'number') {
-                            return `$${value}k`;
+                            return `${value}`;
                         }
                         return value;
                     },
