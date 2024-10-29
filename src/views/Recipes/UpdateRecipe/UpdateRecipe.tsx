@@ -133,19 +133,25 @@ export default UpdateRecipeWithAuth;
 
 const RecipeUpdateContainer = styled.section`
     display: grid;
-    grid-template-rows: 0.5fr 3fr;
+    grid-template-rows: 0.1fr 3fr;
     gap: 50px;
     padding: 50px;
     width: 80vw;
     margin: 0 auto;
 `;
 
+const RecipeContainer = styled.section`
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 100px;
+`;
+
 //헤더부분
 const LeftContainer = styled.div`
     display: flex;
     flex-direction: column;
-    width: 100%;
     margin-bottom: 20px;
+    width: 100%;
 `;
 
 const RecipeNameInput = styled.input`
@@ -264,7 +270,7 @@ const AddButton = styled.button`
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
-    height: 50px;
+    height: 40px;
     font-family: 'SUITE-Regular';
     &:hover {
         background-color: ${colors[400]};
@@ -278,7 +284,10 @@ const DeleteButton = styled.button`
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    width: 100%;
+    height: 40px;
     margin-top: 10px;
+    font-size: 1.1rem;
     font-family: 'SUITE-Regular';
     &:hover {
         background-color: #c0392b;
@@ -306,7 +315,7 @@ const CustomStyledSelect = styled.div`
     border: none;
     border-radius: 8px;
     margin-bottom: 20px;
-
+    font-size: 1rem;
     select {
         width: 100%;
         padding: 10px;
@@ -315,6 +324,7 @@ const CustomStyledSelect = styled.div`
         border-radius: 8px;
         outline: none;
         font-family: 'SUITE-Regular';
+        font-size: 1rem;
     }
 `;
 
@@ -322,7 +332,7 @@ const ThumbnailUploadBox = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 60%;
+    width: 70%;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     padding: 40px;
 `;
@@ -348,15 +358,9 @@ const ThumbnailFileInput = styled.input`
     margin-top: 20px;
 `;
 
-const RecipeContainer = styled.section`
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 100px;
-`;
-
 const StyledCustomSelect = styled(CustomSelect)`
     height: 50px;
-    font-size: 16px;
+    font-size: 1rem;
 `;
 
 const TextLabel = styled.h3`
