@@ -164,13 +164,14 @@ const RightContainer = styled.div`
     flex-direction: column;
     gap: 16px;
     width: 100%;
+    margin-top: 50px;
 `;
 
 const TextLabel = styled.h3`
     font-size: 1.5rem;
     margin-bottom: 10px;
     color: #333;
-    margin-top: 30px;
+    margin-top: 10px;
     font-family: 'SUITE-Regular';
 `;
 
@@ -190,6 +191,7 @@ const RecipeStep = styled.div`
     display: flex;
     flex-direction: column;
     width: 48%;
+    padding: 10px;
 `;
 
 const RecipeStepImage = styled.img`
