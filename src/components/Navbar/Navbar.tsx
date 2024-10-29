@@ -53,6 +53,7 @@ const S_BarList = styled.ul`
 const S_BarItem = styled.li`
     margin: 0px 10px;
     display: flex;
+    align-items: center;
 
     &:hover,
     a:hover {
@@ -64,7 +65,7 @@ const S_BarItem = styled.li`
         text-decoration: none;
         color: #1f2532;
         @media screen and (min-width: 1500px) {
-            font-size: 20px;
+            font-size: 18px;
         }
     }
 `;
