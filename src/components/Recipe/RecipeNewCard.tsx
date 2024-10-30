@@ -58,7 +58,6 @@ export default function RecipeNewCard({
             console.log(err);
         }
     };
-    console.log(typeof recipeRating);
 
     return (
         <S_CardFigure>
@@ -75,7 +74,11 @@ export default function RecipeNewCard({
 
                 <S_CardDescription>자세한 레시피를 확인하고 싶다면 클릭해주세요.</S_CardDescription>
                 <S_CardInfo>
-                    <RecipeMetaData time={recipeCookingTime} level={recipeLevel} rate={recipeRating} />
+                    <RecipeMetaData
+                        time={recipeCookingTime}
+                        level={recipeLevel}
+                        rate={recipeRating.toString().includes('.') ? recipeRating.slice(0, recipeRating.indexOf('.') + 3) : recipeRating}
+                    />
                 </S_CardInfo>
             </S_CardFigcaption>
         </S_CardFigure>

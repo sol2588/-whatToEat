@@ -75,15 +75,13 @@ export default function useComments() {
                 setCurrentRate(0);
             }
         } catch (err: any) {
-            if (err.message == 'No token') {
-                dispatch(showModal({ isOpen: true, content: '로그인 후 이용바랍니다.', onConfirm: () => navigate('/login') }));
+            console.log('댓글작성 error: ', err);
+            if (createComment == '') {
+                dispatch(showModal({ isOpen: true, content: '코멘트는 1글자 이상 300글자 이하로 작성해주세요.', onConfirm: null }));
+            } else if (currentRate == 0) {
+                dispatch(showModal({ isOpen: true, content: '평점은 1.0이상 입력해주세요', onConfirm: null }));
             } else {
-                console.log('댓글작성 error: ', err);
-                if (createComment == '') {
-                    dispatch(showModal({ isOpen: true, content: '코멘트는 1글자 이상 300글자 이하로 작성해주세요.', onConfirm: null }));
-                } else {
-                    dispatch(showModal({ isOpen: true, content: '평점은 1.0이상 입력해주세요', onConfirm: null }));
-                }
+                dispatch(showModal({ isOpen: true, content: '로그인 후 이용하시기 바랍니다.', onConfirm: null }));
             }
         }
     };

@@ -115,6 +115,7 @@ export const userFormHandler = () => {
             }
         } catch (err: any) {
             if (err.response) {
+                console.log('login ', err.response.data);
                 dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null }));
             } else {
                 console.log('로그인 에러: ', err);
