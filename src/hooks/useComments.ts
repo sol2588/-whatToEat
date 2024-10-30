@@ -2,7 +2,6 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import instance from '../utils/api/instance';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../redux/reducer/modalSlice';
-import { useNavigate } from 'react-router-dom';
 
 interface CreateHandlerProps {
     recipeId: number;
