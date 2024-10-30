@@ -38,7 +38,6 @@ export default function useComments() {
     const [currentRate, setCurrentRate] = useState<number>(0);
     const [updateRate, setupdateRate] = useState<number>(0);
 
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     // get : recipeId
     const fetchCommentHandler = async (recipeId: string) => {
