@@ -80,18 +80,8 @@ export default function Mypage(): JSX.Element {
     } = useUpdateForm();
 
     //모달 상태관리 hook
-    const {
-        isModalVisible,
-        isCheckModal,
-        isPasswordModal,
-        closeModal,
-        handlePasswordModalClose,
-        handleCheckModalClose,
-        setIsModalVisible,
-        isDelUserModal,
-        handleDelUserClose,
-        handleDelUserOpen,
-    } = useModal();
+    const { isModalVisible, isCheckModal, isPasswordModal, closeModal, handlePasswordModalClose, handleCheckModalClose, setIsModalVisible } =
+        useModal();
 
     //회원정보수정 hook
     const { handleUpdate } = useUserUpdate(
@@ -321,23 +311,20 @@ export default function Mypage(): JSX.Element {
                                         mb: 2,
                                         boxShadow: 3,
                                     }}
-                                    onClick={handleDelUserOpen}
+                                    onClick={() =>
+                                        dispatch(
+                                            showModal({
+                                                isOpen: true,
+                                                content: '정말 탈퇴하시겠습니까?',
+                                                onConfirm: () => {
+                                                    handleDeleteUser();
+                                                },
+                                            }),
+                                        )
+                                    }
                                 >
                                     회원탈퇴
                                 </Button>
-                                {isDelUserModal && (
-                                    <Modal
-                                        visible={isDelUserModal}
-                                        onClose={handleDelUserClose}
-                                        buttons={[
-                                            { label: '확인', onClick: handleDeleteUser },
-                                            { label: '취소', onClick: handleDelUserClose },
-                                        ]}
-                                    >
-                                        <h2>회원탈퇴</h2>
-                                        <p>정말 탈퇴하시겠습니까? </p>
-                                    </Modal>
-                                )}
                             </>
                         ) : (
                             <>
@@ -361,23 +348,20 @@ export default function Mypage(): JSX.Element {
                                         mb: 2,
                                         boxShadow: 3,
                                     }}
-                                    onClick={handleDelUserOpen}
+                                    onClick={() =>
+                                        dispatch(
+                                            showModal({
+                                                isOpen: true,
+                                                content: '정말 탈퇴하시겠습니까?',
+                                                onConfirm: () => {
+                                                    handleDeleteUser();
+                                                },
+                                            }),
+                                        )
+                                    }
                                 >
                                     회원탈퇴
                                 </Button>
-                                {isDelUserModal && (
-                                    <Modal
-                                        visible={isDelUserModal}
-                                        onClose={handleDelUserClose}
-                                        buttons={[
-                                            { label: '확인', onClick: handleDeleteUser },
-                                            { label: '취소', onClick: handleDelUserClose },
-                                        ]}
-                                    >
-                                        <h2>회원탈퇴</h2>
-                                        <p>정말 탈퇴하시겠습니까?</p>
-                                    </Modal>
-                                )}
                                 {isModalVisible && (
                                     <Modal
                                         visible={isModalVisible}

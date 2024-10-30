@@ -115,12 +115,16 @@ export const userFormHandler = () => {
             }
         } catch (err: any) {
             if (err.response) {
+
                 console.log('login ', err.response.data);
+
                 if (err.response.data == '{email=이메일 형식이 아닙니다.}') {
                     dispatch(showModal({ isOpen: true, content: '올바른 이메일 형식을 입력하시기 바랍니다.', onConfirm: null }));
                 } else {
                     dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null }));
                 }
+
+
             } else {
                 console.log('로그인 에러: ', err);
             }
