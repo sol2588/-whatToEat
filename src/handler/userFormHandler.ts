@@ -120,6 +120,8 @@ export const userFormHandler = () => {
 
                 if (err.response.data == '{email=이메일 형식이 아닙니다.}') {
                     dispatch(showModal({ isOpen: true, content: '올바른 이메일 형식을 입력하시기 바랍니다.', onConfirm: null }));
+                } else if (err.response.data == '{password=비밀번호를 입력해주세요.}') {
+                    dispatch(showModal({ isOpen: true, content: '비밀번호를 입력해주세요.', onConfirm: null }));
                 } else {
                     dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null }));
                 }

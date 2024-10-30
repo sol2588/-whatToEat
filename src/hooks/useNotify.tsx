@@ -23,7 +23,7 @@ export default function useNotify() {
             const response = await instance.get(`/notify/toggle/${id}`);
             console.log('toggle', response);
             if (response.data.code == 'OK') {
-                console.log('how?');
+                fetchNotify();
             }
         } catch (err) {
             console.log(err);

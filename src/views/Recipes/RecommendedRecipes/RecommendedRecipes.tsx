@@ -15,7 +15,7 @@ interface RecipeProps {
     recipeLevel: string;
     recipeCookingTime: string;
     recipeThumbnail: string;
-    recipeRating: string;
+    recipeRating: number;
 }
 
 function RecommendedRecipes(): JSX.Element {
