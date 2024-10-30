@@ -30,19 +30,15 @@ export function SearchResult({ hasMore, recipes, isLoading, fetchRecipes, hasSea
     };
     const target = useObserver(handleObserver);
 
-    console.log(isLoading, hasSearched, hasMore, recipes.length);
-
     return (
         <>
             <RecipeList recipes={recipes} />
-            {!isLoading ? (
-                <div></div>
-            ) : !isLoading && hasSearched && recipes.length > 0 && hasMore ? (
+            {hasSearched && recipes.length > 0 && hasMore ? (
                 <div ref={target}>
                     <Loading />
                 </div>
             ) : (
-                <NoData />
+                !hasMore && <div>No more recipes to load.</div>
             )}
         </>
     );

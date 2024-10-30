@@ -2,6 +2,7 @@ import { useState, FormEvent, ChangeEvent } from 'react';
 import instance from '../utils/api/instance';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../redux/reducer/modalSlice';
+import useAuthToken from './useAuthToken';
 
 interface CreateHandlerProps {
     recipeId: number;
@@ -37,6 +38,7 @@ export default function useComments() {
     const [currentRate, setCurrentRate] = useState<number>(0);
     const [updateRate, setupdateRate] = useState<number>(0);
 
+    const token = useAuthToken();
     const dispatch = useDispatch();
     // get : recipeId
     const fetchCommentHandler = async (recipeId: string) => {
@@ -74,12 +76,12 @@ export default function useComments() {
             }
         } catch (err: any) {
             console.log('댓글작성 error: ', err);
-            if (createComment == '') {
+            if (!token) {
+                dispatch(showModal({ isOpen: true, content: '로그인 후 이용하시기 바랍니다.', onConfirm: null }));
+            } else if (createComment == '') {
                 dispatch(showModal({ isOpen: true, content: '코멘트는 1글자 이상 300글자 이하로 작성해주세요.', onConfirm: null }));
             } else if (currentRate == 0) {
                 dispatch(showModal({ isOpen: true, content: '평점은 1.0이상 입력해주세요', onConfirm: null }));
-            } else {
-                dispatch(showModal({ isOpen: true, content: '로그인 후 이용하시기 바랍니다.', onConfirm: null }));
             }
         }
     };

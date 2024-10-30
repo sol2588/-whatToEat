@@ -7,7 +7,6 @@ export default function useNotify() {
     const fetchNotify = async () => {
         try {
             const response = await instance.get('/notify/list');
-            console.log('notify list response', response);
             if (response.data.code == 'OK') {
                 setNotifyList(response.data.data);
             }
@@ -24,8 +23,7 @@ export default function useNotify() {
             const response = await instance.get(`/notify/toggle/${id}`);
             console.log('toggle', response);
             if (response.data.code == 'OK') {
-                // ! 데이터 내려주는 값 확인필요(id가 제거된 notiList주면 바로 setState로 갱신)
-                setNotifyList((prev) => (prev.includes(id) ? prev.filter((noti) => noti != id) : [...prev, id]));
+                console.log('how?');
             }
         } catch (err) {
             console.log(err);
