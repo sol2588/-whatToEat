@@ -19,7 +19,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '60min',
         recipeAuthor: '',
         recipeLevel: '상',
-        recipeRating: '4.5',
+        recipeRating: '4.5555',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
@@ -127,7 +127,7 @@ const fakeData: Props[] = [
         recipeCookingTime: '45min',
         recipeLevel: '상',
         recipeAuthor: '',
-        recipeRating: '1.5',
+        recipeRating: '1.5333',
         desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur quasi veritatis voluptatem voluptatibus provident modi rerum temporibus labore mollitia omnis sint, dicta blanditiis culpa, pariatur voluptatum unde? Tempore, incidunt eius!',
         ingredients: [
             { name: 'carrot', count: 1 },
