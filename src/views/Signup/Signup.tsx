@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../redux/reducer/modalSlice.ts';
 import colors from '../../styles/colors.ts';
+import { validateEmail } from '../../utils/validation/validation.ts';
 export default function Signup(): JSX.Element {
     const dispatch = useDispatch();
 
@@ -28,6 +29,16 @@ export default function Signup(): JSX.Element {
     } = userFormHandler();
 
     const handleCheckEmail = async () => {
+        if (!email) {
+            dispatch(showModal({ isOpen: true, content: '이메일을 입력해주시기 바랍니다', onConfirm: null }));
+            return;
+        }
+
+        const emailError = validateEmail(email);
+        if (emailError) {
+            dispatch(showModal({ isOpen: true, content: emailError, onConfirm: null }));
+            return;
+        }
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/email-check?email=${email}`);
             console.log(response);
@@ -53,6 +64,11 @@ export default function Signup(): JSX.Element {
     };
 
     const handleCheckNickname = async () => {
+        if (!nickname) {
+            dispatch(showModal({ isOpen: true, content: '닉네임을 입력해주시기 바랍니다', onConfirm: null }));
+            return;
+        }
+
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
             console.log('nickanme check, response( 204 ok 전): ', response);
