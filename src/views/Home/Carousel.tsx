@@ -92,8 +92,8 @@ const CarouselWrapper = styled.div`
     overflow: hidden;
 `;
 const BtnWrapper = styled.div`
-    margin-left: 10px;
-    width: 100px;
+    margin: 0 auto;
+    width: 350px;
     display: flex;
     justify-content: space-between;
 
