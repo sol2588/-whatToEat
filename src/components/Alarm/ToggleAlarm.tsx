@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import useNotify from '../../hooks/useNotify';
 import styled from 'styled-components';
 
@@ -6,13 +6,14 @@ export default function ToggleAlarm({ id }: { id: number }) {
     const [isOn, setIsOn] = useState(true);
     const { toggleNotify } = useNotify();
 
-    useEffect(() => {
+    const clickToggle = () => {
+        setIsOn((prev) => !prev);
         toggleNotify(id);
-    }, [id]);
+    };
 
     return (
         <>
-            <S_ToggleBtn onClick={() => setIsOn((prev) => !prev)} isOn={isOn}>
+            <S_ToggleBtn onClick={clickToggle} isOn={isOn}>
                 {isOn ? <S_MarkToggle isOn={isOn}>ON</S_MarkToggle> : <S_MarkToggle isOn={isOn}>OFF</S_MarkToggle>}
                 <S_Circle isOn={isOn} />
             </S_ToggleBtn>
