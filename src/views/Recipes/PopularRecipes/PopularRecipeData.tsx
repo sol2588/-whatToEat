@@ -14,7 +14,7 @@ export interface RecipeProps {
     recipeLevel: string;
     recipeCookingTime: string;
     recipeThumbnail: string;
-    recipeRating: string;
+    recipeRating: number;
 }
 
 export default function PopularRecipeData(): JSX.Element {
@@ -45,7 +45,6 @@ export default function PopularRecipeData(): JSX.Element {
                 setOffset((prev) => prev + 1);
                 if (recipes.length + newRecipes.length >= totalRecipes) {
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
-                    
                 }
             }
         } catch (err: any) {

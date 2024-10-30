@@ -4,7 +4,7 @@ import styled from 'styled-components';
 interface Props {
     time: string;
     level: string;
-    rate: string;
+    rate: number;
 }
 export default function RecipeMetaData({ time, level, rate }: Props): JSX.Element {
     return (

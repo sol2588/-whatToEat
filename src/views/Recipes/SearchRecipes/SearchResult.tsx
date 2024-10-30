@@ -10,7 +10,7 @@ interface RecipeProps {
     recipeLevel: string;
     recipeCookingTime: string;
     recipeThumbnail: string;
-    recipeRating: string;
+    recipeRating: number;
     ingredients: Record<string, string | number>[];
     instructions: Record<number | string, string>[];
 }

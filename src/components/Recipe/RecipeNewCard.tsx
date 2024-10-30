@@ -20,7 +20,7 @@ interface CardProps {
     recipeLevel: string;
     recipeCookingTime: string;
     recipeThumbnail: string;
-    recipeRating: string;
+    recipeRating: number;
 }
 
 export default function RecipeNewCard({
@@ -74,7 +74,11 @@ export default function RecipeNewCard({
 
                 <S_CardDescription>자세한 레시피를 확인하고 싶다면 클릭해주세요.</S_CardDescription>
                 <S_CardInfo>
-                    <RecipeMetaData time={recipeCookingTime} level={recipeLevel} rate={recipeRating} />
+                    <RecipeMetaData
+                        time={recipeCookingTime}
+                        level={recipeLevel}
+                        rate={recipeRating % 1 === 0 ? recipeRating : parseFloat(recipeRating.toFixed(2))}
+                    />
                 </S_CardInfo>
             </S_CardFigcaption>
         </S_CardFigure>

@@ -10,7 +10,6 @@ import { RootState } from '../../../redux/store/store';
 import { useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import { useRecipeDelete } from '../../../hooks/useRecipeDelete';
-import colors from '../../../styles/colors';
 import Loading from '../../../components/Loading/Loading';
 
 interface Props {
@@ -19,7 +18,7 @@ interface Props {
     recipeName: string;
     recipeLevel: string;
     recipeCookingTime: string;
-    recipeRating: string;
+    recipeRating: number;
     recipeThumbnail: string;
     recipeIngredients: Record<string, string>[];
     recipesManuals: Record<string, string>[];
@@ -166,8 +165,8 @@ const S_DetailBtnWrapper = styled.div`
     display: flex;
     gap: 16px;
     position: absolute;
-    top: 20%;
-    right: 20%;
+    top: 10%;
+    right: 5%;
 `;
 const S_DetailMainFigure = styled.figure`
     display: flex;
@@ -214,20 +213,19 @@ const S_DetailRecipeFigure = styled.figure<{ idx: number }>`
     text-align: center;
     img {
         display: block;
-        width: 50%;
+        width: 80%;
         height: 250px;
         object-fit: cover;
         border: 1px solid #a59d9d;
-        border-top-left-radius: ${({ idx }) => (idx % 2 === 0 ? '50%' : '5%')};
-        border-top-right-radius: ${({ idx }) => (idx % 2 === 0 ? '5%' : '50%')};
-        border-bottom-left-radius: ${({ idx }) => (idx % 2 === 0 ? '5%' : '50%')};
-        border-bottom-right-radius: ${({ idx }) => (idx % 2 === 0 ? '50%' : '5%')};
+        border-top-left-radius: ${({ idx }) => (idx % 2 === 0 ? '40%' : '5%')};
+        border-top-right-radius: ${({ idx }) => (idx % 2 === 0 ? '5%' : '40%')};
+        border-bottom-left-radius: ${({ idx }) => (idx % 2 === 0 ? '5%' : '40%')};
+        border-bottom-right-radius: ${({ idx }) => (idx % 2 === 0 ? '40%' : '5%')};
     }
 
-    @media screen and (max-width: 1400px) {
+    @media screen and (min-width: 1400px) {
         img {
-            width: 50%;
-            height: 200px;
+            height: auto;
         }
     }
 `;
@@ -283,14 +281,24 @@ const S_CartIcon = styled(BsCartCheckFill)`
 `;
 
 const S_StyledLink = styled(Link)`
-    text-decoration: none;
-    margin: 10px;
-    color: ${colors[300]};
-    font-size: 1.2rem;
+    margin-right: 8px;
+    font-size: 16px;
+    width: 50px;
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    background-color: #0173f6;
+    cursor: pointer;
 `;
 
 const S_StyledButton = styled(Button)`
-    color: ${colors[300]};
-    font-size: 1.2rem;
-    margin-left: 10px;
+    font-size: 16px;
+    width: 50px;
+    height: 30px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    background-color: #ff6b6b;
+    cursor: pointer;
 `;

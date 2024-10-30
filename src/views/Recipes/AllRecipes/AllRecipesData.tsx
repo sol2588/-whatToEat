@@ -8,7 +8,6 @@ import AllRecipes from './AllRecipes.js';
 import Navbar from '../../../components/Navbar/Navbar.js';
 import { RecipeLimitProps } from './AllRecipesView.js';
 import { convertLevel, convertTime } from '../../../common/convertFunc.js';
-import fakeData from '../../../fakeData/recipeFake.js';
 
 export interface RecipeProps {
     recipeId: number;
@@ -17,7 +16,7 @@ export interface RecipeProps {
     recipeLevel: string;
     recipeCookingTime: string;
     recipeThumbnail: string;
-    recipeRating: string;
+    recipeRating: number;
 }
 export default function AllRecipesData({ limit }: RecipeLimitProps) {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
@@ -53,12 +52,6 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
             }
         } catch (err: any) {
             console.log('전체레시피 error: ', err);
-            setRecipes(fakeData);
-            const totalRecipes = fakeData.length;
-            if (recipes.length >= totalRecipes) {
-                setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
-                return;
-            }
             dispatch(showModal({ isOpen: true, content: '전체 레시피 조회에 실패했습니다. 잠시 후 다시 시도해주세요.', onConfirm: null }));
         } finally {
             setIsLoading(false);
