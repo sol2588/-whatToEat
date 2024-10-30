@@ -249,8 +249,11 @@ export default function Mypage(): JSX.Element {
                                     ? myRecipes.map((myRecipe) => (
                                           <Grid item xs={12} sm={6} md={6} key={myRecipe.myRecipeId}>
                                               <S_MyFigure>
-                                                  {notifyList && <ToggleAlarm id={myRecipe.myRecipeId} />}
+                                                  <S_MyRecipeToggleButton>
+                                                      {notifyList && <ToggleAlarm id={myRecipe.myRecipeId} />}
+                                                  </S_MyRecipeToggleButton>
                                                   <S_button onClick={() => handleMyRecipeDelete(myRecipe.myRecipeId)}>X</S_button>
+
                                                   <S_thumbnail src={myRecipe.myRecipeThumbnail} alt="작성 레시피 이미지" />
                                                   <M_Linked to={`/recipes/${myRecipe.myRecipeId}`}>
                                                       <S_MyFigcaption>{myRecipe.myRecipeName}</S_MyFigcaption>
@@ -610,7 +613,11 @@ const S_thumbnail = styled.img`
     border-radius: 8px;
     flex-shrink: 0;
 `;
-
+const S_MyRecipeToggleButton = styled.span`
+    position: absolute;
+    top: 10px;
+    left: 10px;
+`;
 const S_button = styled.button`
     position: absolute;
     top: 10px;
