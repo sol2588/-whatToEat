@@ -38,7 +38,7 @@ export function SearchResult({ hasMore, recipes, isLoading, fetchRecipes, hasSea
                     <Loading />
                 </div>
             ) : (
-                !hasMore && <div>No more recipes to load.</div>
+                !hasMore && <NoData />
             )}
         </>
     );
