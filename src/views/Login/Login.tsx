@@ -68,7 +68,7 @@ export default function Login(): JSX.Element {
                         content: response.data.message,
                         onConfirm: () => {
                             dispatch(hideModal());
-                            () => navigate('/login');
+                            navigate('/login');
                         },
                     }),
                 );
