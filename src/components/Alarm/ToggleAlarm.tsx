@@ -2,8 +2,8 @@ import { useState } from 'react';
 import useNotify from '../../hooks/useNotify';
 import styled from 'styled-components';
 
-export default function ToggleAlarm({ id }: { id: number }) {
-    const [isOn, setIsOn] = useState(true);
+export default function ToggleAlarm({ id, lists }: { id: number; lists: number[] }) {
+    const [isOn, setIsOn] = useState(lists.some((list) => list == id));
     const { toggleNotify } = useNotify();
 
     const clickToggle = () => {
