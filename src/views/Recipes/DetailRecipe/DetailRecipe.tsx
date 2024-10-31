@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import axios from 'axios';
 import { RootState } from '../../../redux/store/store';
 import { useSelector } from 'react-redux';
-import { Button } from '@mui/material';
 import { useRecipeDelete } from '../../../hooks/useRecipeDelete';
 import Loading from '../../../components/Loading/Loading';
 
@@ -83,8 +82,10 @@ export default function DetailRecipe(): JSX.Element {
                     </S_DetailMainInfo>
                     {isAuthor && (
                         <S_DetailBtnWrapper>
-                            <S_StyledLink to={`/recipes/update/${id}`}>수정</S_StyledLink>
-                            <S_StyledButton onClick={() => handleMyRecipeDelete(Number(id))}>삭제</S_StyledButton>
+                            <Link to={`/recipes/update/${id}`}>
+                                <S_EditButton>수정</S_EditButton>
+                            </Link>
+                            <S_DeleteButton onClick={() => handleMyRecipeDelete(Number(id))}>삭제</S_DeleteButton>
                         </S_DetailBtnWrapper>
                     )}
                 </S_DetailMain>
@@ -280,7 +281,7 @@ const S_CartIcon = styled(BsCartCheckFill)`
     cursor: pointer;
 `;
 
-const S_StyledLink = styled(Link)`
+const S_EditButton = styled.button`
     margin-right: 8px;
     font-size: 16px;
     width: 50px;
@@ -292,7 +293,7 @@ const S_StyledLink = styled(Link)`
     cursor: pointer;
 `;
 
-const S_StyledButton = styled(Button)`
+const S_DeleteButton = styled.button`
     font-size: 16px;
     width: 50px;
     height: 30px;

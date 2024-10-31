@@ -64,7 +64,7 @@ export default function CommentEditBtn({
                       </>
                   )
                 : nickname == review.commentAuthor && (
-                      <div>
+                      <S_ButtonWrapper>
                           <S_EditBtn
                               onClick={() => {
                                   handleClickEdit({
@@ -85,7 +85,7 @@ export default function CommentEditBtn({
                                   삭제
                               </S_DeleteBtn>
                           )}
-                      </div>
+                      </S_ButtonWrapper>
                   )}
         </>
     );
@@ -102,10 +102,14 @@ const S_EditBtn = styled.button`
     background-color: #0173f6;
     cursor: pointer;
 `;
+const S_ButtonWrapper = styled.div`
+    display: flex;
+    align-items: center;
+`;
 const S_DeleteBtn = styled.button`
-    font-size: 16px;
-    width: 50px;
-    height: 30px;
+    font-size: 12px;
+    width: 40px;
+    height: 25px;
     border: none;
     border-radius: 8px;
     color: #fff;
@@ -113,9 +117,9 @@ const S_DeleteBtn = styled.button`
     cursor: pointer;
 `;
 const S_EditDoneBtn = styled.button`
-    font-size: 16px;
-    width: 50px;
-    height: 30px;
+    font-size: 12px;
+    width: 40px;
+    height: 25px;
     border: none;
     border-radius: 8px;
     color: #fff;
