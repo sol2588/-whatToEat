@@ -22,6 +22,7 @@ instance.interceptors.request.use(
             config.headers['access-token'] = `Bearer ${token}`;
         }
         config.headers['Content-Type'] = 'application/json';
+        console.log('!!!request 값 체크!!!!', config.data);
         return config;
     },
     // 요청 오류 발생 시 처리되는 코드
