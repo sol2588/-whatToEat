@@ -59,6 +59,7 @@ instance.interceptors.response.use(
                         isLoggedIn: true,
                         token: newAccessToken.accessToken,
                         nickname: newAccessToken.nickname,
+                        userId: newAccessToken.userId,
                         provider: parsedProvider,
                         expiredIn: Date.now() + duration,
                     }),
