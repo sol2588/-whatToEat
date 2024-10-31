@@ -106,7 +106,8 @@ export const userFormHandler = () => {
                 const userDispatchData = {
                     isLoggedIn: true,
                     token: accessToken,
-                    nickname: response.data.data,
+                    nickname: response.data.data[0],
+                    userId: response.data.data[1],
                     provider: 'system',
                     expiredIn: Date.now() + duration,
                 };

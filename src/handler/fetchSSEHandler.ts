@@ -119,6 +119,7 @@ export default function fetchSSEHandler() {
                             isLoggedIn: true,
                             token: newToken.accessToken,
                             nickname: newToken.nickname,
+                            userId: newToken.userId,
                             provider: parsedProvider,
                             expiredIn: Date.now() + duration,
                         }),
