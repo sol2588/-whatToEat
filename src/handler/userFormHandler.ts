@@ -96,7 +96,7 @@ export const userFormHandler = () => {
         else if (password == '') dispatch(showModal({ isOpen: true, content: '비밀번호를 입력해주시기 바랍니다.', onConfirm: null }));
 
         try {
-            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password });
+            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password }, { withCredentials: true });
             console.log('response', response);
             console.log('response.data :', response.data);
             if (response.data.code == 'OK') {
