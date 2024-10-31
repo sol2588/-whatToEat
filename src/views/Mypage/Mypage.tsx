@@ -250,7 +250,7 @@ export default function Mypage(): JSX.Element {
                                           <Grid item xs={12} sm={6} md={6} key={myRecipe.myRecipeId}>
                                               <S_MyFigure>
                                                   <S_MyRecipeToggleButton>
-                                                      {notifyList && <ToggleAlarm id={myRecipe.myRecipeId} />}
+                                                      {notifyList && <ToggleAlarm id={myRecipe.myRecipeId} lists={notifyList} />}
                                                   </S_MyRecipeToggleButton>
                                                   <S_button onClick={() => handleMyRecipeDelete(myRecipe.myRecipeId)}>X</S_button>
 

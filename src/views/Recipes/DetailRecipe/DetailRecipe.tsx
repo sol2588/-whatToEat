@@ -225,7 +225,7 @@ const S_DetailRecipeFigure = styled.figure<{ idx: number }>`
 
     @media screen and (min-width: 1400px) {
         img {
-            height: auto;
+            max-height: 300px;
         }
     }
 `;
