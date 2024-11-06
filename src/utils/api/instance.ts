@@ -3,6 +3,8 @@ import reissueToken from './reissueToken';
 import { store } from '../../redux/store/store';
 import { loginSuccess, logoutSuccess } from '../../redux/reducer/userSlice';
 
+let MAX_RETRY_COUNT = 0; // 최대 재시도 횟수
+
 // 기본설정 (기본적인 request, response 가로채서 공통로직 처리)
 const instance = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
@@ -14,15 +16,10 @@ instance.interceptors.request.use(
     // request 서버 전송 전 처리되는 코드로 config는 http 요청 시 사용할 설정과 데이터를 포함
     (config) => {
         const token = store.getState().user.value.token;
-        // if (!token) {
-        // return Promise.reject(new Error('no token'));
-        // return new Promise(() => {});
-        // }
         if (token) {
             config.headers['access-token'] = `Bearer ${token}`;
         }
         config.headers['Content-Type'] = 'application/json';
-        console.log('!!!request 값 체크!!!!', config.data);
         return config;
     },
     // 요청 오류 발생 시 처리되는 코드
@@ -34,18 +31,27 @@ instance.interceptors.request.use(
 
 // 응답 인터셉터
 instance.interceptors.response.use(
-    // 액세스토큰 유효 -> 응답 반환
+    // 액세스토큰 유효 -> 응답 반환 + 응답시도 횟수 초기화
     (response) => {
+        MAX_RETRY_COUNT = 0;
         console.log(response);
         return response;
     },
 
     // 에러 발생시
     async (err) => {
-        console.log('*instance err: *', err);
+        console.log(err);
+        MAX_RETRY_COUNT += 1;
+        if (MAX_RETRY_COUNT >= 3) {
+            console.log('최대 재시도 횟수 초과');
+            alert('서버와의 연결에 문제가 생겼습니다.');
+            // return Promise.reject(err);
+            return new Promise(() => {});
+        }
 
         // 1. 액세스 토큰이 만료되었을때 - 재발급 후 기존 요청 재요청
         if (err.response && err.response?.status == 401) {
+            MAX_RETRY_COUNT += 1;
             const newAccessToken = await reissueToken();
             if (newAccessToken) {
                 const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
