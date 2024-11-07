@@ -158,20 +158,20 @@ const S_HeaderButton = styled.div`
         font-size: 24px;
     }
 `;
-const S_AlaramBadge = styled.span`
-    width: 15px;
-    height: 15px;
-    padding: 2px 4px;
-    font-size: 10px;
-    background-color: red;
-    color: #fff;
-    border-radius: 50%;
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    @media screen and (min-width: 1500px) {
-        width: 20px;
-        height: 20px;
-        font-size: 16px;
-    }
-`;
+// const S_AlaramBadge = styled.span`
+//     width: 15px;
+//     height: 15px;
+//     padding: 2px 4px;
+//     font-size: 10px;
+//     background-color: red;
+//     color: #fff;
+//     border-radius: 50%;
+//     position: absolute;
+//     top: -5px;
+//     right: -5px;
+//     @media screen and (min-width: 1500px) {
+//         width: 20px;
+//         height: 20px;
+//         font-size: 16px;
+//     }
+// `;
