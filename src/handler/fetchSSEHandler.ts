@@ -110,7 +110,7 @@ export default function fetchSSEHandler() {
                 const newToken = await reissueToken();
 
                 if (newToken) {
-                    const duration = 10 * 60 * 1000; // 10분
+                    const duration = 1 * 60 * 1000; // 10분
                     const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
                     const userData = JSON.parse(parsedData.user);
                     const parsedProvider = userData.value.provider;
