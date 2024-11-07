@@ -1,5 +1,6 @@
 import { setupWorker } from 'msw/browser';
 import { recipeHandlers } from './recipeHandlers';
-import { loginHandler } from './loginHandler';
+import { userHandlers } from './userHandlers';
+import { scrapHandler } from './scrapHandler';
 
-export const worker = setupWorker(...recipeHandlers, ...loginHandler);
+export const worker = setupWorker(...recipeHandlers, ...userHandlers, ...scrapHandler);

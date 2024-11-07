@@ -57,8 +57,8 @@ instance.interceptors.response.use(
                 const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
                 const userData = JSON.parse(parsedData.user);
                 const parsedProvider = userData.value.provider;
-                const duration = 10 * 60 * 1000; // 10분
-                console.log('instace에서 err.뭐있니: ', err.response.data);
+                const duration = 1 * 60 * 1000; // 10분
+                console.log('instace: ', err.response.data);
 
                 store.dispatch(
                     loginSuccess({

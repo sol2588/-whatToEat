@@ -12,7 +12,7 @@ const generateAccessToken = async (email: string) => {
         .setIssuedAt()
         .setIssuer('urn:example:issuer')
         .setAudience('urn:example:audience')
-        .setExpirationTime('10m')
+        .setExpirationTime('1m')
         .sign(await secretKey);
 };
 

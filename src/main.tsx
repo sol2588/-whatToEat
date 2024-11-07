@@ -8,10 +8,7 @@ import App from './App.tsx';
 import './styles/App.css';
 import { worker } from './mocks/worker.ts';
 
-// 개발환경에서만 동작하는 경우
-if (import.meta.env.DEV) {
-    worker.start();
-}
+worker.start();
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

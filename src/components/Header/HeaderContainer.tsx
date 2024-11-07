@@ -4,11 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store/store';
 import { FiLogOut, FiUser, FiBell } from 'react-icons/fi';
 import { logoutSuccess } from '../../redux/reducer/userSlice';
-import Alarm from '../Alarm/Alarm';
+// import Alarm from '../Alarm/Alarm';
 import styled from 'styled-components';
 import logo from '../../assets/img/chef-logo.png';
 import colors from '../../styles/colors';
-import fetchSSEHandler from '../../handler/fetchSSEHandler';
+// import fetchSSEHandler from '../../handler/fetchSSEHandler';
 
 interface HeaderProps {
     menuItems: Record<string, string>[];
@@ -21,8 +21,8 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
     const isLogin = useSelector((state: RootState) => state.user.value.isLoggedIn);
     const dispatch = useDispatch();
 
-    const { alarmData, setAlarmData } = fetchSSEHandler();
-    const alarmCount = alarmData.length;
+    // const { alarmData, setAlarmData } = fetchSSEHandler();
+    // const alarmCount = alarmData.length;
     const handleShowAlarm = (e: MouseEvent) => {
         e.stopPropagation();
         setShowAlarm(!showAlarm);
@@ -41,7 +41,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                 <S_MenuList>
                     {menuItems.map((item, idx) => {
                         return (
-                            <S_MenuItem key={item.name + idx} active={isActive === item.name}>
+                            <S_MenuItem key={item.name + idx} $active={isActive === item.name}>
                                 <S_StyledLink to={item.to} onClick={() => handleClickMenu(item.name)}>
                                     {item.name}
                                 </S_StyledLink>
@@ -61,9 +61,9 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                             <S_BellIconWrapper>
                                 <S_BellIcon>
                                     <FiBell onClick={handleShowAlarm} />
-                                    <S_AlaramBadge>{alarmCount}</S_AlaramBadge>
+                                    {/* <S_AlaramBadge>{alarmCount}</S_AlaramBadge> */}
                                 </S_BellIcon>
-                                {showAlarm && <Alarm alarmData={alarmData} changeAlarmData={setAlarmData} />}
+                                {/* {showAlarm && <Alarm alarmData={alarmData} changeAlarmData={setAlarmData} />} */}
                             </S_BellIconWrapper>
                         </S_LoginUserList>
                     ) : (
@@ -108,13 +108,13 @@ const S_MenuList = styled.ul`
     display: flex;
     flex-grow: 1;
 `;
-const S_MenuItem = styled.li<{ active: boolean }>`
+const S_MenuItem = styled.li<{ $active: boolean }>`
     margin: 10px;
     cursor: pointer;
     &:hover {
         border-bottom: 3px solid ${colors[300]};
     }
-    border-bottom: ${(props) => (props.active ? `3px solid ${colors[300]}` : 'none')};
+    border-bottom: ${(props) => (props.$active ? `3px solid ${colors[300]}` : 'none')};
 `;
 const S_StyledLink = styled(Link)`
     text-decoration: none;
