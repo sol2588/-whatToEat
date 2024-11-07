@@ -6,6 +6,9 @@ import { store, persistor } from './redux/store/store.ts';
 import Globalmodal from './components/Modal/Globalmodal.tsx';
 import App from './App.tsx';
 import './styles/App.css';
+import { worker } from './mocks/worker.ts';
+
+worker.start();
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

@@ -13,6 +13,7 @@ export default function useHeaderLogic() {
         const currentMenu = menuItems.find((menu) => location.pathname == menu.to);
         if (currentMenu) {
             setIsActive(currentMenu.name);
+            localStorage.setItem('menu', currentMenu.name);
         } else {
             setIsActive('');
         }
@@ -20,8 +21,8 @@ export default function useHeaderLogic() {
 
     const handleClickMenu = (menu: string): void => {
         setIsActive(menu);
+        localStorage.setItem('menu', menu);
     };
-    console.log(isActive);
 
     const menuItems = [
         { name: 'Home', to: '/' },

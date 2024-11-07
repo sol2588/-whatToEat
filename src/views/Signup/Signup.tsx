@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { userFormHandler } from '../../handler/userFormHandler.ts';
-import { Button, Container, Box, Typography, TextField } from '@mui/material';
-import axios from 'axios';
-import styled from 'styled-components';
+import { validateEmail } from '../../utils/validation/validation.ts';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../redux/reducer/modalSlice.ts';
 import colors from '../../styles/colors.ts';
-import { validateEmail } from '../../utils/validation/validation.ts';
+import styled from 'styled-components';
+import axios from 'axios';
+import { Button, Container, Box, Typography, TextField } from '@mui/material';
+
 export default function Signup(): JSX.Element {
     const dispatch = useDispatch();
 
@@ -41,18 +42,13 @@ export default function Signup(): JSX.Element {
         }
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/email-check?email=${email}`);
-            console.log(response);
-            console.log('response.data :', response.data);
-
-            // 이메일 사용 가능 여부에 따라 처리
-
+            // 이메일 사용 가능 여부
             if (response.data.data === true) {
                 setEmailCheck(true);
             } else if (response.data.data === false) {
                 setEmailCheck(false);
+                setEmail('');
             }
-
-            // Redux를 통해 모달 띄우기
             dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
         } catch (err: any) {
             if (err.response) {
@@ -71,14 +67,12 @@ export default function Signup(): JSX.Element {
 
         try {
             const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
-            console.log('nickanme check, response( 204 ok 전): ', response);
-            console.log('nick response.data.data', response.data.data);
-
-            // 닉네임 사용 가능 여부에 따라 처리
+            // 닉네임 사용 가능 여부에
             if (response.data.data === true) {
                 setNicknameCheck(true);
             } else if (response.data.data === false) {
                 setNicknameCheck(false);
+                setNickname('');
             }
             dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
         } catch (err: any) {
@@ -89,11 +83,6 @@ export default function Signup(): JSX.Element {
             }
         }
     };
-
-    useEffect(() => {
-        console.log('emailCheck:', emailCheck);
-        console.log('nicknameCheck:', nicknameCheck);
-    }, [emailCheck, nicknameCheck]);
 
     return (
         <Container

@@ -4,12 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../redux/reducer/userSlice.ts';
 import { showModal } from '../redux/reducer/modalSlice.ts';
-import axios from 'axios';
+import instance from '../utils/api/instance.ts';
 
 export const userFormHandler = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordCheck, setPasswordCheck] = useState('');
@@ -79,30 +78,27 @@ export const userFormHandler = () => {
         }
 
         try {
-            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/signup`, { email, password, nickname });
+            const response: any = await instance.post(`/users/signup`, { email, password, nickname });
             if (response.status == 201) {
+                console.log(response);
                 dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: () => navigate('/login') })); // 회원가입 성공 modal
             }
         } catch (err: any) {
-            console.log('회원가입 에러: ', err);
-            dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null })); // 회원가입 실패 modal
+            console.log(err);
+            dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null }));
         }
     };
 
     // 로그인 버튼 눌렀을때 호출되는 함수
     const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (email == '') dispatch(showModal({ isOpen: true, content: '이메일을 입력해주시기 바랍니다.', onConfirm: null }));
-        else if (password == '') dispatch(showModal({ isOpen: true, content: '비밀번호를 입력해주시기 바랍니다.', onConfirm: null }));
 
         try {
-            const response: any = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, { email, password }, { withCredentials: true });
-            console.log('response', response);
-            console.log('response.data :', response.data);
+            const response: any = await instance.post(`/users/login`, { email, password });
             if (response.data.code == 'OK') {
                 const token = response.headers['access-token']; // 헤더 토큰 저장
                 const accessToken = token?.replace('Bearer ', ''); // Bearer 삭제 후 저장
-                const duration = 10 * 60 * 1000; // 10분
+                const duration = 1 * 60 * 1000; // 10분
                 const userDispatchData = {
                     isLoggedIn: true,
                     token: accessToken,
@@ -112,25 +108,12 @@ export const userFormHandler = () => {
                     expiredIn: Date.now() + duration,
                 };
                 dispatch(loginSuccess(userDispatchData));
-                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: () => navigate('/') })); // 로그인 성공 modal
+                navigate('/');
+            } else {
+                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
             }
         } catch (err: any) {
-            if (err.response) {
-
-                console.log('login ', err.response.data);
-
-                if (err.response.data == '{email=이메일 형식이 아닙니다.}') {
-                    dispatch(showModal({ isOpen: true, content: '올바른 이메일 형식을 입력하시기 바랍니다.', onConfirm: null }));
-                } else if (err.response.data == '{password=비밀번호를 입력해주세요.}') {
-                    dispatch(showModal({ isOpen: true, content: '비밀번호를 입력해주세요.', onConfirm: null }));
-                } else {
-                    dispatch(showModal({ isOpen: true, content: err.response.data, onConfirm: null }));
-                }
-
-
-            } else {
-                console.log('로그인 에러: ', err);
-            }
+            console.log(err);
         }
     };
 

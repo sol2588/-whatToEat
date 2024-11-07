@@ -7,7 +7,7 @@ import all from '../../assets/img/all.jpeg';
 import createRecipe from '../../assets/img/create.jpeg';
 import recommend from '../../assets/img/recommend.jpeg';
 import bookmark from '../../assets/img/bookmark.jpeg';
-import Visited from '../../components/Visited/Visited';
+// import Visited from '../../components/Visited/Visited';
 
 export default function Home(): JSX.Element {
     const carouselLists = [
@@ -39,9 +39,7 @@ export default function Home(): JSX.Element {
                     <h2>오늘의 레시피 추천</h2>
                     <p>아침, 점심, 저녁 메뉴를 추천받아보세요.</p>
                     <StyledLink to="/recipes/recommended">추천 레시피</StyledLink>
-                    <VisitedContainer>
-                        <Visited />
-                    </VisitedContainer>
+                    <VisitedContainer>{/*<Visited /> */}</VisitedContainer>
                 </HomeContent>
                 <Carousel carouselLists={carouselLists} />
             </HomeMain>
