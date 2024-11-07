@@ -1,71 +1,79 @@
+import styled from 'styled-components';
 import { HiListBullet, HiOutlinePencilSquare, HiOutlineHeart } from 'react-icons/hi2';
 import { Link } from 'react-router-dom';
-import styled from 'styled-components';
 
-export default function NavBar() {
+export default function Navbar() {
     return (
         <S_BarContainer>
-            <S_BarWrapper>
-                <S_BarList>
-                    <S_BarItem>
-                        <HiListBullet />
-                        <Link to="/recipes/create">레시피 작성</Link>
-                    </S_BarItem>
-                    <S_BarItem>
-                        <HiOutlineHeart />
-                        <Link to="/mypage">찜목록 보기</Link>
-                    </S_BarItem>
-                    <S_BarItem>
-                        <HiOutlinePencilSquare />
-                        <Link to="/mypage">작성레시피 보기</Link>
-                    </S_BarItem>
-                </S_BarList>
-            </S_BarWrapper>
+            <S_BarHeader>
+                <h5>Menus</h5>
+            </S_BarHeader>
+            <S_BarList>
+                <S_BarItem>
+                    <HiOutlinePencilSquare />
+                    <Link to="/recipes/create">레시피 작성</Link>
+                </S_BarItem>
+                <S_BarItem>
+                    <HiOutlineHeart />
+                    <Link to="/mypage">찜목록 보기</Link>
+                </S_BarItem>
+                <S_BarItem>
+                    <HiListBullet />
+                    <Link to="/mypage">레시피 보기</Link>
+                </S_BarItem>
+            </S_BarList>
         </S_BarContainer>
     );
 }
 
 const S_BarContainer = styled.div`
-    width: 35%;
-    position: fixed;
-    top: 15%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    @media screen and (min-width: 1249px) {
-        top: 12%;
+    padding: 30px;
+`;
+const S_BarHeader = styled.div`
+    width: 100%;
+    font-weight: 600;
+    font-size: 18px;
+    color: #fff;
+    background-color: #1f2532;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    h5 {
+        padding: 5px 15px;
     }
 `;
-const S_BarWrapper = styled.div`
-    padding: 14px 12px;
-    border-radius: 8px;
-    backdrop-filter: blur(24px);
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    background-color: rgba(250, 250, 250, 0.4);
-    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2);
-`;
-
 const S_BarList = styled.ul`
     list-style: none;
+    padding-bottom: 10px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-around;
 `;
 const S_BarItem = styled.li`
-    margin: 0px 10px;
+    padding-top: 8px;
+    margin-top: 8px;
+    position: relative;
     display: flex;
     align-items: center;
-
-    &:hover,
-    a:hover {
+    &:hover {
         color: #0288d1;
     }
-
+    &::after {
+        content: '';
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        border-bottom: 0.8px solid #656565;
+    }
     a {
         margin-left: 5px;
         text-decoration: none;
         color: #1f2532;
-        @media screen and (min-width: 1500px) {
-            font-size: 18px;
-        }
+    }
+    a:hover {
+        color: #0288d1;
     }
 `;

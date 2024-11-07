@@ -1,14 +1,13 @@
 import { useState, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import RecipeMetaData from './RecipeMetaData';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
-import colors from '../../styles/colors';
 import useAuthToken from '../../hooks/useAuthToken';
-import instance from '../../utils/api/instance';
-import useHeaderLogic from '../../hooks/useHeaderLogic';
-import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
 import { showModal } from '../../redux/reducer/modalSlice';
+import instance from '../../utils/api/instance';
+import colors from '../../styles/colors';
+import styled from 'styled-components';
 
 // ! main 페이지가 아닌 all isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, all, recipeList, recipeCard인듯
 
@@ -34,8 +33,7 @@ export default function RecipeNewCard({
     const [marked, setMarked] = useState<boolean>(false);
     const dispatch = useDispatch();
     const token = useAuthToken();
-
-    const { isActive } = useHeaderLogic();
+    const menu = localStorage.getItem('menu');
     const handleClickBookmark = async (e: MouseEvent) => {
         e.stopPropagation();
         try {
@@ -66,13 +64,15 @@ export default function RecipeNewCard({
                 <S_BookmarkIcons onClick={handleClickBookmark} mark={marked}>
                     {marked ? <FaBookmark /> : <FaRegBookmark />}
                 </S_BookmarkIcons>
-                <S_CardCategory>{isActive} 레시피입니다.</S_CardCategory>
+                <S_CardCategory>{menu} 레시피입니다.</S_CardCategory>
 
                 <S_Link to={`/recipes/${recipeId}`}>
                     <S_CardTitle>{recipeName}</S_CardTitle>
                 </S_Link>
 
-                <S_CardDescription>자세한 레시피를 확인하고 싶다면 클릭해주세요.</S_CardDescription>
+                <S_CardDescription>
+                    <S_Link to={`/recipes/${recipeId}`}>자세한 레시피를 확인하기.</S_Link>
+                </S_CardDescription>
                 <S_CardInfo>
                     <RecipeMetaData
                         time={recipeCookingTime}
@@ -102,6 +102,13 @@ const S_CardImg = styled.img`
     height: 260px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    object-fit: cover;
+    @media screen and (min-width: 1024px) and (max-width: 1440px) {
+        height: 200px;
+    }
+    @media screen and (min-width: 769px) and (max-width: 1024px) {
+        height: 200px;
+    }
 `;
 
 const S_CardFigcaption = styled.figcaption`

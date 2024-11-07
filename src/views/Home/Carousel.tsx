@@ -60,7 +60,7 @@ export default function Carousel({ carouselLists }: CarouselProps) {
             <CarouselWrapper>
                 <CarouselList ref={carouselRef}>
                     {makeNewList().map((item: ImgProps, idx: number) => (
-                        <CarouselItem key={idx} active={idx == currIdx}>
+                        <CarouselItem key={idx} $active={idx == currIdx}>
                             <img src={item.url} />
                             <p>{item.content}</p>
                         </CarouselItem>
@@ -115,15 +115,15 @@ const CarouselList = styled.ul`
     }
 `;
 
-const CarouselItem = styled.li<{ active: boolean }>`
+const CarouselItem = styled.li<{ $active: boolean }>`
     display: flex;
     flex-direction: column;
     width: 33%;
     height: 80%;
     border-radius: 16px;
     overflow: hidden;
-    filter: ${(props) => (props.active ? 'brightness(100%)' : 'brightness(50%)')};
-    transform: ${(props) => (props.active ? 'scale(1)' : 'scale(0.9)')};
+    filter: ${(props) => (props.$active ? 'brightness(100%)' : 'brightness(50%)')};
+    transform: ${(props) => (props.$active ? 'scale(1)' : 'scale(0.9)')};
     transition: all ease 0.9s;
     img {
         width: 310px;

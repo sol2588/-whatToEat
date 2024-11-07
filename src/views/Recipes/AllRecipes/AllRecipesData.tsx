@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import instance from '../../../utils/api/instance.js';
-import { showModal } from '../../../redux/reducer/modalSlice.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import AllRecipes from './AllRecipes.js';
 import Navbar from '../../../components/Navbar/Navbar.js';
@@ -23,7 +21,6 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
     const [offset, setOffset] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [hasMore, setHasMore] = useState<boolean>(true);
-    const dispatch = useDispatch();
     const { pathname } = useLocation();
 
     useEffect(() => {
@@ -34,7 +31,8 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
         if (isLoading && !hasMore) return;
         setIsLoading(true);
         try {
-            const response = await instance.get(`/recipes?page=${offset}&size=15`);
+            const response = await instance.get(`/recipes?page=${offset}&size=5`);
+            console.log(response);
 
             if (response.data.code == 'OK') {
                 const totalRecipes = response.data.data.totalRecipes;
@@ -52,7 +50,6 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
             }
         } catch (err: any) {
             console.log('전체레시피 error: ', err);
-            dispatch(showModal({ isOpen: true, content: '전체 레시피 조회에 실패했습니다. 잠시 후 다시 시도해주세요.', onConfirm: null }));
         } finally {
             setIsLoading(false);
         }
