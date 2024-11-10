@@ -4,10 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store/store';
 import { FiLogOut, FiUser, FiBell } from 'react-icons/fi';
 import { logoutSuccess } from '../../redux/reducer/userSlice';
+import { useNavigate } from 'react-router-dom';
 // import Alarm from '../Alarm/Alarm';
 import styled from 'styled-components';
 import logo from '../../assets/img/chef-logo.png';
 import colors from '../../styles/colors';
+import axios from 'axios';
 // import fetchSSEHandler from '../../handler/fetchSSEHandler';
 
 interface HeaderProps {
@@ -20,6 +22,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
     const [showAlarm, setShowAlarm] = useState<boolean>(false);
     const isLogin = useSelector((state: RootState) => state.user.value.isLoggedIn);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     // const { alarmData, setAlarmData } = fetchSSEHandler();
     // const alarmCount = alarmData.length;
@@ -28,8 +31,16 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
         setShowAlarm(!showAlarm);
     };
 
-    const logout = () => {
-        dispatch(logoutSuccess());
+    const handleLogout = async () => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/logout`);
+            if (response.data.code == 'OK') {
+                dispatch(logoutSuccess());
+                navigate('/login');
+            }
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
@@ -53,7 +64,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                     {isLogin ? (
                         <S_LoginUserList>
                             <S_StyledLink to="/">
-                                <FiLogOut onClick={logout} />
+                                <FiLogOut onClick={handleLogout} />
                             </S_StyledLink>
                             <S_StyledLink to="/mypage">
                                 <FiUser />

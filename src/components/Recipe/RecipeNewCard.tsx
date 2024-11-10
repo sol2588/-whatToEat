@@ -8,19 +8,9 @@ import { showModal } from '../../redux/reducer/modalSlice';
 import instance from '../../utils/api/instance';
 import colors from '../../styles/colors';
 import styled from 'styled-components';
+import { RecipeProps } from '../../types/recipe';
 
 // ! main 페이지가 아닌 all isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, all, recipeList, recipeCard인듯
-
-interface CardProps {
-    page?: string;
-    recipeId: number;
-    recipeName: string;
-    recipeAuthor: string;
-    recipeLevel: string;
-    recipeCookingTime: string;
-    recipeThumbnail: string;
-    recipeRating: number;
-}
 
 export default function RecipeNewCard({
     recipeId,
@@ -29,7 +19,7 @@ export default function RecipeNewCard({
     recipeCookingTime,
     recipeLevel,
     recipeRating,
-}: CardProps): JSX.Element {
+}: RecipeProps): JSX.Element {
     const [marked, setMarked] = useState<boolean>(false);
     const dispatch = useDispatch();
     const token = useAuthToken();
@@ -37,11 +27,12 @@ export default function RecipeNewCard({
     const handleClickBookmark = async (e: MouseEvent) => {
         e.stopPropagation();
         try {
+            const response = await instance.post(`/recipes/${recipeId}/scrap`);
+
             if (!token) {
-                window.location.href = '/login';
+                // window.location.href = '/login'; // msw 사용시 불필요
                 return;
             }
-            const response = await instance.post(`/recipes/${recipeId}/scrap`);
 
             if (response.data.code == 'OK') {
                 if (response.data.data == 'CANCELED') {

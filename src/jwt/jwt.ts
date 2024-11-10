@@ -35,7 +35,6 @@ const verifyToken = async (token: string) => {
             issuer: 'urn:example:issuer',
             audience: 'urn:example:audience',
         });
-        console.log('payload: ', payload);
         return payload;
     } catch (err) {
         console.log(err);

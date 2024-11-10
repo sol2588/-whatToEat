@@ -5,7 +5,7 @@ interface UserActionState {
     isLoggedIn: boolean;
     token: string | null;
     nickname: string | null;
-    userId: number | string | null;
+    userId: string | null;
     provider: string | null;
     expiredIn: number | null;
 }

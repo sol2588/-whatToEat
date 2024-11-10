@@ -6,16 +6,8 @@ import AllRecipes from './AllRecipes.js';
 import Navbar from '../../../components/Navbar/Navbar.js';
 import { RecipeLimitProps } from './AllRecipesView.js';
 import { convertLevel, convertTime } from '../../../common/convertFunc.js';
+import { RecipeProps } from '../PopularRecipes/PopularRecipeData.js';
 
-export interface RecipeProps {
-    recipeId: number;
-    recipeName: string;
-    recipeAuthor: string;
-    recipeLevel: string;
-    recipeCookingTime: string;
-    recipeThumbnail: string;
-    recipeRating: number;
-}
 export default function AllRecipesData({ limit }: RecipeLimitProps) {
     const [recipes, setRecipes] = useState<RecipeProps[]>([]);
     const [offset, setOffset] = useState<number>(0);

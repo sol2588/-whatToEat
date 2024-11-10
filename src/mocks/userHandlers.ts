@@ -1,7 +1,6 @@
 import { generateAccessToken, generateRefreshToken, verifyToken } from '../jwt/jwt';
 import { http, HttpResponse } from 'msw';
 import { store } from '../redux/store/store';
-import { loginSuccess } from '../redux/reducer/userSlice';
 
 interface User {
     email: string;
@@ -47,7 +46,7 @@ export const userHandlers = [
                 { code: 'OK', data: [userInfo?.nickname, userInfo?.email] },
                 {
                     headers: {
-                        'Set-Cookie': `refreshToken=${refreshToken}`,
+                        'Set-Cookie': `refresh=${refreshToken}`,
                         'access-token': `Bearer ${token}`,
                     },
                 },
@@ -57,15 +56,26 @@ export const userHandlers = [
         }
     }),
 
-    // 액세스토큰 재발급
-    http.get(`${import.meta.env.VITE_BASE_URL}/auth/token/refresh`, async ({ request, cookies }) => {
-        console.log('ㅇ여기로 들어왔는지가 가장중요해');
-        try {
-            const userId = (await request.json()) as string;
-            const token = store.getState().user.value.token;
-            const refreshToken = cookies.refreshToken;
-            console.log(userId);
+    // 로그아웃
+    http.get(`${import.meta.env.VITE_BASE_URL}/logout`, () => {
+        return HttpResponse.json(
+            { code: 'OK', message: '로그아웃 성공' },
+            {
+                headers: {
+                    'Set-Cookie': `refresh=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`,
+                },
+            },
+        );
+    }),
 
+    // 액세스토큰 재발급
+    http.get(`${import.meta.env.VITE_BASE_URL}/auth/token/refresh`, async ({ cookies }) => {
+        try {
+            const token = store.getState().user.value.token;
+            const refreshToken = cookies.refresh;
+            const nickname = store.getState().user.value.nickname;
+            const userId = store.getState().user.value.userId;
+            console.log(refreshToken);
             if (!token) {
                 window.location.href = '/login';
                 return HttpResponse.json({ message: '로그인 후 이용하시기 바랍니다.' });
@@ -76,27 +86,11 @@ export const userHandlers = [
             }
 
             const verified = await verifyToken(token);
-            console.log('verifyed', verified);
-            if (!verified) {
-                const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
-                const userData = JSON.parse(parsedData.user);
-                const parsedNickname = userData.value.nickname;
-                const parsedProvider = userData.value.provider;
-                const duration = 1 * 60 * 1000; // 10분
+            if (!verified && userId) {
                 const newAccessToken = await generateAccessToken(userId);
-                store.dispatch(
-                    loginSuccess({
-                        isLoggedIn: true,
-                        token: newAccessToken,
-                        nickname: parsedNickname,
-                        userId: userId,
-                        provider: parsedProvider,
-                        expiredIn: Date.now() + duration,
-                    }),
-                );
-                console.log('new!!!!', newAccessToken);
+
                 return HttpResponse.json(
-                    { code: 'OK', data: [, userId] },
+                    { code: 'OK', data: [nickname, userId] },
                     {
                         headers: {
                             'access-token': `Bearer ${newAccessToken}`,
@@ -105,7 +99,6 @@ export const userHandlers = [
                 );
             }
         } catch (err) {
-            console.log('!!!!!!!!!!!!!!!!!!!!!!!');
             console.log(err);
         }
     }),
