@@ -12,7 +12,7 @@ export default function AuthKaKao() {
         const params = new URLSearchParams(window.location.search);
         const token = params.get('access-token');
         const nickname = params.get('nickname');
-        const userId = Number(params.get('userId'));
+        const userId = params.get('userId');
         const provider = params.get('provider');
         const duration = 10 * 60 * 1000; // 10분
 

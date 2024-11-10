@@ -2,33 +2,45 @@ import { http, HttpResponse } from 'msw';
 import { store } from '../redux/store/store';
 import { showModal } from '../redux/reducer/modalSlice';
 
-const scrapped: string[] = [];
+let scrapped: string[] = [];
 
 export const scrapHandler = [
     http.post(`${import.meta.env.VITE_BASE_URL}/recipes/:recipeId/scrap`, async ({ cookies, params }) => {
         try {
-            const { recipeId } = params;
+            const { recipeId } = params as { recipeId: string };
             const token = store.getState().user.value.token;
-            const refreshToken = cookies.refreshToken;
-            console.log('아무거나');
+            const refreshToken = cookies.refresh;
 
             if (!refreshToken) {
-                store.dispatch(showModal({ isOpen: true, content: '로그인 후 이용하시기 바랍니다.', onConfirm: null }));
-                window.location.href = '/login';
+                store.dispatch(
+                    showModal({
+                        isOpen: true,
+                        content: `로그인 후 이용하시기 바랍니다.`,
+                        onConfirm: () => {
+                            window.location.href = '/login';
+                        },
+                    }),
+                );
                 return;
             }
-            if (!token) {
-                return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
+
+            if (token) {
+                const expriedToken = store.getState().user.value.expiredIn! < Date.now();
+                if (expriedToken) {
+                    return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
+                }
             }
             const existRecipe = scrapped.some((scrap) => scrap == recipeId);
 
             if (existRecipe) {
+                scrapped = scrapped.filter((scrap) => scrap != recipeId);
                 return HttpResponse.json({
                     code: 'OK',
                     data: 'CANCELED',
                     message: '찜하기를 취소하였습니다.',
                 });
             } else {
+                scrapped.push(recipeId);
                 return HttpResponse.json({
                     code: 'OK',
                     data: 'SCRAPED',
@@ -36,7 +48,7 @@ export const scrapHandler = [
                 });
             }
         } catch (err) {
-            console.log('스크랩 에러 발생');
+            console.log('스크랩', err);
         }
     }),
 ];

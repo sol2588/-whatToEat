@@ -1,7 +1,7 @@
 import RecipeList from '../../../components/Recipe/RecipeList.js';
 import useObserver from '../../../hooks/useObserver.js';
 import Loading from '../../../components/Loading/Loading.js';
-import { RecipeProps } from './AllRecipesData.js';
+import { RecipeProps } from '../../../types/recipe.js';
 import NoData from '../../../components/Loading/NoData.js';
 
 interface RecipeLimitProps {
