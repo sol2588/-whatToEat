@@ -65,11 +65,7 @@ export default function RecipeNewCard({
                     <S_Link to={`/recipes/${recipeId}`}>자세한 레시피를 확인하기.</S_Link>
                 </S_CardDescription>
                 <S_CardInfo>
-                    <RecipeMetaData
-                        time={recipeCookingTime}
-                        level={recipeLevel}
-                        rate={recipeRating % 1 === 0 ? recipeRating : parseFloat(recipeRating.toFixed(2))}
-                    />
+                    <RecipeMetaData time={recipeCookingTime} level={recipeLevel} rate={recipeRating} />
                 </S_CardInfo>
             </S_CardFigcaption>
         </S_CardFigure>

@@ -1,4 +1,6 @@
-const recipeManuals = [
+import { ManualsProps } from '../../types/recipe';
+
+const recipeManuals: ManualsProps[] = [
     {
         mNum: 1,
         mContent: '오트밀 1컵을 전자렌지 가능한 밥그릇에 부어주고 설탕이나 꿀을 1스푼 넣고 소금과 후추 한꼬집씩을 넣고 골고루 섞어주세요',

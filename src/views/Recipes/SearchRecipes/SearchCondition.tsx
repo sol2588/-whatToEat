@@ -2,14 +2,13 @@ import { useState, useEffect, ChangeEvent, FormEvent, KeyboardEvent, MouseEvent 
 import { SearchBox } from './SearchBox';
 import { SearchResult } from './SearchResult';
 import { levelOptions, timeOption } from '../../../common/options';
+import { convertLevel, convertTime } from '../../../common/convertFunc.js';
 import { useDispatch } from 'react-redux';
 import { showModal } from '../../../redux/reducer/modalSlice';
 import colors from '../../../styles/colors';
 import styled from 'styled-components';
 import instance from '../../../utils/api/instance';
 import qs from 'qs';
-import Navbar from '../../../components/Navbar/Navbar.js';
-import { convertLevel, convertTime } from '../../../common/convertFunc.js';
 
 export interface RecipeProps {
     recipeId: number;
@@ -86,27 +85,22 @@ export default function SearchCondition(): JSX.Element {
                     recipeLevel: convertLevel(recipe.recipeLevel),
                     recipeCookingTime: convertTime(recipe.recipeCookingTime),
                 }));
-                console.log(totalRecipes);
+
                 setRecipes((prev) => [...prev, ...newRecipes]);
                 setOffset((prev) => prev + 1);
                 setHasSearched(true);
-                dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
 
                 if (recipes.length + newRecipes.length >= totalRecipes) {
                     setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
                 }
-            } else {
-                dispatch(showModal({ isOpen: true, content: '재료명을 다시 입력해주시기 바랍니다.', onConfirm: null }));
             }
         } catch (err) {
             console.log('레시피 검색 error : ', err);
-            dispatch(showModal({ isOpen: true, content: '일치하는 레시피가 없습니다. 다시 시도해주세요.', onConfirm: null }));
+            dispatch(showModal({ isOpen: true, content: '일치하는 레시피가 없습니다. 다른 조건으로 검색해주시기 바랍니다.', onConfirm: null }));
         } finally {
             setIsLoading(false);
         }
     };
-    console.log(ingredientsList);
-    console.log(level);
 
     // 재료 입력후 enter 키를 누른 경우 handleSumbit 호출
     const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
@@ -168,7 +162,6 @@ export default function SearchCondition(): JSX.Element {
         setHasSearched(false);
         setHasMore(true);
     };
-    console.log(isLoading, hasMore, hasSearched);
 
     return (
         <S_ConditionContainer>
@@ -214,7 +207,6 @@ export default function SearchCondition(): JSX.Element {
             </S_ConditionList>
 
             <SearchResult hasMore={hasMore} recipes={recipes} isLoading={isLoading} hasSearched={hasSearched} fetchRecipes={fetchRecipes} />
-            <Navbar />
         </S_ConditionContainer>
     );
 }
@@ -321,8 +313,6 @@ const S_SelectBtn = styled.button<{ active: boolean }>`
     cursor: pointer;
 
     &:hover {
-        color: #fff;
-        background-color: ${colors[200]};
         border: 1px solid ${colors[200]};
     }
 `;
