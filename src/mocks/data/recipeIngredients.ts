@@ -1,4 +1,6 @@
-const recipeIngredients = [
+import { IngredientsProps } from '../../types/recipe';
+
+const recipeIngredients: IngredientsProps[] = [
     {
         num: 1,
         recipeName: '오트밀 찌거나 구운 귀리',

@@ -4,12 +4,12 @@ import { BsCartCheckFill } from 'react-icons/bs';
 import RecipeMetaData from '../../../components/Recipe/RecipeMetaData';
 import CommentsView from '../../Comments/CommentsView';
 import { convertLevel, convertTime } from '../../../common/convertFunc';
-import styled from 'styled-components';
-import axios from 'axios';
 import { RootState } from '../../../redux/store/store';
 import { useSelector } from 'react-redux';
 import { useRecipeDelete } from '../../../hooks/useRecipeDelete';
 import Loading from '../../../components/Loading/Loading';
+import instance from '../../../utils/api/instance';
+import styled from 'styled-components';
 
 interface Props {
     recipeId: number;
@@ -26,7 +26,7 @@ interface Props {
 export default function DetailRecipe(): JSX.Element {
     const { id } = useParams();
     const [recipe, setRecipe] = useState<Props | null>(null);
-    const [message, setMessage] = useState<string>();
+
     //게시물삭제
     const { handleMyRecipeDelete } = useRecipeDelete();
 
@@ -36,7 +36,7 @@ export default function DetailRecipe(): JSX.Element {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
+                const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
                 if (response.data.code === 'OK') {
                     const data = response.data.data;
                     const convertData = {
@@ -46,11 +46,9 @@ export default function DetailRecipe(): JSX.Element {
                     };
 
                     setRecipe(convertData);
-                    setMessage(response.data.message);
                 }
             } catch (err: any) {
                 console.log(err);
-                setMessage(err.response.data.message);
             }
         };
         fetchData();
@@ -58,10 +56,6 @@ export default function DetailRecipe(): JSX.Element {
 
     // recipeAuthor와 loggedNickname이 일치할 경우 수정, 삭제 버튼을 보여줌
     const isAuthor = recipe && recipe.recipeAuthor === nickname;
-    console.log('loggedNickname:', nickname);
-    console.log('recipeAuthor :', recipe && recipe.recipeAuthor);
-    console.log('isAuthor :', isAuthor);
-    console.log('detailPage message:', message);
 
     if (!recipe) {
         return <Loading />;

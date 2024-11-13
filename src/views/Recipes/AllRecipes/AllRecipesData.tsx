@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import instance from '../../../utils/api/instance.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import AllRecipes from './AllRecipes.js';
-import Navbar from '../../../components/Navbar/Navbar.js';
 import { RecipeLimitProps } from './AllRecipesView.js';
 import { convertLevel, convertTime } from '../../../common/convertFunc.js';
 import { RecipeProps } from '../PopularRecipes/PopularRecipeData.js';
@@ -23,7 +22,7 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
         if (isLoading && !hasMore) return;
         setIsLoading(true);
         try {
-            const response = await instance.get(`/recipes?page=${offset}&size=5`);
+            const response = await instance.get(`/recipes?page=${offset}&size=15`);
             console.log(response);
 
             if (response.data.code == 'OK') {
@@ -50,7 +49,6 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
     return (
         <S_RecipeContainer>
             <AllRecipes hasMore={hasMore} limit={limit} recipes={recipes} fetchRecipes={fetchRecipes} isLoading={isLoading} />
-            {pathname != '/' && <Navbar />}
         </S_RecipeContainer>
     );
 }
