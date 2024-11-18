@@ -1,18 +1,14 @@
 import { FormEvent, ChangeEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import { MdStar, MdStarBorder } from 'react-icons/md';
+import { CommentCreateType } from '../../types/comment';
 import styled from 'styled-components';
 import colors from '../../styles/colors';
 
-interface CreateHandlerProps {
-    recipeId: number;
-    comment: string;
-    rating: number;
-}
 interface CreateProps {
     createdRate: number;
     createdComment: string;
-    createCommentHandler: (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CreateHandlerProps) => Promise<void>;
+    createCommentHandler: (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CommentCreateType) => Promise<void>;
     handleCreateComment: (e: ChangeEvent<HTMLTextAreaElement>) => void;
     handleCreateRate: (rate: number) => void;
 }

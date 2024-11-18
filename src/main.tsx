@@ -8,7 +8,7 @@ import App from './App.tsx';
 import './styles/App.css';
 import { worker } from './mocks/worker.ts';
 
-worker.start();
+worker.start({ onUnhandledRequest: 'bypass' });
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>

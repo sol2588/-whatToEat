@@ -1,30 +1,18 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store/store';
+import { CommentsType, CommentUpdateType } from '../../types/comment';
 import styled from 'styled-components';
 
-interface Props {
-    commentAuthor: string;
-    commentContent: string;
-    commentId: number;
-    rating: number;
-    createdAt: string;
-    updatedAt: string;
-}
-interface UpdateProps {
-    commentId: number;
-    comment: string;
-    rating: number;
-}
 interface EditBtnProps {
-    recipeId?: string;
-    review: Props;
+    recipeId?: number;
+    review: CommentsType;
     isEditing: boolean;
     commentId?: number;
     updateRate: number;
     updateComment: string;
     handleClickEdit: ({ comments, commentId, commentRate }: { comments: string; commentId: number; commentRate: number }) => void;
-    updateCommentHandler: ({ commentId, comment, rating }: UpdateProps, recipeId: string) => Promise<void>;
-    deleteCommentHandler: (commentId: number, recipeId: string) => Promise<void>;
+    updateCommentHandler: ({ commentId, comment, rating }: CommentUpdateType, recipeId: number) => Promise<void>;
+    deleteCommentHandler: (commentId: number, recipeId: number) => Promise<void>;
 }
 
 export default function CommentEditBtn({
@@ -93,9 +81,9 @@ export default function CommentEditBtn({
 
 const S_EditBtn = styled.button`
     margin-right: 8px;
-    font-size: 16px;
-    width: 50px;
-    height: 30px;
+    font-size: 12px;
+    width: 40px;
+    height: 25px;
     border: none;
     border-radius: 8px;
     color: #fff;
