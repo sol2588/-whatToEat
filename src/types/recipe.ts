@@ -6,8 +6,10 @@ export interface RecipeProps {
     recipeCookingTime: string;
     recipeThumbnail: string;
     recipeRating: number;
-    createdAt?: string;
-    updatedAt?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
+    // recipeIngredients?:Record<string, string>[]
+    // recipeManuals?: Record<string, string>[]
 }
 
 export interface ManualsProps {

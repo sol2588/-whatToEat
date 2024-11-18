@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import instance from '../../../utils/api/instance.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import AllRecipes from './AllRecipes.js';
@@ -12,7 +11,6 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
     const [offset, setOffset] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [hasMore, setHasMore] = useState<boolean>(true);
-    const { pathname } = useLocation();
 
     useEffect(() => {
         fetchRecipes();
@@ -23,7 +21,6 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
         setIsLoading(true);
         try {
             const response = await instance.get(`/recipes?page=${offset}&size=15`);
-            console.log(response);
 
             if (response.data.code == 'OK') {
                 const totalRecipes = response.data.data.totalRecipes;

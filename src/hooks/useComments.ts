@@ -1,36 +1,14 @@
 import { useState, FormEvent, ChangeEvent } from 'react';
 import instance from '../utils/api/instance';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '../redux/reducer/modalSlice';
 import useAuthToken from './useAuthToken';
-
-interface CreateHandlerProps {
-    recipeId: number;
-    comment: string;
-    rating: number;
-}
-interface UpdateHandlerProps {
-    commentId: number;
-    comment: string;
-    rating: number;
-}
-interface EditingProps {
-    commentId: number;
-    comments: string;
-    commentRate: number;
-}
-interface CommentDataProps {
-    commentAuthor: string;
-    commentContent: string;
-    commentId: number;
-    rating: number;
-    createdAt: string;
-    updatedAt: string;
-}
+import { RootState } from '../redux/store/store';
+import { CommentsType, CommentCreateType, CommentUpdateType, EditingType } from '../types/comment';
 
 export default function useComments() {
     const [editing, setEditing] = useState<boolean>(false); // 수정 중인지 check
-    const [commentDataList, setCommentDataList] = useState<CommentDataProps[]>([]);
+    const [commentDataList, setCommentDataList] = useState<CommentsType[]>([]);
     const [recipeId, setRecipeId] = useState<number>();
     const [commentId, setCommentId] = useState<number>();
     const [createComment, setCreateComment] = useState<string>('');
@@ -40,8 +18,9 @@ export default function useComments() {
 
     const token = useAuthToken();
     const dispatch = useDispatch();
+    const nickname = useSelector((state: RootState) => state.user.value.nickname); // msw로 nickname 전달
     // get : recipeId
-    const fetchCommentHandler = async (recipeId: string) => {
+    const fetchCommentHandler = async (recipeId: number) => {
         try {
             const response: any = await instance.get(`/comments/${recipeId}`);
             if (response.data.code === 'OK') {
@@ -52,10 +31,9 @@ export default function useComments() {
             dispatch(showModal({ isOpen: true, content: '댓글을 가져오는데 실패했습니다.', onConfirm: null }));
         }
     };
-    console.log('recipeId', recipeId);
 
     // create : recipeId, comment, rating
-    const createCommentHandler = async (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CreateHandlerProps) => {
+    const createCommentHandler = async (e: FormEvent<HTMLFormElement>, { recipeId, comment, rating }: CommentCreateType) => {
         e.preventDefault();
         setRecipeId(recipeId);
         setCurrentRate(rating);
@@ -65,11 +43,11 @@ export default function useComments() {
                 recipeId: recipeId,
                 comment: comment,
                 rating: rating,
+                nickname: nickname,
             });
 
             if (response.data.code == 'CREATED') {
-                console.log(response);
-                dispatch(showModal({ isOpen: true, content: '댓글 작성 성공!', onConfirm: await fetchCommentHandler(recipeId.toString()) }));
+                dispatch(showModal({ isOpen: true, content: '댓글이 작성되었습니다.', onConfirm: await fetchCommentHandler(recipeId) }));
                 // 초기화
                 setCreateComment('');
                 setCurrentRate(0);
@@ -87,20 +65,19 @@ export default function useComments() {
     };
 
     // update : commentId, comment, rating
-    const updateCommentHandler = async ({ commentId, comment, rating }: UpdateHandlerProps, recipeId: string) => {
+    const updateCommentHandler = async ({ commentId, comment, rating }: CommentUpdateType, recipeId: number) => {
         setEditing(false); // 수정완료 시 false로 상태변경
         try {
             const response: any = await instance.put('/comments', {
-                commentsId: commentId,
+                commentId: commentId,
                 comment: comment,
                 rating: rating,
             });
 
             if (response.data.code === 'OK') {
-                console.log(response);
                 setUpdateComment('');
                 setCommentId(0);
-                dispatch(showModal({ isOpen: true, content: '댓글이 수정되었습니다.', onConfirm: await fetchCommentHandler(recipeId.toString()) }));
+                dispatch(showModal({ isOpen: true, content: '댓글이 수정되었습니다.', onConfirm: await fetchCommentHandler(recipeId) }));
             }
         } catch (err) {
             console.log('댓글 수정 error: ', err);
@@ -123,14 +100,14 @@ export default function useComments() {
     };
 
     // 코멘트 수정 버튼과 연결
-    const handleClickEdit = ({ comments, commentId, commentRate }: EditingProps) => {
+    const handleClickEdit = ({ comments, commentId, commentRate }: EditingType) => {
         setEditing(true);
         setCommentId(commentId); // 수정버튼 누른 commentId값 저장 => commentsDataList에서 같은 commentid값을 가진 코멘트 filter하기 위함
         setUpdateComment(comments);
         setupdateRate(commentRate);
     };
 
-    const deleteCommentHandler = async (commentId: number, recipeId: string) => {
+    const deleteCommentHandler = async (commentId: number, recipeId: number) => {
         try {
             const response: any = await instance.delete('/comments', {
                 data: {
@@ -151,6 +128,7 @@ export default function useComments() {
     return {
         editing,
         handleClickEdit,
+        recipeId,
         commentId,
         currentRate,
         updateRate,

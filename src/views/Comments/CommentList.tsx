@@ -3,32 +3,20 @@ import { useParams } from 'react-router-dom';
 import CommentRating from './CommentRating';
 import CommentsContent from './CommentsContent';
 import CommentEditBtn from './CommentEditBtn';
+import { CommentsType, CommentUpdateType } from '../../types/comment';
 import styled from 'styled-components';
 import chef from '../../assets/img/chef-hat.png';
 
-interface UpdateProps {
-    commentId: number;
-    comment: string;
-    rating: number;
-}
-interface CommentDataProps {
-    commentAuthor: string;
-    commentContent: string;
-    commentId: number;
-    rating: number;
-    createdAt: string;
-    updatedAt: string;
-}
 interface CommentsListProps {
     isEditing: boolean;
     handleClickEdit: ({ comments, commentId, commentRate }: { comments: string; commentId: number; commentRate: number }) => void;
     commentId?: number;
     updateRate?: number;
     updateComment: string;
-    commentDataList: CommentDataProps[];
-    fetchCommentHandler: (id: string) => Promise<void>;
-    updateCommentHandler: ({ commentId, comment, rating }: UpdateProps, recipeId: string) => Promise<void>;
-    deleteCommentHandler: (commentId: number, recipeId: string) => Promise<void>;
+    commentDataList: CommentsType[];
+    fetchCommentHandler: (id: number) => Promise<void>;
+    updateCommentHandler: ({ commentId, comment, rating }: CommentUpdateType, recipeId: number) => Promise<void>;
+    deleteCommentHandler: (commentId: number, recipeId: number) => Promise<void>;
     handleUpdateComment: (e: ChangeEvent<HTMLTextAreaElement>) => void;
     handleUpdateRate: (rate: number) => void;
 }
@@ -46,12 +34,13 @@ export default function CommentList({
     handleUpdateComment,
     handleUpdateRate,
 }: CommentsListProps): JSX.Element {
-    const { id } = useParams<{ id: string }>();
+    const { id } = useParams();
+    const numId = Number(id);
 
     // fetchCommentsList : recipeId 기준 코멘트 조회 & recipeId가 바뀔때마다 fetchCommentHandler 호출
     useEffect(() => {
-        if (id) {
-            fetchCommentHandler(id);
+        if (numId) {
+            fetchCommentHandler(numId);
         }
     }, []);
 
@@ -66,7 +55,7 @@ export default function CommentList({
                                 <S_ReviewerFigure>
                                     <img src={chef} alt="워터마크" />
                                     <S_ReviewerFigcaption date={false}>{comment.commentAuthor}</S_ReviewerFigcaption>
-                                    <S_ReviewerFigcaption date={true}>{comment.createdAt.split('T')[0]}</S_ReviewerFigcaption>
+                                    <S_ReviewerFigcaption date={true}>{comment.createdAt.toString().split('T')[0]}</S_ReviewerFigcaption>
                                     <CommentRating
                                         isEditing={isEditing}
                                         commentId={commentId}
@@ -85,7 +74,7 @@ export default function CommentList({
                                     updateCommentHandler={updateCommentHandler}
                                     deleteCommentHandler={deleteCommentHandler}
                                     review={comment}
-                                    recipeId={id}
+                                    recipeId={numId}
                                 />
                             </S_CommentsSelectWrapper>
                             <S_CommentsDataWrapper>
