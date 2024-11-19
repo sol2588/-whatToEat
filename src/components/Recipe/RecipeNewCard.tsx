@@ -73,7 +73,7 @@ export default function RecipeNewCard({
 }
 
 const S_CardFigure = styled.figure`
-    height: 100%;
+    max-height: 100%;
     padding: 0;
     border: 1px solid #d7d8dc;
     border-radius: 8px;
@@ -84,17 +84,33 @@ const S_CardFigure = styled.figure`
     &:hover {
         background-color: #fff;
     }
+
+    @media screen and (max-width: 768px) {
+        flex-direction: row;
+        width: 100%;
+        height: auto;
+    }
 `;
 const S_CardImg = styled.img`
     height: 260px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
     object-fit: cover;
+
     @media screen and (min-width: 1024px) and (max-width: 1440px) {
         height: 200px;
     }
     @media screen and (min-width: 769px) and (max-width: 1024px) {
         height: 200px;
+    }
+    @media screen and (max-width: 768px) {
+        width: 30%;
+        height: auto;
+        max-height: 160px;
+        flex-shrink: 0;
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;
+        border-top-right-radius: 0;
     }
 `;
 
@@ -109,6 +125,11 @@ const S_CardFigcaption = styled.figcaption`
 
     &:last-child {
         padding-bottom: 16px;
+    }
+
+    @media screen and (max-width: 768px) {
+        width: 100%;
+        gap: 0;
     }
 `;
 const S_CardText = styled.p`

@@ -53,7 +53,6 @@ export default function Carousel({ carouselLists }: CarouselProps) {
             }
         }, 500);
     };
-    console.log(currIdx);
 
     return (
         <Container>
@@ -92,8 +91,8 @@ const CarouselWrapper = styled.div`
     overflow: hidden;
 `;
 const BtnWrapper = styled.div`
-    margin: 0 395px;
-    width: 400px;
+    padding: 0 40px;
+    width: 100%;
     display: flex;
     justify-content: space-between;
 
@@ -128,7 +127,7 @@ const CarouselItem = styled.li<{ $active: boolean }>`
     img {
         width: 310px;
         height: 480px;
-        object-fit: fill;
+        /* object-fit: cover; */
     }
     p {
         margin: 10px 30px 15px;

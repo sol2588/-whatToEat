@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import Carousel from './Carousel';
 import styled from 'styled-components';
 import AllRecipesView from '../Recipes/AllRecipes/AllRecipesView';
@@ -10,6 +11,21 @@ import bookmark from '../../assets/img/bookmark.jpeg';
 // import Visited from '../../components/Visited/Visited';
 
 export default function Home(): JSX.Element {
+    const [limit, setLimit] = useState<number>(3);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > 768 && window.innerWidth < 1025) {
+                setLimit(2);
+            } else if (window.innerWidth < 769) {
+                setLimit(1);
+            } else {
+                setLimit(3);
+            }
+        };
+        window.addEventListener('resize', handleResize);
+    }, [limit]);
+
     const carouselLists = [
         {
             url: question,
@@ -45,7 +61,7 @@ export default function Home(): JSX.Element {
             </HomeMain>
             <RecipesList>
                 <h3>전체 레시피</h3>
-                <AllRecipesView limit={3} />
+                <AllRecipesView limit={limit} />
                 <StyledLink to="/recipes/all">view more</StyledLink>
             </RecipesList>
         </HomeContainer>
