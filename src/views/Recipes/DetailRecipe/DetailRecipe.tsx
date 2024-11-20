@@ -199,6 +199,10 @@ const S_DetailRecipeInstruction = styled.div`
     grid-template-columns: repeat(2, 1fr);
     justify-items: stretch;
     border-bottom: 20px solid #f9f9f9;
+
+    @media screen and (max-width: 768px) {
+        display: block;
+    }
 `;
 const S_DetailRecipeFigure = styled.figure<{ idx: number }>`
     display: flex;
@@ -218,9 +222,29 @@ const S_DetailRecipeFigure = styled.figure<{ idx: number }>`
         border-bottom-right-radius: ${({ idx }) => (idx % 2 === 0 ? '40%' : '5%')};
     }
 
-    @media screen and (min-width: 1400px) {
+    @media screen and (min-width: 1440px) {
         img {
             max-height: 300px;
+        }
+    }
+    @media screen and (max-width: 1024px) {
+        img {
+            width: 80%;
+            max-height: 250px;
+            border-top-left-radius: ${({ idx }) => (idx % 2 === 0 ? '20%' : '5%')};
+            border-top-right-radius: ${({ idx }) => (idx % 2 === 0 ? '5%' : '20%')};
+            border-bottom-left-radius: ${({ idx }) => (idx % 2 === 0 ? '5%' : '20%')};
+            border-bottom-right-radius: ${({ idx }) => (idx % 2 === 0 ? '20%' : '5%')};
+        }
+    }
+    @media screen and (max-width: 768px) {
+        img {
+            width: 80%;
+            max-height: 250px;
+            border-top-left-radius: ${({ idx }) => (idx % 2 === 0 ? '40%' : '5%')};
+            border-top-right-radius: ${({ idx }) => (idx % 2 === 0 ? '5%' : '40%')};
+            border-bottom-left-radius: ${({ idx }) => (idx % 2 === 0 ? '5%' : '40%')};
+            border-bottom-right-radius: ${({ idx }) => (idx % 2 === 0 ? '40%' : '5%')};
         }
     }
 `;
