@@ -24,7 +24,7 @@ export default function AllRecipes({ limit, recipes, fetchRecipes, isLoading, ha
     return (
         <>
             <RecipeList recipes={recipes} limit={limit} />
-            {limit == 3 ? (
+            {limit ? (
                 ''
             ) : hasMore ? (
                 <div ref={target}>

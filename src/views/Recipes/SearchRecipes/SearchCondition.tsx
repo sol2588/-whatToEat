@@ -180,19 +180,23 @@ export default function SearchCondition(): JSX.Element {
                 <S_SearchTimeLevelWrapper>
                     <S_SearchItem>
                         <S_SearchItemTitle>난이도를 선택해주세요</S_SearchItemTitle>
-                        {levelOptions.map((levelData) => (
-                            <S_SelectBtn key={levelData.value} value={levelData.value} onClick={handleLevel} active={level == levelData.value}>
-                                {levelData.label}
-                            </S_SelectBtn>
-                        ))}
+                        <S_SelectBtnWrapper>
+                            {levelOptions.map((levelData) => (
+                                <S_SelectBtn key={levelData.value} value={levelData.value} onClick={handleLevel} active={level == levelData.value}>
+                                    {levelData.label}
+                                </S_SelectBtn>
+                            ))}
+                        </S_SelectBtnWrapper>
                     </S_SearchItem>
                     <S_SearchItem>
                         <S_SearchItemTitle>조리시간을 선택해 주세요.</S_SearchItemTitle>
-                        {timeOption.map((timeData) => (
-                            <S_SelectBtn key={timeData.value} value={timeData.value} onClick={handleTime} active={time == timeData.value}>
-                                {timeData.label}
-                            </S_SelectBtn>
-                        ))}
+                        <S_SelectBtnWrapper>
+                            {timeOption.map((timeData) => (
+                                <S_SelectBtn key={timeData.value} value={timeData.value} onClick={handleTime} active={time == timeData.value}>
+                                    {timeData.label}
+                                </S_SelectBtn>
+                            ))}
+                        </S_SelectBtnWrapper>
                     </S_SearchItem>
                 </S_SearchTimeLevelWrapper>
                 <S_ButtonWrapper>
@@ -240,9 +244,13 @@ const S_SearchItem = styled.li`
 const S_SearchItemTitle = styled.h4`
     font-size: 18px;
     padding: 0 8px 8px;
+    min-width: 250px;
 
     @media screen and (min-width: 1500px) {
         font-size: 24px;
+    }
+    @media screen and (max-width: 1440px) {
+        min-width: 200px;
     }
 `;
 const S_SearchTimeLevelWrapper = styled.div`
@@ -258,6 +266,9 @@ const S_SearchTimeLevelWrapper = styled.div`
         top: -10%;
         border: 0.8px solid lightgray;
     }
+    @media screen and (max-width: 1024px) {
+        flex-direction: column;
+    }
 `;
 
 const S_SearchIngredientsList = styled.ul<{ length: number }>`
@@ -271,10 +282,13 @@ const S_SearchIngredientsList = styled.ul<{ length: number }>`
         background-color: ${colors[200]};
         border-radius: 20px;
     }
+    @media screen and (max-width: 1024px) {
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
 `;
 
 const S_ButtonWrapper = styled.div`
-    width: 80%;
     margin: 30px auto 0px;
     display: flex;
     justify-content: space-between;
@@ -301,6 +315,25 @@ const S_SearchButton = styled.button<{ searchBtn: boolean }>`
     @media screen and (min-width: 1500px) {
         font-size: 18px;
     }
+    @media screen and (max-width: 1025px) {
+        padding: 10px;
+        min-width: 150px;
+    }
+    @media screen and (max-width: 769px) {
+        min-width: 100px;
+    }
+`;
+const S_SelectBtnWrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+
+    @media screen and (max-width: 1440px) {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+    @media screen and (max-width: 1024px) {
+        display: flex;
+    }
 `;
 const S_SelectBtn = styled.button<{ active: boolean }>`
     margin: 4px;
@@ -314,5 +347,9 @@ const S_SelectBtn = styled.button<{ active: boolean }>`
 
     &:hover {
         border: 1px solid ${colors[200]};
+    }
+
+    @media screen and (max-width: 1024px) {
+        font-size: 12px;
     }
 `;

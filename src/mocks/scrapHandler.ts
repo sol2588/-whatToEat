@@ -27,7 +27,7 @@ export const scrapHandler = [
             if (token) {
                 const expriedToken = store.getState().user.value.expiredIn! < Date.now();
                 if (expriedToken) {
-                    return HttpResponse.json({ message: 'Unauthorized' }, { status: 401 });
+                    return HttpResponse.json({ code: 'Bad Request', message: 'Unauthorized' }, { status: 401 });
                 }
             }
             const existRecipe = scrapped.some((scrap) => scrap == recipeId);
