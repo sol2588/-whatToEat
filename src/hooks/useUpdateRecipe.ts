@@ -1,12 +1,13 @@
+import { useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecipeCreate } from './useRecipeCreate';
+import { showModal } from '../redux/reducer/modalSlice';
 import useAuthToken from './useAuthToken';
 import instance from '../utils/api/instance';
-import DefaultImg from '../assets/img/defaultImg.jpeg';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { showModal } from '../redux/reducer/modalSlice';
+import DefaultImg from '../assets/img/uploadImg.png';
+
 export const useUpdateRecipes = (id: string | undefined) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();

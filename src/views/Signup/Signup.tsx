@@ -91,6 +91,7 @@ export default function Signup(): JSX.Element {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                marginBottom: 0,
             }}
         >
             <Box
@@ -103,6 +104,7 @@ export default function Signup(): JSX.Element {
                     padding: 4,
                     borderRadius: 2,
                     mt: 8,
+                    mb: 8,
                     width: '700px',
                 }}
             >

@@ -73,7 +73,7 @@ export default function RecipeNewCard({
 }
 
 const S_CardFigure = styled.figure`
-    max-height: 100%;
+    height: 100%;
     padding: 0;
     border: 1px solid #d7d8dc;
     border-radius: 8px;
@@ -88,7 +88,6 @@ const S_CardFigure = styled.figure`
     @media screen and (max-width: 768px) {
         flex-direction: row;
         width: 100%;
-        height: auto;
     }
 `;
 const S_CardImg = styled.img`
