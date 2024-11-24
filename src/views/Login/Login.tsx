@@ -22,6 +22,7 @@ export default function Login(): JSX.Element {
                     padding: 4,
                     borderRadius: 2,
                     mt: 8,
+                    mb: 8,
                 }}
             >
                 <Typography variant="h4" component="h1" gutterBottom>

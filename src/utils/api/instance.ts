@@ -34,7 +34,6 @@ instance.interceptors.response.use(
     // 액세스토큰 유효 -> 응답 반환 + 응답시도 횟수 초기화
     (response) => {
         MAX_RETRY_COUNT = 0;
-        console.log(response);
         return response;
     },
 
@@ -58,7 +57,6 @@ instance.interceptors.response.use(
                 const userData = JSON.parse(parsedData.user);
                 const parsedProvider = userData.value.provider;
                 const duration = 1 * 60 * 1000; // 10분
-                console.log('instace: ', err.response.data);
 
                 store.dispatch(
                     loginSuccess({

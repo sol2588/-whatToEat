@@ -14,10 +14,23 @@ interface SelectProps {
 
 export default function CustomSelect({ value, id, label, handleChange, options }: SelectProps) {
     return (
-        <Box sx={{ minWidth: 120 }}>
+        <Box>
             <FormControl fullWidth>
                 <InputLabel id={`${id}-label`}>{label}</InputLabel>
-                <Select labelId={`${id}-label`} id={`${id}`} value={value} label={label} onChange={handleChange}>
+                <Select
+                    sx={{
+                        height: '40px',
+                        minWidth: '200px',
+                        '@media (max-width: 768px)': {
+                            minWidth: '120px',
+                        },
+                    }}
+                    labelId={`${id}-label`}
+                    id={`${id}`}
+                    value={value}
+                    label={label}
+                    onChange={handleChange}
+                >
                     {options.map((option) => (
                         <MenuItem value={option.value}>{option.label}</MenuItem>
                     ))}

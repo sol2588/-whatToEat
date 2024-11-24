@@ -1,14 +1,13 @@
-import React from 'react';
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import DefaultImg from '../../../assets/img/defaultImg.jpeg';
 import { useUpdateRecipes } from '../../../hooks/useUpdateRecipe';
-import withAuth from '../../../hooks/withAuth';
-import CustomSelect from '../../../ui/Select/CustomSelect';
 import { timeOption } from '../../../common/options';
+import CustomSelect from '../../../ui/Select/CustomSelect';
+import withAuth from '../../../hooks/withAuth';
+import DefaultImg from '../../../assets/img/uploadImg.png';
+import styled from 'styled-components';
 import colors from '../../../styles/colors';
 
-const UpdateRecipe: React.FC = () => {
+function UpdateRecipe(): JSX.Element {
     const { id } = useParams<{ id: string }>();
 
     const {
@@ -126,7 +125,7 @@ const UpdateRecipe: React.FC = () => {
             </RecipeContainer>
         </RecipeUpdateContainer>
     );
-};
+}
 
 const UpdateRecipeWithAuth = withAuth(UpdateRecipe);
 export default UpdateRecipeWithAuth;

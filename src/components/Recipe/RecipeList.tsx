@@ -40,4 +40,7 @@ const S_RecipeUlList = styled.ul`
     @media screen and (min-width: 769px) and (max-width: 1024px) {
         grid-template-columns: repeat(2, minmax(240px, 1fr));
     }
+    @media screen and (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
 `;
