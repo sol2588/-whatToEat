@@ -45,20 +45,14 @@ export default function useSearchRecipe() {
                     return qs.stringify(params);
                 },
             });
-            console.log('search response: ', response);
-            console.log('검색내용', ingredientsList, time, level);
             if (response.data.code == 'OK') {
-                console.log('search response.data: ', response.data);
-                console.log('search response: ', response);
                 setRecipes(response.data.data);
                 setMessage(response.data.message);
             } else {
-                console.log('code ok 아닐때');
                 setMessage('재료명을 다시 입력해주시기 바랍니다.');
             }
         } catch (err) {
-            console.log('search err: ', err);
-            console.log('검색 오류입니다.');
+            console.log(err);
             setMessage('검색 중 오류가 발생했습니다. 다시 시도해주세요.');
         } finally {
             setSearching(false);
@@ -76,14 +70,12 @@ export default function useSearchRecipe() {
 
     // 난이도를 변경하는 핸들러
     const handleLevel = (e: SelectChangeEvent) => {
-        console.log(e.target.value);
         setLevel(e.target.value);
     };
 
     // 소요시간을 변경하는 핸들러
     const handleTime = (e: SelectChangeEvent) => {
         setTime(e.target.value);
-        console.log(e.target.value);
     };
 
     return {

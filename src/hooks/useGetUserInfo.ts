@@ -1,17 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
-// import axios from 'axios';
 import useAuthToken from './useAuthToken';
 import instance from '../utils/api/instance';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store/store';
 
 export const useGetUserInfo = () => {
     const token = useAuthToken();
-
+    const userData = useSelector((state: RootState) => state.user.value.userId);
     const [userInfo, setUserInfo] = useState({ email: '', nickname: '', img: '' });
 
     const fetchUserInfo = useCallback(async () => {
         try {
-            const response = await instance.get(`/users`);
-            console.log('마이페이지 유저정보', response);
+            const response = await instance.get(`/users/${userData}`);
+
             const { email, nickname } = response.data.data;
             setUserInfo({
                 email: email,
