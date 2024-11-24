@@ -1,14 +1,12 @@
-import { useState, MouseEvent } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import RecipeMetaData from './RecipeMetaData';
+import { RecipeProps } from '../../types/recipe';
+import { useBookmark } from '../../hooks/useBookmark';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
-import useAuthToken from '../../hooks/useAuthToken';
-import { showModal } from '../../redux/reducer/modalSlice';
-import instance from '../../utils/api/instance';
 import colors from '../../styles/colors';
 import styled from 'styled-components';
-import { RecipeProps } from '../../types/recipe';
+import { RootState } from '../../redux/store/store';
 
 // ! main 페이지가 아닌 all isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, all, recipeList, recipeCard인듯
 
@@ -20,40 +18,16 @@ export default function RecipeNewCard({
     recipeLevel,
     recipeRating,
 }: RecipeProps): JSX.Element {
-    const [marked, setMarked] = useState<boolean>(false);
-    const dispatch = useDispatch();
-    const token = useAuthToken();
     const menu = localStorage.getItem('menu');
-    const handleClickBookmark = async (e: MouseEvent) => {
-        e.stopPropagation();
-        try {
-            const response = await instance.post(`/recipes/${recipeId}/scrap`);
-
-            if (!token) {
-                // window.location.href = '/login'; // msw 사용시 불필요
-                return;
-            }
-
-            if (response.data.code == 'OK') {
-                if (response.data.data == 'CANCELED') {
-                    setMarked(false);
-                    dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
-                } else if (response.data.data == 'SCRAPED') {
-                    setMarked(true);
-                    dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
-                }
-            }
-        } catch (err: any) {
-            console.log(err);
-        }
-    };
+    const marked = useSelector((state: RootState) => state.book);
+    const { handleClickBookmark } = useBookmark();
 
     return (
         <S_CardFigure>
             <S_CardImg alt="레시피이미지" src={recipeThumbnail} />
             <S_CardFigcaption>
-                <S_BookmarkIcons onClick={handleClickBookmark} mark={marked}>
-                    {marked ? <FaBookmark /> : <FaRegBookmark />}
+                <S_BookmarkIcons onClick={(e) => handleClickBookmark(e, recipeId)} mark={marked.booklist.includes(recipeId)}>
+                    {marked.booklist.find((item) => item == recipeId) ? <FaBookmark /> : <FaRegBookmark />}
                 </S_BookmarkIcons>
                 <S_CardCategory>{menu} 레시피입니다.</S_CardCategory>
 

@@ -3,6 +3,6 @@ import { recipeHandlers } from './recipeHandlers';
 import { userHandlers } from './userHandlers';
 import { scrapHandler } from './scrapHandler';
 import { commentHandler } from './commentHandlers';
-import { sseHandler } from './sseHandler';
+import { myinfoHandlers } from './myinfoHandlers';
 
-export const worker = setupWorker(...recipeHandlers, ...userHandlers, ...scrapHandler, ...commentHandler, ...sseHandler);
+export const worker = setupWorker(...recipeHandlers, ...userHandlers, ...scrapHandler, ...commentHandler, ...myinfoHandlers);

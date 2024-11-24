@@ -21,7 +21,7 @@ export default function useNotify() {
     const toggleNotify = async (id: number) => {
         try {
             const response = await instance.get(`/notify/toggle/${id}`);
-            console.log('toggle', response);
+
             if (response.data.code == 'OK') {
                 fetchNotify();
             }

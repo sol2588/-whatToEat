@@ -7,7 +7,7 @@ interface User {
     password: string;
     nickname: string;
 }
-const users: User[] = [
+export const users: User[] = [
     {
         email: 'sd@naver.com',
         password: '12345678',
@@ -75,7 +75,7 @@ export const userHandlers = [
             const refreshToken = cookies.refresh;
             const nickname = store.getState().user.value.nickname;
             const userId = store.getState().user.value.userId;
-            console.log(refreshToken);
+
             if (!token) {
                 window.location.href = '/login';
                 return HttpResponse.json({ message: '로그인 후 이용하시기 바랍니다.' });

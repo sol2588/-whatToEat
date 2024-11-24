@@ -2,7 +2,7 @@ import { http, HttpResponse } from 'msw';
 import { store } from '../redux/store/store';
 import { showModal } from '../redux/reducer/modalSlice';
 
-let scrapped: string[] = [];
+export let scrapped: string[] = [];
 
 export const scrapHandler = [
     http.post(`${import.meta.env.VITE_BASE_URL}/recipes/:recipeId/scrap`, async ({ cookies, params }) => {
