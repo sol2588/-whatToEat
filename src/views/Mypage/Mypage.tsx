@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Modal from '../../components/Modal/Modal';
 import { useModal } from '../../hooks/useModal';
@@ -9,61 +9,49 @@ import { Button, Typography, Avatar, Grid, Pagination, Box } from '@mui/material
 import { useUserUpdate } from '../../hooks/useUserUpdate';
 import { useRecipeDelete } from '../../hooks/useRecipeDelete';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
-import colors from '../../styles/colors';
 import { useBookmark } from '../../hooks/useBookmark';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { userFormHandler } from '../../handler/userFormHandler';
-import useAuthToken from '../../hooks/useAuthToken';
-import { useNavigate } from 'react-router-dom';
 import { useDeleteUser } from '../../hooks/useDeleteUser';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { hideModal, showModal } from '../../redux/reducer/modalSlice';
-import { RootState } from '../../redux/store/store';
 import ToggleAlarm from '../../components/Alarm/ToggleAlarm';
 import useNotify from '../../hooks/useNotify';
+import withAuth from '../../hooks/withAuth';
+import instance from '../../utils/api/instance';
+import colors from '../../styles/colors';
+import styled from 'styled-components';
+import { RootState } from '../../redux/store/store';
 
-export default function Mypage(): JSX.Element {
+function Mypage(): JSX.Element {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
-    const isLoggedIn = useSelector((state: RootState) => state.user.value.isLoggedIn);
-
-    //로그인확인
-    useEffect(() => {
-        if (!isLoggedIn) {
-            navigate('/');
-        }
-    }, [isLoggedIn, navigate]);
-
+    const marked = useSelector((state: RootState) => state.book.booklist);
     const { handleDeleteUser } = useDeleteUser();
 
-    //provider에서 kakao or 일반유저 확인하기위해 사용.
+    // kakao or 일반유저 확인
     const parsedData = JSON.parse(sessionStorage.getItem('persist:root')!);
     const userData = JSON.parse(parsedData.user);
     const parsedProvider = userData.value.provider;
-    console.log(parsedProvider);
 
-    const token = useAuthToken();
-    // 페이지 번호 상태
+    // 페이지 번호
     const [myRecipesPage, setMyRecipesPage] = useState(1);
     const [scrapedRecipesPage, setScrapedRecipesPage] = useState(1);
 
-    //유저 정보 hook
+    //유저 정보
     const { userInfo, refetchUserInfo: refetchUserInfo } = useGetUserInfo();
 
-    // 스크랩, 작성 게시물 불러오는 hook
-    const { myRecipes, setMyRecipes, scrapedRecipes, totalMyRecipesPages, totalScrapedRecipesPages, setScrapedRecipes } = useGetMyRecipes(
+    // 스크랩, 작성 게시물
+    const { myRecipes, setMyRecipes, scrapedRecipes, totalMyRecipesPages, totalScrapedRecipesPages } = useGetMyRecipes(
         myRecipesPage,
         scrapedRecipesPage,
     );
 
-    //게시물 삭제 hook
+    //게시물 삭제
     const { handleMyRecipeDelete } = useRecipeDelete(setMyRecipes);
 
-    //북마크 hook
-    const { bookmarkRecipes, handleClickBookmark, setBookmarkRecipes } = useBookmark(setScrapedRecipes);
+    //북마크
+    const { handleClickBookmark } = useBookmark();
 
-    //유효성 검사를 위한 hook
+    //유효성 검사
     const {
         password,
         newPassword,
@@ -79,11 +67,11 @@ export default function Mypage(): JSX.Element {
         clearFieldError,
     } = useUpdateForm();
 
-    //모달 상태관리 hook
+    //모달 상태관리
     const { isModalVisible, isCheckModal, isPasswordModal, closeModal, handlePasswordModalClose, handleCheckModalClose, setIsModalVisible } =
         useModal();
 
-    //회원정보수정 hook
+    //회원정보수정
     const { handleUpdate } = useUserUpdate(
         password,
         newPassword,
@@ -105,10 +93,8 @@ export default function Mypage(): JSX.Element {
     //닉네임체크 핸들러
     const handleCheckNickname = async () => {
         try {
-            const response: any = await axios.get(`${import.meta.env.VITE_BASE_URL}/auth/nickname-check?nickname=${nickname}`);
-            console.log('mypage nickanme check, response( 204 ok 전): ', response);
+            const response: any = await instance.get(`/auth/nickname-check?nickname=${nickname}`);
             if (response.data.data === true) {
-                console.log(response);
                 setNicknameCheck(true);
                 setCheckFailMessage(response.data.message);
             } else if (response.data.data === false) {
@@ -134,23 +120,8 @@ export default function Mypage(): JSX.Element {
     const [checkFailMsg, setCheckFailMsg] = useState<string>('');
     const handlePasswordCheck = async () => {
         try {
-            const response = await axios.post(
-                `${import.meta.env.VITE_BASE_URL}/auth/password-check`,
-                {
-                    password: password,
-                },
-                {
-                    headers: {
-                        'access-token': `Bearer ${token}`,
-                    },
-                    withCredentials: true,
-                },
-            );
-            console.log('비밀번호 확인 response:', response.data);
-            console.log('비밀번호 확인 response.data.data:', response.data.data);
-            console.log('비밀번호 확인 response.data.message:', response.data.message);
+            const response = await instance.post(`/auth/password-check`, { password: password });
             if (response.data.data === true) {
-                console.log(response);
                 setPasswordInfoCheck(true);
                 setCheckFailMsg(response.data.message);
             } else if (response.data.data === false) {
@@ -165,23 +136,10 @@ export default function Mypage(): JSX.Element {
                     },
                 }),
             );
-            console.log('passwordcheckmessage : ', response.data.message);
         } catch (error) {
             console.error('비밀번호 확인 중 오류 발생:', error);
         }
     };
-
-    useEffect(() => {
-        if (scrapedRecipes.length > 0) {
-            // `scrapedRecipes`에 스크랩된 게시물 ID 값을 기반으로 `bookmarkRecipes` 업데이트
-            const initialBookmarks = scrapedRecipes.reduce((acc, recipe) => {
-                acc[recipe.recipeId] = true; // 이미 스크랩된 게시물은 true로 설정
-                return acc;
-            }, {} as Record<string, boolean>);
-
-            setBookmarkRecipes(initialBookmarks);
-        }
-    }, [scrapedRecipes, setBookmarkRecipes]);
 
     const renderPlaceholderItems = () => {
         return (
@@ -210,10 +168,10 @@ export default function Mypage(): JSX.Element {
                                                       <S_MyFigcaption>{scrapedRecipe.recipeName}</S_MyFigcaption>
                                                   </M_Linked>
                                                   <M_BookmarkIcons
-                                                      onClick={() => handleClickBookmark(scrapedRecipe.recipeId)}
-                                                      mark={bookmarkRecipes[scrapedRecipe.recipeId] ?? false}
+                                                      onClick={(e) => handleClickBookmark(e, scrapedRecipe.recipeId)}
+                                                      mark={marked.includes(scrapedRecipe.recipeId)}
                                                   >
-                                                      {bookmarkRecipes[scrapedRecipe.recipeId] ? <FaBookmark /> : <FaRegBookmark />}
+                                                      {marked.includes(scrapedRecipe.recipeId) ? <FaBookmark /> : <FaRegBookmark />}
                                                   </M_BookmarkIcons>
                                               </S_MyFigure>
                                           </Grid>
@@ -474,6 +432,8 @@ export default function Mypage(): JSX.Element {
     );
 }
 
+export default withAuth(Mypage);
+
 const S_MyContainer = styled.section`
     padding: 40px;
     display: grid;
@@ -511,7 +471,7 @@ const S_MyFigure = styled.figure`
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
     width: 100%;
-    min-height: 280px;
+    max-height: 230px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -523,16 +483,16 @@ const S_MyFigure = styled.figure`
 `;
 
 const S_MyFigcaption = styled.figcaption`
+    margin-top: 8px;
     text-align: center;
-    font-size: 1rem;
-    font-weight: 500;
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    line-height: 22px;
     min-height: 40px;
-    width: 100%;
     word-break: keep-all;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
 `;
 
 const S_MyInfo = styled.div`
