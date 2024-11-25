@@ -4,5 +4,6 @@ import { userHandlers } from './userHandlers';
 import { scrapHandler } from './scrapHandler';
 import { commentHandler } from './commentHandlers';
 import { myinfoHandlers } from './myinfoHandlers';
+import { sseHandler } from './sseHandler';
 
-export const worker = setupWorker(...recipeHandlers, ...userHandlers, ...scrapHandler, ...commentHandler, ...myinfoHandlers);
+export const worker = setupWorker(...recipeHandlers, ...userHandlers, ...scrapHandler, ...commentHandler, ...myinfoHandlers, ...sseHandler);
