@@ -55,7 +55,7 @@ export default function Home(): JSX.Element {
                     <h2>오늘의 레시피 추천</h2>
                     <p>아침, 점심, 저녁 메뉴를 추천받아보세요.</p>
                     <StyledLink to="/recipes/recommended">추천 레시피</StyledLink>
-                    <VisitedContainer>{/*<Visited /> */}</VisitedContainer>
+                    {/* <VisitedContainer><Visited /></VisitedContainer> */}
                 </HomeContent>
                 <Carousel carouselLists={carouselLists} />
             </HomeMain>
@@ -70,13 +70,17 @@ export default function Home(): JSX.Element {
 
 const HomeContainer = styled.section``;
 const HomeMain = styled.div`
-    display: grid;
-    grid-template-columns: 33% 67%;
-`;
-
-const HomeContent = styled.div`
-    background-color: #d8dced;
     padding: 30px 70px;
+    background-color: #d8dced;
+    display: grid;
+    grid-template-columns: 27% 73%;
+
+    @media screen and (max-width: 769px) {
+        display: block;
+    }
+`;
+const HomeContent = styled.div`
+    padding-right: 30px;
     word-break: keep-all;
     h2 {
         font-size: 40px;
@@ -101,6 +105,20 @@ const HomeContent = styled.div`
         font-size: 14px;
         cursor: pointer;
     }
+
+    @media screen and (max-width: 769px) {
+        padding-bottom: 0;
+        text-align: center;
+        border-bottom: 3px solid #3f51b515;
+        h2 {
+            border-bottom: 0;
+            margin-bottom: 10px;
+            padding-bottom: 0;
+        }
+        a {
+            margin-top: 16px;
+        }
+    }
 `;
 
 const RecipesList = styled.section`
@@ -124,6 +142,6 @@ const StyledLink = styled(Link)`
     cursor: pointer;
 `;
 
-const VisitedContainer = styled.div`
-    margin-top: 20px;
-`;
+// const VisitedContainer = styled.div`
+//     margin-top: 20px;
+// `;
