@@ -73,38 +73,44 @@ export const recipeHandlers = [
     // 검색레시피 조회
     http.get(`${import.meta.env.VITE_BASE_URL}/recipes/search`, ({ request }) => {
         // 검색어 / 난이도 / 소요시간에 따른 레시피 조회
-        const url = new URL(request.url);
-        const page = Number(url.searchParams.get('page')) || 0;
+        try {
+            const url = new URL(request.url);
+            const page = Number(url.searchParams.get('page')) || 0;
 
-        const filtersList = {
-            ingredient: url.searchParams.getAll('ingredientName'),
-            time: url.searchParams.get('recipeCookingTime'),
-            level: url.searchParams.get('recipeLevel'),
-        };
+            const filtersList = {
+                ingredient: url.searchParams.getAll('ingredientName'),
+                time: url.searchParams.get('recipeCookingTime'),
+                level: url.searchParams.get('recipeLevel'),
+            };
 
-        const filterByIngredients =
-            filtersList.ingredient.length == 0
-                ? null
-                : recipeIngredients.filter((recipeIng) => filtersList.ingredient.some((ing) => recipeIng.recipeName.includes(ing)));
+            const filterByIngredients =
+                filtersList.ingredient.length == 0
+                    ? null
+                    : recipeIngredients.filter((recipeIng) => filtersList.ingredient.some((ing) => recipeIng.recipeName.includes(ing)));
 
-        const findRecipes = recipes.filter((recipe) => {
-            const filterIngre = filtersList.ingredient.length == 0 || filterByIngredients?.some((ingre) => ingre.recipeId == recipe.recipeId);
-            const filterTime = !filtersList.time || recipe.recipeCookingTime == filtersList.time;
-            const filterLevel = !filtersList.level || recipe.recipeLevel == filtersList.level;
+            const findRecipes = recipes.filter((recipe) => {
+                const filterIngre = filtersList.ingredient.length == 0 || filterByIngredients?.some((ingre) => ingre.recipeId == recipe.recipeId);
+                const filterTime = !filtersList.time || recipe.recipeCookingTime == filtersList.time;
+                const filterLevel = !filtersList.level || recipe.recipeLevel == filtersList.level;
 
-            return filterIngre && filterTime && filterLevel;
-        });
+                return filterIngre && filterTime && filterLevel;
+            });
 
-        const searched = findRecipes?.slice(page * PAGE_SIZE, Math.min((page + 1) * PAGE_SIZE, findRecipes.length));
+            const searched = findRecipes?.slice(page * PAGE_SIZE, Math.min((page + 1) * PAGE_SIZE, findRecipes.length));
 
-        return HttpResponse.json({
-            code: 'OK',
-            message: '검색한 레시피 조회',
-            data: {
-                recipes: searched,
-                totalRecipes: findRecipes.length,
-            },
-        });
+            return HttpResponse.json({
+                code: 'OK',
+                message: '검색한 레시피 조회',
+                data: {
+                    recipes: searched,
+                    totalRecipes: findRecipes.length,
+                },
+            });
+        } catch (err) {
+            return HttpResponse.json({
+                message: '일치하는 레시피가 없습니다. 다른 조건으로 검색해주시기 바랍니다.',
+            });
+        }
     }),
 
     // 특정레시피 조회

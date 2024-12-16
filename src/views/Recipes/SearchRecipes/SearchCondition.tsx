@@ -1,26 +1,14 @@
 import { useState, useEffect, ChangeEvent, FormEvent, KeyboardEvent, MouseEvent } from 'react';
+import { useDispatch } from 'react-redux';
 import { SearchBox } from './SearchBox';
 import { SearchResult } from './SearchResult';
 import { levelOptions, timeOption } from '../../../common/options';
 import { convertLevel, convertTime } from '../../../common/convertFunc.js';
-import { useDispatch } from 'react-redux';
 import { showModal } from '../../../redux/reducer/modalSlice';
+import { useGetRecipes } from '../../../hooks/useGetRecipes.js';
+import { RecipeProps } from '../../../types/recipe.js';
 import colors from '../../../styles/colors';
 import styled from 'styled-components';
-import instance from '../../../utils/api/instance';
-import qs from 'qs';
-
-export interface RecipeProps {
-    recipeId: number;
-    recipeName: string;
-    recipeAuthor: string;
-    recipeLevel: string;
-    recipeCookingTime: string;
-    recipeThumbnail: string;
-    recipeRating: number;
-    ingredients: Record<string, string | number>[];
-    instructions: Record<number | string, string>[];
-}
 
 export default function SearchCondition(): JSX.Element {
     const dispatch = useDispatch();
@@ -29,98 +17,68 @@ export default function SearchCondition(): JSX.Element {
     const [ingredientsList, setIngredientsList] = useState<string[]>([]); // 입력 검색어 저장 리스트
     const [time, setTime] = useState<string>(''); // 소요시간(select에서 선택)
     const [level, setLevel] = useState<string>(''); // 난이도(select에서 선택)
-    const [offset, setOffset] = useState<number>(0);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [hasSearched, setHasSearched] = useState<boolean>(false);
-    const [hasMore, setHasMore] = useState<boolean>(true);
 
-    // 재료 입력시에 검색어 리스트 입력 재료로 갱신
+    const { data, isFetching, hasNextPage, fetchNextPage } = useGetRecipes('search', ingredientsList, time, level);
+
+    console.log(data);
+
+    // 검색어에 따른 재료 리스트 설정
     useEffect(() => {
+        // 입력값이 있는 경우
         if (searchIngredients.trim()) {
-            // 입력값이 공백이 아닐 경우에만 처리
             const ingredients = searchIngredients.split(' ').filter((ingredient) => ingredient);
-            setIngredientsList([...ingredients]);
+            setIngredientsList(ingredients);
+            // 입력값이 없는 경우 빈배열 설정
         } else {
-            setIngredientsList([]); // 입력값이 공백인 경우 빈 배열 설정
+            setIngredientsList([]);
         }
     }, [searchIngredients]);
 
-    // 검색어 상태관리
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearchIngredients(e.target.value);
+    // 검색레시피 불러오기
+    const getSearchedRecipes = () => {
+        setRecipes(
+            data?.pages.flatMap((page) =>
+                page.recipes.map((recipe: RecipeProps) => ({
+                    ...recipe,
+                    recipeLevel: convertLevel(recipe.recipeLevel),
+                    recipeCookingTime: convertTime(recipe.recipeCookingTime),
+                })),
+            ) || [],
+        );
     };
 
-    // 검색 버튼 클릭시 api 통신
-    const handleSubmit = async (e: FormEvent) => {
+    // handler
+    // 1. 검색 재료 저장
+    const handleChangeSearchIngre = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchIngredients(e.target.value);
+    };
+    // 2. 검색 : 버튼
+    const handleSubmitSearch = async (e: FormEvent) => {
         e.preventDefault();
-
         if (!ingredientsList.length && !time && !level) {
             dispatch(showModal({ isOpen: true, content: '재료명, 조리시간, 난이도 중 하나는 입력해주시기 바랍니다.', onConfirm: null }));
             return;
         }
-        await fetchRecipes();
+        await getSearchedRecipes();
     };
-
-    const fetchRecipes = async () => {
-        if (isLoading || !hasMore) return;
-        setIsLoading(true);
-        try {
-            const response: any = await instance.get(`/recipes/search`, {
-                params: {
-                    ingredientName: ingredientsList,
-                    ...(time && { recipeCookingTime: time }),
-                    ...(level && { recipeLevel: level }),
-                    page: offset,
-                    size: 15,
-                },
-                paramsSerializer: (params) => {
-                    return qs.stringify(params, { arrayFormat: 'repeat' });
-                },
-            });
-
-            if (response.data.code == 'OK') {
-                const totalRecipes = response.data.data.totalRecipes;
-                const newRecipes: RecipeProps[] = response.data.data.recipes.map((recipe: RecipeProps) => ({
-                    ...recipe,
-                    recipeLevel: convertLevel(recipe.recipeLevel),
-                    recipeCookingTime: convertTime(recipe.recipeCookingTime),
-                }));
-
-                setRecipes((prev) => [...prev, ...newRecipes]);
-                setOffset((prev) => prev + 1);
-                setHasSearched(true);
-
-                if (recipes.length + newRecipes.length >= totalRecipes) {
-                    setHasMore(false); // 더 이상 불러올 데이터가 없으면 false로 설정
-                }
-            }
-        } catch (err) {
-            console.log('레시피 검색 error : ', err);
-            dispatch(showModal({ isOpen: true, content: '일치하는 레시피가 없습니다. 다른 조건으로 검색해주시기 바랍니다.', onConfirm: null }));
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    // 재료 입력후 enter 키를 누른 경우 handleSumbit 호출
+    // 3. 검색 : enterKey
     const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key == 'Enter') {
-            await handleSubmit(e);
+            await handleSubmitSearch(e);
         }
     };
-
-    // 난이도를 변경하는 핸들러
+    // 4. 검색 초기화
+    const handleInit = () => {
+        setTime('');
+        setLevel('');
+        setSearchIngredients('');
+        setIngredientsList([]);
+        setRecipes([]);
+    };
+    // 5. 난이도 변경
     const handleLevel = (e: MouseEvent<HTMLButtonElement>) => {
         if (recipes.length > 0) {
-            setTime('');
-            setLevel('');
-            setOffset(0);
-            setSearchIngredients('');
-            setIngredientsList([]);
-            setRecipes([]);
-            setIsLoading(false);
-            setHasSearched(false);
-            setHasMore(true);
+            handleInit();
         }
         const { value } = e.currentTarget;
         if (level == value) {
@@ -129,19 +87,10 @@ export default function SearchCondition(): JSX.Element {
             setLevel(value);
         }
     };
-
-    // 소요시간을 변경하는 핸들러
+    // 6. 소요시간 변경
     const handleTime = (e: MouseEvent<HTMLButtonElement>) => {
         if (recipes.length > 0) {
-            setTime('');
-            setLevel('');
-            setOffset(0);
-            setSearchIngredients('');
-            setIngredientsList([]);
-            setRecipes([]);
-            setIsLoading(false);
-            setHasSearched(false);
-            setHasMore(true);
+            handleInit();
         }
         const { value } = e.currentTarget;
         if (time == value) {
@@ -151,24 +100,12 @@ export default function SearchCondition(): JSX.Element {
         }
     };
 
-    const handleInit = () => {
-        setTime('');
-        setLevel('');
-        setOffset(0);
-        setSearchIngredients('');
-        setIngredientsList([]);
-        setRecipes([]);
-        setIsLoading(false);
-        setHasSearched(false);
-        setHasMore(true);
-    };
-
     return (
         <S_ConditionContainer>
             <S_ConditionList>
                 <S_SearchItem>
                     <S_SearchItemTitle>재료를 입력해주세요.</S_SearchItemTitle>
-                    <SearchBox value={searchIngredients} onChange={handleChange} handleKeyDown={handleKeyDown} />
+                    <SearchBox value={searchIngredients} onChange={handleChangeSearchIngre} handleKeyDown={handleKeyDown} />
                     {ingredientsList.length != 0 && (
                         <S_SearchIngredientsList length={ingredientsList.length}>
                             {ingredientsList.map((ingredient, idx) => (
@@ -203,14 +140,19 @@ export default function SearchCondition(): JSX.Element {
                     <S_SearchButton type="button" searchBtn={false} onClick={handleInit}>
                         초기화
                     </S_SearchButton>
-                    <S_SearchButton type="button" onClick={handleSubmit} searchBtn={true} disabled={ingredientsList.length == 0 && !level && !time}>
+                    <S_SearchButton
+                        type="button"
+                        onClick={handleSubmitSearch}
+                        searchBtn={true}
+                        disabled={ingredientsList.length == 0 && !level && !time}
+                    >
                         검색
                     </S_SearchButton>
                 </S_ButtonWrapper>
                 <p>재료명, 조리시간, 난이도 중 필요한 정보를 입력하여주시기 바랍니다. </p>
             </S_ConditionList>
 
-            <SearchResult hasMore={hasMore} recipes={recipes} isLoading={isLoading} hasSearched={hasSearched} fetchRecipes={fetchRecipes} />
+            <SearchResult isFetching={isFetching} hasNextPage={hasNextPage} recipes={recipes} fetchNextPage={fetchNextPage} />
         </S_ConditionContainer>
     );
 }

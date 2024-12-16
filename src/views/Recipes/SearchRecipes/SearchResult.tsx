@@ -2,30 +2,19 @@ import RecipeList from '../../../components/Recipe/RecipeList';
 import useObserver from '../../../hooks/useObserver.js';
 import Loading from '../../../components/Loading/Loading.js';
 import NoData from '../../../components/Loading/NoData.js';
+import { RecipeProps } from '../../../types/recipe.js';
 
-interface RecipeProps {
-    recipeId: number;
-    recipeName: string;
-    recipeAuthor: string;
-    recipeLevel: string;
-    recipeCookingTime: string;
-    recipeThumbnail: string;
-    recipeRating: number;
-    ingredients: Record<string, string | number>[];
-    instructions: Record<number | string, string>[];
-}
 interface SearchResultProps {
     recipes: RecipeProps[];
-    isLoading: boolean;
-    hasSearched: boolean;
-    fetchRecipes: () => void;
-    hasMore: boolean;
+    isFetching: boolean;
+    fetchNextPage: () => void;
+    hasNextPage: boolean;
 }
 
-export function SearchResult({ hasMore, recipes, isLoading, fetchRecipes, hasSearched }: SearchResultProps) {
+export function SearchResult({ recipes, isFetching, hasNextPage, fetchNextPage }: SearchResultProps): JSX.Element {
     const handleObserver = async (entry: IntersectionObserverEntry) => {
-        if (entry.isIntersecting && !isLoading) {
-            await fetchRecipes();
+        if (entry.isIntersecting && !isFetching && hasNextPage) {
+            await fetchNextPage();
         }
     };
     const target = useObserver(handleObserver);
@@ -33,12 +22,14 @@ export function SearchResult({ hasMore, recipes, isLoading, fetchRecipes, hasSea
     return (
         <>
             <RecipeList recipes={recipes} />
-            {hasSearched && recipes.length > 0 && hasMore ? (
+            {/* 검색전일때 Loading 표시 렌더되지 않게 처리 */}
+            {recipes.length > 0 && hasNextPage ? (
                 <div ref={target}>
                     <Loading />
                 </div>
             ) : (
-                !hasMore && <NoData />
+                // 다음페이지가 없을때 NoData 렌더
+                !hasNextPage && <NoData />
             )}
         </>
     );

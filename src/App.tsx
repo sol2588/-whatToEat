@@ -1,5 +1,5 @@
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import './App.css';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Login from './views/Login/Login.tsx';
 import Signup from './views/Signup/Signup.tsx';
 import Mypage from './views/Mypage/Mypage.tsx';
@@ -13,6 +13,7 @@ import AuthKaKao from './components/AuthKaKao.tsx';
 import SearchViewRecipes from './views/Recipes/SearchRecipes/SearchViewRecipes.tsx';
 import CreateRecipe from './views/Recipes/CreateRecipe/CreateRecipe.tsx';
 import UpdateRecipe from './views/Recipes/UpdateRecipe/UpdateRecipe.tsx';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 function App() {
     return (
@@ -33,6 +34,7 @@ function App() {
                     <Route path="/recipes/update/:id" element={<UpdateRecipe />} />
                 </Route>
             </Routes>
+            <ReactQueryDevtools initialIsOpen={false} position="bottom" />
         </BrowserRouter>
     );
 }

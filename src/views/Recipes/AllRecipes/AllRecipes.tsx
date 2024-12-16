@@ -1,21 +1,21 @@
 import RecipeList from '../../../components/Recipe/RecipeList.js';
 import useObserver from '../../../hooks/useObserver.js';
-import Loading from '../../../components/Loading/Loading.js';
 import { RecipeProps } from '../../../types/recipe.js';
+import Loading from '../../../components/Loading/Loading.js';
 import NoData from '../../../components/Loading/NoData.js';
 
 interface RecipeLimitProps {
     limit?: number;
     recipes: RecipeProps[];
-    fetchRecipes: () => void;
-    isLoading: boolean;
-    hasMore: boolean;
+    fetchNextPage: () => void;
+    isFetching: boolean;
+    hasNextPage: boolean;
 }
 
-export default function AllRecipes({ limit, recipes, fetchRecipes, isLoading, hasMore }: RecipeLimitProps): JSX.Element {
+export default function AllRecipes({ limit, recipes, fetchNextPage, hasNextPage, isFetching }: RecipeLimitProps): JSX.Element {
     const handleObserver = async (entry: IntersectionObserverEntry) => {
-        if (entry.isIntersecting && !isLoading) {
-            await fetchRecipes();
+        if (entry.isIntersecting && !isFetching && hasNextPage) {
+            await fetchNextPage();
         }
     };
 
@@ -26,7 +26,7 @@ export default function AllRecipes({ limit, recipes, fetchRecipes, isLoading, ha
             <RecipeList recipes={recipes} limit={limit} />
             {limit ? (
                 ''
-            ) : hasMore ? (
+            ) : hasNextPage ? (
                 <div ref={target}>
                     <Loading />
                 </div>

@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
-import useAuthToken from '../hooks/useAuthToken';
+import useAuthToken from './useAuthToken';
 import reissueToken from '../utils/api/reissueToken';
 import { useDispatch } from 'react-redux';
 import { loginSuccess } from '../redux/reducer/userSlice';
 
-export interface SSEProps {
+export interface SseProps {
     recipeName: string;
     message: string;
     rating: number;
@@ -13,15 +13,15 @@ export interface SSEProps {
     recipeId: number;
 }
 
-interface SSEState {
+interface SseState {
     isConnected: boolean;
     error: Error | null;
     reconnectCount: number;
 }
 
-export default function fetchSSEHandler() {
-    const [alarmData, setAlarmData] = useState<SSEProps[]>([]); // 서버가 푸쉬한 데이터 저장
-    const [sseState, setSseState] = useState<SSEState>({
+export default function useSseHandler() {
+    const [alarmData, setAlarmData] = useState<SseProps[]>([]); // 서버가 푸쉬한 데이터 저장
+    const [sseState, setSseState] = useState<SseState>({
         isConnected: false,
         error: null,
         reconnectCount: 0,
@@ -158,7 +158,7 @@ export default function fetchSSEHandler() {
         }
     }, [token, closeConnection]);
 
-    console.log('SSE State: ', sseState);
+    // console.log('SSE State: ', sseState);
 
     return { alarmData, sseState, setAlarmData };
 }

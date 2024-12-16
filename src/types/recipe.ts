@@ -8,8 +8,8 @@ export interface RecipeProps {
     recipeRating: number;
     createdAt?: Date;
     updatedAt?: Date;
-    // recipeIngredients?:Record<string, string>[]
-    // recipeManuals?: Record<string, string>[]
+    recipeIngredients?: Record<string, string | number>[];
+    recipesManuals?: Record<number | string, string>[];
 }
 
 export interface ManualsProps {

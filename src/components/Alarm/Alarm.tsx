@@ -1,9 +1,9 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
+import { SseProps } from '../../hooks/useSseHandler';
 import styled from 'styled-components';
-import { SSEProps } from '../../handler/fetchSSEHandler';
 
-export default function Alarm({ alarmData, changeAlarmData }: { alarmData: SSEProps[]; changeAlarmData: Dispatch<SetStateAction<SSEProps[]>> }) {
+export default function Alarm({ alarmData, changeAlarmData }: { alarmData: SseProps[]; changeAlarmData: Dispatch<SetStateAction<SseProps[]>> }) {
     const handleChangeAlarmData = (id: number) => {
         changeAlarmData((prev) => prev.filter((alarm) => alarm.recipeId != id));
     };

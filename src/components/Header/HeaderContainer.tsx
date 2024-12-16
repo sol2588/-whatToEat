@@ -5,12 +5,12 @@ import { RootState } from '../../redux/store/store';
 import { FiLogOut, FiUser, FiBell, FiMenu } from 'react-icons/fi';
 import { logoutSuccess } from '../../redux/reducer/userSlice';
 import { useNavigate } from 'react-router-dom';
-// import Alarm from '../Alarm/Alarm';
+import useSseHandler from '../../hooks/useSseHandler';
+import Alarm from '../Alarm/Alarm';
 import styled from 'styled-components';
 import logo from '../../assets/img/chef-logo.png';
 import colors from '../../styles/colors';
 import axios from 'axios';
-// import fetchSSEHandler from '../../handler/fetchSSEHandler';
 
 interface HeaderProps {
     menuItems: Record<string, string>[];
@@ -26,8 +26,8 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    // const { alarmData, setAlarmData } = fetchSSEHandler();
-    // const alarmCount = alarmData.length;
+    const { alarmData, setAlarmData } = useSseHandler();
+    const alarmCount = alarmData.length;
     const handleShowAlarm = (e: MouseEvent) => {
         e.stopPropagation();
         setShowAlarm(!showAlarm);
@@ -59,9 +59,9 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                         <S_BellIconWrapper>
                             <S_BellIcon>
                                 <FiBell onClick={handleShowAlarm} />
-                                {/* <S_AlaramBadge>{alarmCount}</S_AlaramBadge> */}
+                                <S_AlaramBadge>{alarmCount}</S_AlaramBadge>
                             </S_BellIcon>
-                            {/* {showAlarm && <Alarm alarmData={alarmData} changeAlarmData={setAlarmData} />} */}
+                            {showAlarm && <Alarm alarmData={alarmData} changeAlarmData={setAlarmData} />}
                         </S_BellIconWrapper>
                     </S_LoginUserList>
                 ) : (
@@ -290,20 +290,20 @@ const S_HeaderButton = styled.div`
         font-size: 22px;
     }
 `;
-// const S_AlaramBadge = styled.span`
-//     width: 15px;
-//     height: 15px;
-//     padding: 2px 4px;
-//     font-size: 10px;
-//     background-color: red;
-//     color: #fff;
-//     border-radius: 50%;
-//     position: absolute;
-//     top: -5px;
-//     right: -5px;
-//     @media screen and (min-width: 1500px) {
-//         width: 20px;
-//         height: 20px;
-//         font-size: 16px;
-//     }
-// `;
+const S_AlaramBadge = styled.span`
+    width: 15px;
+    height: 15px;
+    padding: 2px 4px;
+    font-size: 10px;
+    background-color: red;
+    color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    @media screen and (min-width: 1500px) {
+        width: 20px;
+        height: 20px;
+        font-size: 16px;
+    }
+`;
