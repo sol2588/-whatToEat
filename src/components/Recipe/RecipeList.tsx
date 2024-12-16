@@ -1,15 +1,7 @@
 import RecipeNewCard from './RecipeNewCard';
 import styled from 'styled-components';
+import { RecipeProps } from '../../types/recipe';
 
-interface RecipeProps {
-    recipeId: number;
-    recipeName: string;
-    recipeAuthor: string;
-    recipeLevel: string;
-    recipeCookingTime: string;
-    recipeThumbnail: string;
-    recipeRating: number;
-}
 interface RecipeListProps {
     recipes: RecipeProps[];
     limit?: number;

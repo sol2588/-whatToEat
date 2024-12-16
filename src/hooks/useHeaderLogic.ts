@@ -28,8 +28,8 @@ export default function useHeaderLogic() {
         { name: 'Home', to: '/' },
         { name: 'All', to: '/recipes/all' },
         { name: 'Popular', to: '/recipes/popular' },
+        { name: 'Recommended', to: '/recipes/recommended' },
         { name: 'Search', to: '/recipes/search' },
-        ...(isLogin ? [{ name: 'Recommended', to: '/recipes/recommended' }] : []),
     ];
 
     return { handleClickMenu, isActive, menuItems };
