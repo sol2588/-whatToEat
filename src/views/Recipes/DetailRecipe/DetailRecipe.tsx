@@ -1,60 +1,30 @@
-import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { BsCartCheckFill } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store/store';
+import { useRecipeDelete } from '../../../hooks/useRecipeDelete';
+import { useGetRecipeId } from '../../../hooks/useGetRecipeId';
+import { convertLevel, convertTime } from '../../../common/convertFunc';
+import { RecipeProps } from '../../../types/recipe';
 import RecipeMetaData from '../../../components/Recipe/RecipeMetaData';
 import CommentsView from '../../Comments/CommentsView';
-import { convertLevel, convertTime } from '../../../common/convertFunc';
-import { RootState } from '../../../redux/store/store';
-import { useSelector } from 'react-redux';
-import { useRecipeDelete } from '../../../hooks/useRecipeDelete';
 import Loading from '../../../components/Loading/Loading';
-import instance from '../../../utils/api/instance';
+import { BsCartCheckFill } from 'react-icons/bs';
 import styled from 'styled-components';
 
-interface Props {
-    recipeId: number;
-    recipeAuthor: string;
-    recipeName: string;
-    recipeLevel: string;
-    recipeCookingTime: string;
-    recipeRating: number;
-    recipeThumbnail: string;
-    recipeIngredients: Record<string, string>[];
-    recipesManuals: Record<string, string>[];
-}
-
 export default function DetailRecipe(): JSX.Element {
-    const { id } = useParams();
-    const [recipe, setRecipe] = useState<Props | null>(null);
+    const { id } = useParams<{ id: string }>();
+    const recipeId = Number(id);
+    const { data } = useGetRecipeId(recipeId);
+    const recipe: RecipeProps = data && {
+        ...data,
+        recipeCookingTime: convertTime(data.recipeCookingTime),
+        recipeLevel: convertLevel(data.recipeLevel),
+    };
 
+    const nickname = useSelector((state: RootState) => state.user.value.nickname);
     //게시물삭제
     const { handleMyRecipeDelete } = useRecipeDelete();
-
-    //로그인된 유저 닉네임
-    const nickname = useSelector((state: RootState) => state.user.value.nickname);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await instance.get(`${import.meta.env.VITE_BASE_URL}/recipes/${id}`);
-                if (response.data.code === 'OK') {
-                    const data = response.data.data;
-                    const convertData = {
-                        ...data,
-                        recipeLevel: convertLevel(data.recipeLevel),
-                        recipeCookingTime: convertTime(data.recipeCookingTime),
-                    };
-
-                    setRecipe(convertData);
-                }
-            } catch (err: any) {
-                console.log(err);
-            }
-        };
-        fetchData();
-    }, [id]);
-
-    // recipeAuthor와 loggedNickname이 일치할 경우 수정, 삭제 버튼을 보여줌
+    // recipeAuthor와 nickname 일치할 경우 수정, 삭제 버튼
     const isAuthor = recipe && recipe.recipeAuthor === nickname;
 
     if (!recipe) {
@@ -224,7 +194,7 @@ const S_DetailRecipeFigure = styled.figure<{ idx: number }>`
 
     @media screen and (min-width: 1440px) {
         img {
-            max-height: 300px;
+            height: 400px;
         }
     }
     @media screen and (max-width: 1024px) {

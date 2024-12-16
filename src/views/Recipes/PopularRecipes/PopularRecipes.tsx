@@ -1,21 +1,20 @@
 import RecipeList from '../../../components/Recipe/RecipeList.js';
 import useObserver from '../../../hooks/useObserver.js';
 import Loading from '../../../components/Loading/Loading.js';
-import { RecipeProps } from './PopularRecipeData.js';
+import { RecipeProps } from '../../../types/recipe.js';
 import NoData from '../../../components/Loading/NoData.js';
-// import { debounce } from 'lodash';
 
 interface RecipeLimitProps {
     recipes: RecipeProps[];
-    fetchRecipes: () => void;
-    isLoading: boolean;
-    hasMore: boolean;
+    fetchNextPage: () => void;
+    isFetching: boolean;
+    hasNextPage: boolean;
 }
 
-export default function PopularRecipes({ hasMore, recipes, fetchRecipes, isLoading }: RecipeLimitProps): JSX.Element {
+export default function PopularRecipes({ hasNextPage, recipes, fetchNextPage, isFetching }: RecipeLimitProps): JSX.Element {
     const handleObserver = async (entry: IntersectionObserverEntry) => {
-        if (entry.isIntersecting && !isLoading) {
-            await fetchRecipes();
+        if (entry.isIntersecting && !isFetching && hasNextPage) {
+            await fetchNextPage();
         }
     };
 
@@ -24,7 +23,7 @@ export default function PopularRecipes({ hasMore, recipes, fetchRecipes, isLoadi
     return (
         <>
             <RecipeList recipes={recipes} />
-            {hasMore ? (
+            {hasNextPage ? (
                 <div ref={target}>
                     <Loading />
                 </div>
