@@ -28,7 +28,7 @@ export const recipeHandlers = [
     http.get(`${import.meta.env.VITE_BASE_URL}/recipes/popular`, ({ request }) => {
         const url = new URL(request.url);
         const page = Number(url.searchParams.get('page')) || 0;
-        const popular = recipes
+        const popular = [...recipes]
             .sort((a, b) => b.recipeRating - a.recipeRating)
             .slice(page * PAGE_SIZE, Math.min((page + 1) * PAGE_SIZE, recipes.length));
 
