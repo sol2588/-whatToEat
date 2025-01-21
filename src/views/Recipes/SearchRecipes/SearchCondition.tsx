@@ -12,45 +12,40 @@ import styled from 'styled-components';
 
 export default function SearchCondition(): JSX.Element {
     const dispatch = useDispatch();
-    const [recipes, setRecipes] = useState<RecipeProps[]>([]); // 레시피 데이터 저장
-    const [searchIngredients, setSearchIngredients] = useState<string>(''); // 입력 검색어
-    const [ingredientsList, setIngredientsList] = useState<string[]>([]); // 입력 검색어 저장 리스트
-    const [time, setTime] = useState<string>(''); // 소요시간(select에서 선택)
-    const [level, setLevel] = useState<string>(''); // 난이도(select에서 선택)
+    const [searchTerms, setSearchTerms] = useState<string>(''); // 검색어
+    const [ingredientsList, setIngredientsList] = useState<string[]>([]); // 검색 재료 리스트
+    const [time, setTime] = useState<string>(''); // 소요시간(select 선택)
+    const [level, setLevel] = useState<string>(''); // 난이도(select 선택)
 
-    const { data, isFetching, hasNextPage, fetchNextPage } = useGetRecipes('search', ingredientsList, time, level);
-
-    console.log(data);
+    const { refetch, data, isFetching, hasNextPage, fetchNextPage } = useGetRecipes('search', ingredientsList, time, level, false);
 
     // 검색어에 따른 재료 리스트 설정
     useEffect(() => {
-        // 입력값이 있는 경우
-        if (searchIngredients.trim()) {
-            const ingredients = searchIngredients.split(' ').filter((ingredient) => ingredient);
+        // 입력값이 있는 경우 : 검색 재료 리스트 값을 filter
+        if (searchTerms.trim()) {
+            const ingredients = searchTerms.split(' ').filter(Boolean);
             setIngredientsList(ingredients);
-            // 입력값이 없는 경우 빈배열 설정
+            // 입력값이 없는 경우 : 빈배열
         } else {
             setIngredientsList([]);
         }
-    }, [searchIngredients]);
+    }, [searchTerms]);
 
-    // 검색레시피 불러오기
-    const getSearchedRecipes = () => {
-        setRecipes(
-            data?.pages.flatMap((page) =>
-                page.recipes.map((recipe: RecipeProps) => ({
-                    ...recipe,
-                    recipeLevel: convertLevel(recipe.recipeLevel),
-                    recipeCookingTime: convertTime(recipe.recipeCookingTime),
-                })),
-            ) || [],
-        );
-    };
+    // 레시피 가져오기
+    const getRecipes = async () => await refetch();
+    const recipes: RecipeProps[] =
+        data?.pages.flatMap((page) =>
+            page.recipes.map((recipe: RecipeProps) => ({
+                ...recipe,
+                recipeLevel: convertLevel(recipe.recipeLevel),
+                recipeCookingTime: convertTime(recipe.recipeCookingTime),
+            })),
+        ) || [];
 
     // handler
     // 1. 검색 재료 저장
     const handleChangeSearchIngre = (e: ChangeEvent<HTMLInputElement>) => {
-        setSearchIngredients(e.target.value);
+        setSearchTerms(e.target.value);
     };
     // 2. 검색 : 버튼
     const handleSubmitSearch = async (e: FormEvent) => {
@@ -59,7 +54,11 @@ export default function SearchCondition(): JSX.Element {
             dispatch(showModal({ isOpen: true, content: '재료명, 조리시간, 난이도 중 하나는 입력해주시기 바랍니다.', onConfirm: null }));
             return;
         }
-        await getSearchedRecipes();
+        const result = await refetch();
+        // 검색레시피 저장
+        if (result.data && data) {
+            getRecipes();
+        }
     };
     // 3. 검색 : enterKey
     const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
@@ -71,9 +70,9 @@ export default function SearchCondition(): JSX.Element {
     const handleInit = () => {
         setTime('');
         setLevel('');
-        setSearchIngredients('');
+        setSearchTerms('');
         setIngredientsList([]);
-        setRecipes([]);
+        // setRecipes([]);
     };
     // 5. 난이도 변경
     const handleLevel = (e: MouseEvent<HTMLButtonElement>) => {
@@ -105,7 +104,7 @@ export default function SearchCondition(): JSX.Element {
             <S_ConditionList>
                 <S_SearchItem>
                     <S_SearchItemTitle>재료를 입력해주세요.</S_SearchItemTitle>
-                    <SearchBox value={searchIngredients} onChange={handleChangeSearchIngre} handleKeyDown={handleKeyDown} />
+                    <SearchBox value={searchTerms} onChange={handleChangeSearchIngre} handleKeyDown={handleKeyDown} />
                     {ingredientsList.length != 0 && (
                         <S_SearchIngredientsList length={ingredientsList.length}>
                             {ingredientsList.map((ingredient, idx) => (

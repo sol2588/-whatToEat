@@ -19,17 +19,20 @@ export function SearchResult({ recipes, isFetching, hasNextPage, fetchNextPage }
     };
     const target = useObserver(handleObserver);
 
+    if (recipes.length == 0) {
+        return <></>;
+    }
+    console.log(recipes);
+
     return (
         <>
             <RecipeList recipes={recipes} />
-            {/* 검색전일때 Loading 표시 렌더되지 않게 처리 */}
-            {recipes.length > 0 && hasNextPage ? (
+            {hasNextPage ? (
                 <div ref={target}>
                     <Loading />
                 </div>
             ) : (
-                // 다음페이지가 없을때 NoData 렌더
-                !hasNextPage && <NoData />
+                <NoData />
             )}
         </>
     );
