@@ -7,10 +7,10 @@ import HeaderView from './components/Header/HeaderView.tsx';
 import Home from './views/Home/Home.tsx';
 import AllRecipesView from './views/Recipes/AllRecipes/AllRecipesView.tsx';
 import PopularRecipesView from './views/Recipes/PopularRecipes/PopularRecipesView.tsx';
-import RecommendedRecipes from './views/Recipes/RecommendedRecipes/RecommendedRecipes.tsx';
+import RecommendedRecipesView from './views/Recipes/RecommendedRecipes/RecommendedRecipesView.tsx';
 import DetailRecipe from './views/Recipes/DetailRecipe/DetailRecipe.tsx';
 import AuthKaKao from './components/AuthKaKao.tsx';
-import SearchViewRecipes from './views/Recipes/SearchRecipes/SearchViewRecipes.tsx';
+import SearchCondition from './views/Recipes/SearchRecipes/SearchCondition.tsx';
 import CreateRecipe from './views/Recipes/CreateRecipe/CreateRecipe.tsx';
 import UpdateRecipe from './views/Recipes/UpdateRecipe/UpdateRecipe.tsx';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -27,8 +27,8 @@ function App() {
                     <Route path="/mypage" element={<Mypage />} />
                     <Route path="/recipes/all" element={<AllRecipesView />} />
                     <Route path="/recipes/popular" element={<PopularRecipesView />} />
-                    <Route path="/recipes/search" element={<SearchViewRecipes />} />
-                    <Route path="/recipes/recommended" element={<RecommendedRecipes />} />
+                    <Route path="/recipes/search" element={<SearchCondition />} />
+                    <Route path="/recipes/recommended" element={<RecommendedRecipesView />} />
                     <Route path="/recipes/:id" element={<DetailRecipe />} />
                     <Route path="/recipes/create" element={<CreateRecipe />} />
                     <Route path="/recipes/update/:id" element={<UpdateRecipe />} />

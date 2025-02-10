@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useSuspenseInfiniteQuery } from '@tanstack/react-query';
 import instance from '../utils/api/instance';
 import qs from 'qs';
 
@@ -24,15 +24,14 @@ const getTypeRecipes = async (type: string | null, offset: number, ingredients?:
     return response.data.data;
 };
 
-export function useGetRecipes(type: string = 'all', ingredients?: string[], time?: string, level?: string, enabled: boolean = true) {
-    const { refetch, isLoading, isFetching, isError, error, fetchNextPage, hasNextPage, data } = useInfiniteQuery({
+export function useGetRecipes(type: string = 'all', ingredients?: string[], time?: string, level?: string) {
+    const { refetch, isLoading, isFetching, isError, error, fetchNextPage, hasNextPage, data } = useSuspenseInfiniteQuery({
         queryKey: ['recipes', type, { time, level, ingredients }], // time, level, ingredients 순서는 중요하지 않음
         queryFn: ({ pageParam = 0 }) => getTypeRecipes(type == 'all' ? null : type, pageParam, ingredients, time, level),
         initialPageParam: 0,
         getNextPageParam: (lastPage, allPages) => {
             return allPages.length * 15 < lastPage.totalRecipes ? allPages.length : null;
         },
-        enabled,
     });
 
     return { refetch, data, isLoading, isFetching, isError, error, hasNextPage, fetchNextPage, ingredients, time, level };
