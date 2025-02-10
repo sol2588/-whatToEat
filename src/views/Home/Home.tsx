@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Carousel from './Carousel';
 import styled from 'styled-components';
 import AllRecipesView from '../Recipes/AllRecipes/AllRecipesView';
@@ -8,6 +8,7 @@ import all from '../../assets/img/all.jpeg';
 import createRecipe from '../../assets/img/create.jpeg';
 import recommend from '../../assets/img/recommend.jpeg';
 import bookmark from '../../assets/img/bookmark.jpeg';
+import CardSkeleton from '../../components/Skeleton/CardSkeleton';
 // import Visited from '../../components/Visited/Visited';
 
 export default function Home(): JSX.Element {
@@ -61,7 +62,9 @@ export default function Home(): JSX.Element {
             </HomeMain>
             <RecipesList>
                 <h3>전체 레시피</h3>
-                <AllRecipesView limit={limit} />
+                <Suspense fallback={<CardSkeleton />}>
+                    <AllRecipesView limit={limit} />
+                </Suspense>
                 <StyledLink to="/recipes/all">view more</StyledLink>
             </RecipesList>
         </HomeContainer>

@@ -21,17 +21,19 @@ export default function AllRecipes({ limit, recipes, fetchNextPage, hasNextPage,
 
     const target = useObserver(handleObserver);
 
+    if (limit) {
+        return <></>;
+    }
+
     return (
         <>
             <RecipeList recipes={recipes} limit={limit} />
-            {limit ? (
-                ''
-            ) : hasNextPage ? (
+            {hasNextPage ? (
                 <div ref={target}>
                     <Loading />
                 </div>
             ) : (
-                <NoData />
+                recipes.length > 0 && <NoData />
             )}
         </>
     );

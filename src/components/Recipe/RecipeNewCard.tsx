@@ -70,10 +70,7 @@ const S_CardImg = styled.img`
     border-top-right-radius: 8px;
     object-fit: cover;
 
-    @media screen and (min-width: 1024px) and (max-width: 1440px) {
-        height: 200px;
-    }
-    @media screen and (min-width: 769px) and (max-width: 1024px) {
+    @media screen and (min-width: 769px) and (max-width: 1440px) {
         height: 200px;
     }
     @media screen and (max-width: 768px) {

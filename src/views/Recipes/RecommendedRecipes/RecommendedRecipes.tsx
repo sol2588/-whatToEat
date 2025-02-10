@@ -1,8 +1,10 @@
+import { Suspense } from 'react';
 import RecipeList from '../../../components/Recipe/RecipeList.js';
 import { convertTime, convertLevel } from '../../../common/convertFunc.js';
 import { RecipeProps } from '../../../types/recipe.js';
 import { useGetRecipes } from '../../../hooks/useGetRecipes.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
+import CardSkeleton from '../../../components/Skeleton/CardSkeleton.js';
 
 export default function RecommendedRecipes(): JSX.Element {
     const { data } = useGetRecipes('recommended');
@@ -18,7 +20,9 @@ export default function RecommendedRecipes(): JSX.Element {
 
     return (
         <S_RecipeContainer>
-            <RecipeList recipes={recipes} />
+            <Suspense fallback={<CardSkeleton />}>
+                <RecipeList recipes={recipes} />
+            </Suspense>
         </S_RecipeContainer>
     );
 }
