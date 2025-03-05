@@ -11,7 +11,7 @@ interface RecipeLimitProps {
     hasNextPage: boolean;
 }
 
-export default function PopularRecipes({ hasNextPage, recipes, fetchNextPage, isFetching }: RecipeLimitProps): JSX.Element {
+export default function PopularRecipesPage({ hasNextPage, recipes, fetchNextPage, isFetching }: RecipeLimitProps): JSX.Element {
     const handleObserver = async (entry: IntersectionObserverEntry) => {
         if (entry.isIntersecting && !isFetching && hasNextPage) {
             await fetchNextPage();

@@ -1,4 +1,4 @@
-import PopularRecipes from './PopularRecipes';
+import PopularRecipesPage from './PopularRecipesPage.js';
 import { convertLevel, convertTime } from '../../../common/convertFunc.js';
 import { RecipeProps } from '../../../types/recipe.js';
 import { useGetRecipes } from '../../../hooks/useGetRecipes.js';
@@ -18,7 +18,7 @@ export default function PopularRecipeData(): JSX.Element {
 
     return (
         <S_RecipeContainer>
-            <PopularRecipes hasNextPage={hasNextPage} recipes={recipes} fetchNextPage={fetchNextPage} isFetching={isFetching} />
+            <PopularRecipesPage hasNextPage={hasNextPage} recipes={recipes} fetchNextPage={fetchNextPage} isFetching={isFetching} />
         </S_RecipeContainer>
     );
 }
