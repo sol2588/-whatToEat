@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect, Suspense } from 'react';
 import Carousel from './Carousel';
 import styled from 'styled-components';
-import AllRecipesView from '../Recipes/AllRecipes/AllRecipesView';
+import AllRecipesView from '../Recipes/AllRecipes/AllRecipesConatiner';
 import question from '../../assets/img/main.jpeg';
 import all from '../../assets/img/all.jpeg';
 import createRecipe from '../../assets/img/create.jpeg';

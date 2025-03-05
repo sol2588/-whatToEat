@@ -6,7 +6,7 @@ export interface RecipeLimitProps {
     limit?: number;
 }
 
-export default function AllRecipesView({ limit }: RecipeLimitProps) {
+export default function AllRecipesConatiner({ limit }: RecipeLimitProps) {
     return (
         <Suspense fallback={<CardSkeleton />}>
             <AllRecipesData limit={limit} />;

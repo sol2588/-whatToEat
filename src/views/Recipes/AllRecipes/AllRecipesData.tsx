@@ -4,7 +4,7 @@ import { convertLevel, convertTime } from '../../../common/convertFunc.js';
 import { RecipeProps } from '../../../types/recipe.js';
 import { useGetRecipes } from '../../../hooks/useGetRecipes.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
-import AllRecipes from './AllRecipes.js';
+import AllRecipesPage from './AllRecipesPage.js';
 
 interface RecipeLimitProps {
     limit?: number;
@@ -32,7 +32,7 @@ export default function AllRecipesData({ limit }: RecipeLimitProps) {
     return (
         <S_RecipeContainer>
             <Suspense fallback={<CardSkeleton />}>
-                <AllRecipes
+                <AllRecipesPage
                     hasNextPage={hasNextPage}
                     limit={limit}
                     recipes={recipes}

@@ -6,7 +6,7 @@ import { useGetRecipes } from '../../../hooks/useGetRecipes.js';
 import { S_RecipeContainer } from '../../../styles/RecipeContainer.js';
 import CardSkeleton from '../../../components/Skeleton/CardSkeleton.js';
 
-export default function RecommendedRecipes(): JSX.Element {
+export default function RecommendedRecipesPage(): JSX.Element {
     const { data } = useGetRecipes('recommended');
 
     const recipes =

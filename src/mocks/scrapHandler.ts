@@ -10,8 +10,7 @@ export const scrapHandler = [
             const { recipeId } = params as { recipeId: string };
             const token = store.getState().user.value.token;
             const refreshToken = cookies.refresh;
-
-            if (!refreshToken) {
+            if (!refreshToken || !token) {
                 store.dispatch(
                     showModal({
                         isOpen: true,

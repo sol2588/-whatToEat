@@ -48,7 +48,7 @@ export const recipeHandlers = [
         const getRandomId = () => {
             const idArray: number[] = [];
             while (idArray.length < 3) {
-                let id = Math.floor(Math.random() * 376);
+                const id = Math.floor(Math.random() * 376);
                 if (idArray.includes(id)) continue;
                 idArray.push(id);
             }
@@ -108,7 +108,7 @@ export const recipeHandlers = [
             });
         } catch (err) {
             return HttpResponse.json({
-                message: '일치하는 레시피가 없습니다. 다른 조건으로 검색해주시기 바랍니다.',
+                message: ', 검색 중 작은 문제가 발생했습니다. 잠시 후 다시 시도하여 주시기 바랍니다.',
             });
         }
     }),
