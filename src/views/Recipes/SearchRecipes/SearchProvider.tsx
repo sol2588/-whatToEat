@@ -16,12 +16,6 @@ interface FilterContextType {
     searchParams: FilterType;
     actions: {
         updateSearchParams: <K extends keyof FilterType>(key: K, value: FilterType[K]) => void;
-        // changeSearching: (option: boolean) => void;
-        // changeFetching: (option: boolean) => void;
-        // changeLevel: (lv: string) => void;
-        // changeTime: (tick: string) => void;
-        // changeTerm: (text: string) => void;
-        // changeIngredientsList: (arr: string[] | []) => void;
         handleInit: () => void;
     };
 }
