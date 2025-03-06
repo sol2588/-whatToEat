@@ -2,11 +2,11 @@ import styled from 'styled-components';
 import photo from '../../assets/img/photo.png';
 import { S_RecipeContainer } from '../../styles/RecipeContainer';
 
-export default function CardSkeleton() {
+export default function CardSkeleton({ limit }: { limit?: number }) {
     return (
         <S_RecipeContainer>
             <S_RecipeUlList>
-                {Array(6)
+                {Array(limit ? limit : 6)
                     .fill(0)
                     .map((_, idx) => (
                         <S_CardFigure key={idx}>
