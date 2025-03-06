@@ -8,8 +8,8 @@ export interface RecipeLimitProps {
 
 export default function AllRecipesConatiner({ limit }: RecipeLimitProps) {
     return (
-        <Suspense fallback={<CardSkeleton />}>
-            <AllRecipesData limit={limit} />;
+        <Suspense fallback={<CardSkeleton limit={limit} />}>
+            <AllRecipesData limit={limit} />
         </Suspense>
     );
 }

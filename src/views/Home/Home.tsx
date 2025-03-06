@@ -1,15 +1,37 @@
 import { Link } from 'react-router-dom';
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import Carousel from './Carousel';
 import styled from 'styled-components';
-import AllRecipesView from '../Recipes/AllRecipes/AllRecipesConatiner';
+import AllRecipesConatiner from '../Recipes/AllRecipes/AllRecipesConatiner';
 import question from '../../assets/img/main.jpeg';
 import all from '../../assets/img/all.jpeg';
 import createRecipe from '../../assets/img/create.jpeg';
 import recommend from '../../assets/img/recommend.jpeg';
 import bookmark from '../../assets/img/bookmark.jpeg';
-import CardSkeleton from '../../components/Skeleton/CardSkeleton';
 // import Visited from '../../components/Visited/Visited';
+
+const CAROUSEL_LISTS = [
+    {
+        url: question,
+        content: '오늘 뭘 먹을지 고민되지 않으신가요?',
+    },
+    {
+        url: recommend,
+        content: '하루에 3번, 오늘의 요리를 추천받아보세요.',
+    },
+    {
+        url: bookmark,
+        content: '나중에 도전하고 싶은 레시피를 저장할 수 있어요',
+    },
+    {
+        url: all,
+        content: '먹고 싶은 요리를 직접 고를수도 있어요',
+    },
+    {
+        url: createRecipe,
+        content: '직접 레시피를 작성할수 있어요',
+    },
+];
 
 export default function Home(): JSX.Element {
     const [limit, setLimit] = useState<number>(3);
@@ -27,30 +49,8 @@ export default function Home(): JSX.Element {
         window.addEventListener('resize', handleResize);
     }, [limit]);
 
-    const carouselLists = [
-        {
-            url: question,
-            content: '오늘 뭘 먹을지 고민되지 않으신가요?',
-        },
-        {
-            url: recommend,
-            content: '하루에 3번, 오늘의 요리를 추천받아보세요.',
-        },
-        {
-            url: bookmark,
-            content: '나중에 도전하고 싶은 레시피를 저장할 수 있어요',
-        },
-        {
-            url: all,
-            content: '먹고 싶은 요리를 직접 고를수도 있어요',
-        },
-        {
-            url: createRecipe,
-            content: '직접 레시피를 작성할수 있어요',
-        },
-    ];
     return (
-        <HomeContainer>
+        <section>
             <HomeMain>
                 <HomeContent>
                     <h2>오늘의 레시피 추천</h2>
@@ -58,20 +58,17 @@ export default function Home(): JSX.Element {
                     <StyledLink to="/recipes/recommended">추천 레시피</StyledLink>
                     {/* <VisitedContainer><Visited /></VisitedContainer> */}
                 </HomeContent>
-                <Carousel carouselLists={carouselLists} />
+                <Carousel carouselLists={CAROUSEL_LISTS} />
             </HomeMain>
             <RecipesList>
                 <h3>전체 레시피</h3>
-                <Suspense fallback={<CardSkeleton />}>
-                    <AllRecipesView limit={limit} />
-                </Suspense>
+                <AllRecipesConatiner limit={limit} />
                 <StyledLink to="/recipes/all">view more</StyledLink>
             </RecipesList>
-        </HomeContainer>
+        </section>
     );
 }
 
-const HomeContainer = styled.section``;
 const HomeMain = styled.div`
     padding: 30px 70px;
     background-color: #d8dced;
