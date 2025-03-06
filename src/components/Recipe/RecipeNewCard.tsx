@@ -8,8 +8,6 @@ import colors from '../../styles/colors';
 import styled from 'styled-components';
 import { RootState } from '../../redux/store/store';
 
-// ! main 페이지가 아닌 all isMain을 콘솔에 찍으면 false값이 찍힘 -> 최적화 방안 생각(RecipeCard에서는 4번 : main, all, recipeList, recipeCard인듯
-
 export default function RecipeNewCard({
     recipeId,
     recipeName,
@@ -19,15 +17,18 @@ export default function RecipeNewCard({
     recipeRating,
 }: RecipeProps): JSX.Element {
     const menu = localStorage.getItem('menu');
-    const marked = useSelector((state: RootState) => state.book);
+    const scrapedRecipes = useSelector((state: RootState) => state.book);
     const { handleClickBookmark } = useBookmark();
 
     return (
         <S_CardFigure>
             <S_CardImg alt="레시피이미지" src={recipeThumbnail} />
             <S_CardFigcaption>
-                <S_BookmarkIcons onClick={(e) => handleClickBookmark(e, recipeId)} mark={marked.booklist.includes(recipeId)}>
-                    {marked.booklist.find((item) => item == recipeId) ? <FaBookmark /> : <FaRegBookmark />}
+                <S_BookmarkIcons
+                    onClick={(e) => handleClickBookmark(e, recipeId)}
+                    mark={scrapedRecipes.booklist.some((markedItem) => markedItem.recipeId == recipeId)}
+                >
+                    {scrapedRecipes.booklist.some((markedItem) => markedItem.recipeId == recipeId) ? <FaBookmark /> : <FaRegBookmark />}
                 </S_BookmarkIcons>
                 <S_CardCategory>{menu} 레시피입니다.</S_CardCategory>
 

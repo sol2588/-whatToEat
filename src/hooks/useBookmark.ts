@@ -20,11 +20,11 @@ export const useBookmark = () => {
             }
 
             if (response.data.code == 'OK') {
-                if (response.data.data == 'CANCELED') {
+                if (response.data.data.status == 'CANCELED') {
                     dispatch(removeBookmark(recipeId));
                     dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
-                } else if (response.data.data == 'SCRAPED') {
-                    dispatch(addBookmark(recipeId));
+                } else if (response.data.data.status == 'SCRAPED') {
+                    dispatch(addBookmark(response.data.data.scrapData));
                     dispatch(showModal({ isOpen: true, content: response.data.message, onConfirm: null }));
                 }
             }

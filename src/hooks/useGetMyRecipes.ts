@@ -8,14 +8,7 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
         myRecipeThumbnail: string;
     }
 
-    interface ScrabRecipe {
-        recipeAuthor: string;
-        recipeId: number;
-        recipeName: string;
-        recipeThumbnail: string;
-    }
     const [myRecipes, setMyRecipes] = useState<MyRecipe[]>([]);
-    const [scrapedRecipes, setScrapedRecipes] = useState<ScrabRecipe[]>([]);
     const [totalMyRecipesPages, setTotalMyRecipesPages] = useState(1); // 총 작성 레시피 페이지 수
     const [totalScrapedRecipesPages, setTotalScrapedRecipesPages] = useState(1); // 총 스크랩 레시피 페이지 수
 
@@ -28,7 +21,6 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
                 if (response.data.code === 'OK') {
                     // API 응답 데이터를 사용하여 상태 업데이트
                     setMyRecipes(response.data.data.myRecipes.dataList);
-                    setScrapedRecipes(response.data.data.myScrapedRecipes.dataList);
                     // 총 페이지 수 업데이트
                     setTotalMyRecipesPages(response.data.data.myRecipes.totalPage);
                     setTotalScrapedRecipesPages(response.data.data.myScrapedRecipes.totalPage);
@@ -44,9 +36,7 @@ export const useGetMyRecipes = (myRecipesPage: number, scrapedRecipesPage: numbe
     return {
         myRecipes,
         setMyRecipes,
-        scrapedRecipes,
         totalMyRecipesPages,
         totalScrapedRecipesPages,
-        setScrapedRecipes,
     };
 };
