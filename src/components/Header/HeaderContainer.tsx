@@ -1,4 +1,4 @@
-import { useState, MouseEvent, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store/store';
@@ -22,14 +22,14 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
     const [showAlarm, setShowAlarm] = useState<boolean>(false);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const outSideBar = useRef<HTMLDivElement | null>(null);
+    const outSideBell = useRef<HTMLDivElement | null>(null);
     const isLogin = useSelector((state: RootState) => state.user.value.isLoggedIn);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const { alarmData, setAlarmData } = useSseHandler();
     const alarmCount = alarmData.length;
-    const handleShowAlarm = (e: MouseEvent) => {
-        e.stopPropagation();
+    const handleShowAlarm = () => {
         setShowAlarm(!showAlarm);
     };
 
@@ -46,7 +46,14 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
     };
 
     return (
-        <S_HaderContainer>
+        <S_HaderContainer
+            ref={outSideBell}
+            onClick={(e) => {
+                if (e.target == outSideBell.current) {
+                    setShowAlarm(false);
+                }
+            }}
+        >
             <S_UserAction>
                 {isLogin ? (
                     <S_LoginUserList>
@@ -56,10 +63,10 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                         <S_StyledLink to="/mypage">
                             <FiUser />
                         </S_StyledLink>
-                        <S_BellIconWrapper>
+                        <S_BellIconWrapper onClick={(e) => e.stopPropagation()}>
                             <S_BellIcon>
                                 <FiBell onClick={handleShowAlarm} />
-                                <S_AlaramBadge>{alarmCount}</S_AlaramBadge>
+                                <S_AlaramBadge onClick={handleShowAlarm}>{alarmCount}</S_AlaramBadge>
                             </S_BellIcon>
                             {showAlarm && <Alarm alarmData={alarmData} changeAlarmData={setAlarmData} />}
                         </S_BellIconWrapper>
@@ -84,13 +91,13 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
 
                 <S_BarIcon onClick={() => setIsOpen((prev) => !prev)} />
                 {isOpen && (
-                    <S_ResponseWrapper
+                    <S_ResponsiveWrapper
                         ref={outSideBar}
                         onClick={(e) => {
                             if (e.target == outSideBar.current) setIsOpen(false);
                         }}
                     >
-                        <S_ResponseMenu onClick={(e) => e.stopPropagation()}>
+                        <S_ResponsiveMenu onClick={(e) => e.stopPropagation()}>
                             {menuItems.map((item, idx) => {
                                 return (
                                     <S_MenuItem key={item.name + idx} $active={isActive === item.name}>
@@ -98,7 +105,7 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                                             to={item.to}
                                             onClick={() => {
                                                 handleClickMenu(item.name);
-                                                setIsOpen(!isOpen);
+                                                setIsOpen(false);
                                             }}
                                         >
                                             {item.name}
@@ -106,8 +113,8 @@ export default function HeaderContainer({ menuItems, handleClickMenu, isActive }
                                     </S_MenuItem>
                                 );
                             })}
-                        </S_ResponseMenu>
-                    </S_ResponseWrapper>
+                        </S_ResponsiveMenu>
+                    </S_ResponsiveWrapper>
                 )}
 
                 <S_MenuList>
@@ -196,7 +203,7 @@ const S_BarIcon = styled(FiMenu)`
         display: flex;
     }
 `;
-const S_ResponseWrapper = styled.div`
+const S_ResponsiveWrapper = styled.div`
     position: fixed;
     top: 0;
     left: 0;
@@ -205,7 +212,7 @@ const S_ResponseWrapper = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 99;
 `;
-const S_ResponseMenu = styled.ul`
+const S_ResponsiveMenu = styled.ul`
     display: none;
     position: fixed;
     top: 0;
