@@ -1,8 +1,10 @@
 import { http, HttpResponse } from 'msw';
 import { store } from '../redux/store/store';
 import { showModal } from '../redux/reducer/modalSlice';
+import { recipes } from './data/recipes';
+import { RecipeProps } from '../types/recipe';
 
-export let scrapped: string[] = [];
+export let scrapped: RecipeProps[] = [];
 
 export const scrapHandler = [
     http.post(`${import.meta.env.VITE_BASE_URL}/recipes/:recipeId/scrap`, async ({ cookies, params }) => {
@@ -29,20 +31,24 @@ export const scrapHandler = [
                     return HttpResponse.json({ code: 'Bad Request', message: 'Unauthorized' }, { status: 401 });
                 }
             }
-            const existRecipe = scrapped.some((scrap) => scrap == recipeId);
+            const existRecipe = scrapped.find((scrap) => scrap.recipeId == Number(recipeId));
 
             if (existRecipe) {
-                scrapped = scrapped.filter((scrap) => scrap != recipeId);
+                scrapped = scrapped.filter((scrap) => scrap.recipeId != Number(recipeId));
+
                 return HttpResponse.json({
                     code: 'OK',
-                    data: 'CANCELED',
+                    data: { status: 'CANCELED' },
                     message: '찜하기를 취소하였습니다.',
                 });
             } else {
-                scrapped.push(recipeId);
+                const targetRecipe = recipes.find((recipe) => recipe.recipeId == Number(recipeId));
+                if (targetRecipe) {
+                    scrapped.push(targetRecipe);
+                }
                 return HttpResponse.json({
                     code: 'OK',
-                    data: 'SCRAPED',
+                    data: { scrapData: targetRecipe, status: 'SCRAPED' },
                     message: '레시피를 찜하였습니다. 마이페이지에서 확인가능합니다. ',
                 });
             }

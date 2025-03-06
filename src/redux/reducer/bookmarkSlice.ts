@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { RecipeProps } from '../../types/recipe';
 
 interface BookmarkActionState {
     bookmark: boolean;
-    booklist: number[];
+    booklist: RecipeProps[];
 }
 const bookmarkSlice = createSlice({
     name: 'bookmark',
@@ -12,7 +13,7 @@ const bookmarkSlice = createSlice({
             state.booklist.push(action.payload);
         },
         removeBookmark: (state, action) => {
-            state.booklist = state.booklist.filter((item) => item !== action.payload);
+            state.booklist = state.booklist.filter((item) => item.recipeId !== action.payload);
         },
     },
 });

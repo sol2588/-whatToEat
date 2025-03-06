@@ -1,30 +1,23 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Modal from '../../components/Modal/Modal';
+import { useDispatch } from 'react-redux';
+import instance from '../../utils/api/instance';
 import { useModal } from '../../hooks/useModal';
 import { useUpdateForm } from '../../hooks/useUpdateForm';
 import { useGetMyRecipes } from '../../hooks/useGetMyRecipes';
 import { useGetUserInfo } from '../../hooks/useGetUserInfo';
-import { Button, Grid, Pagination, Box } from '@mui/material';
 import { useUserUpdate } from '../../hooks/useUserUpdate';
-import { useRecipeDelete } from '../../hooks/useRecipeDelete';
-import { FaRegBookmark, FaBookmark } from 'react-icons/fa6';
-import { useBookmark } from '../../hooks/useBookmark';
+import withAuth from '../../hooks/withAuth';
 import { userFormHandler } from '../../handler/userFormHandler';
 import { useDeleteUser } from '../../hooks/useDeleteUser';
-import { useDispatch, useSelector } from 'react-redux';
 import { hideModal, showModal } from '../../redux/reducer/modalSlice';
-import ToggleAlarm from '../../components/Alarm/ToggleAlarm';
-import useNotify from '../../hooks/useNotify';
-import withAuth from '../../hooks/withAuth';
-import instance from '../../utils/api/instance';
-import colors from '../../styles/colors';
+import MyScrap from './MyScrap';
+import Modal from '../../components/Modal/Modal';
+import { Button } from '@mui/material';
 import styled from 'styled-components';
-import { RootState } from '../../redux/store/store';
+import MyRecipes from './MyRecipes';
 
 function Mypage(): JSX.Element {
     const dispatch = useDispatch();
-    const marked = useSelector((state: RootState) => state.book.booklist);
     const { handleDeleteUser } = useDeleteUser();
 
     // kakao or 일반유저 확인
@@ -40,16 +33,7 @@ function Mypage(): JSX.Element {
     const { userInfo, refetchUserInfo: refetchUserInfo } = useGetUserInfo();
 
     // 스크랩, 작성 게시물
-    const { myRecipes, setMyRecipes, scrapedRecipes, totalMyRecipesPages, totalScrapedRecipesPages } = useGetMyRecipes(
-        myRecipesPage,
-        scrapedRecipesPage,
-    );
-
-    //게시물 삭제
-    const { handleMyRecipeDelete } = useRecipeDelete(setMyRecipes);
-
-    //북마크
-    const { handleClickBookmark } = useBookmark();
+    const { myRecipes, setMyRecipes, totalMyRecipesPages, totalScrapedRecipesPages } = useGetMyRecipes(myRecipesPage, scrapedRecipesPage);
 
     //유효성 검사
     const {
@@ -141,105 +125,17 @@ function Mypage(): JSX.Element {
         }
     };
 
-    const renderPlaceholderItems = () => {
-        return (
-            <div style={{ marginTop: '16px', marginLeft: '20px' }}>
-                <p>게시물이 존재하지 않습니다.</p>
-            </div>
-        );
-    };
-
-    const { notifyList } = useNotify();
-
     return (
         <S_MyContainer>
             <S_Content>
-                <S_MyScrap>
-                    <S_ScrapWrapper>
-                        <S_Subtitle>찜한 레시피</S_Subtitle>
-                        <Grid container spacing={2}>
-                            {scrapedRecipes.length > 0
-                                ? scrapedRecipes.map((scrapedRecipe) => (
-                                      <Grid item xs={12} sm={6} md={6} key={scrapedRecipe.recipeId}>
-                                          <S_MyFigure>
-                                              <S_thumbnail src={scrapedRecipe.recipeThumbnail} alt="스크랩 이미지" />
-                                              <M_Linked to={`/recipes/${scrapedRecipe.recipeId}`}>
-                                                  <S_MyFigcaption>{scrapedRecipe.recipeName}</S_MyFigcaption>
-                                              </M_Linked>
-                                              <M_BookmarkIcons
-                                                  onClick={(e) => handleClickBookmark(e, scrapedRecipe.recipeId)}
-                                                  mark={marked.includes(scrapedRecipe.recipeId)}
-                                              >
-                                                  {marked.includes(scrapedRecipe.recipeId) ? <FaBookmark /> : <FaRegBookmark />}
-                                              </M_BookmarkIcons>
-                                          </S_MyFigure>
-                                      </Grid>
-                                  ))
-                                : renderPlaceholderItems()}
-                        </Grid>
-                    </S_ScrapWrapper>
-                    <S_PagenationWrapper>
-                        {scrapedRecipes.length > 0 ? (
-                            <S_PaginationContainer>
-                                <Pagination
-                                    count={totalScrapedRecipesPages} // 스크랩 레시피 총 페이지 수
-                                    page={scrapedRecipesPage}
-                                    onChange={(_, page) => setScrapedRecipesPage(page)} // 페이지 변경
-                                    variant="outlined"
-                                    color="primary"
-                                    shape="rounded"
-                                    size="large"
-                                    sx={{ mt: 2 }}
-                                />
-                            </S_PaginationContainer>
-                        ) : (
-                            <Box></Box>
-                        )}
-                    </S_PagenationWrapper>
-                </S_MyScrap>
-
-                <S_MyPosting>
-                    <S_MyRecipeWrapper>
-                        <S_Subtitle>작성한 레시피</S_Subtitle>
-                        <Grid container spacing={2}>
-                            {myRecipes.length > 0
-                                ? myRecipes.map((myRecipe) => (
-                                      <Grid item xs={12} sm={6} md={6} key={myRecipe.myRecipeId}>
-                                          <S_MyFigure>
-                                              <S_MyRecipeToggleButton>
-                                                  {notifyList && <ToggleAlarm id={myRecipe.myRecipeId} lists={notifyList} />}
-                                              </S_MyRecipeToggleButton>
-                                              <S_button onClick={() => handleMyRecipeDelete(myRecipe.myRecipeId)}>X</S_button>
-
-                                              <S_thumbnail src={myRecipe.myRecipeThumbnail} alt="작성 레시피 이미지" />
-                                              <M_Linked to={`/recipes/${myRecipe.myRecipeId}`}>
-                                                  <S_MyFigcaption>{myRecipe.myRecipeName}</S_MyFigcaption>
-                                              </M_Linked>
-                                          </S_MyFigure>
-                                      </Grid>
-                                  ))
-                                : renderPlaceholderItems()}
-                        </Grid>
-                    </S_MyRecipeWrapper>
-                    <S_PagenationWrapper>
-                        {myRecipes.length > 0 ? (
-                            <S_PaginationContainer>
-                                <Pagination
-                                    count={totalMyRecipesPages} // 작성한 레시피 총 페이지 수
-                                    page={myRecipesPage}
-                                    onChange={(_, page) => setMyRecipesPage(page)} // 페이지 변경
-                                    variant="outlined"
-                                    color="primary"
-                                    shape="rounded"
-                                    size="large"
-                                    sx={{ mt: 2 }}
-                                />
-                            </S_PaginationContainer>
-                        ) : (
-                            <Box></Box>
-                        )}
-                    </S_PagenationWrapper>
-                </S_MyPosting>
+                <MyScrap scrapPage={scrapedRecipesPage} setScrapPage={setScrapedRecipesPage} totalPage={totalScrapedRecipesPages} />
+                <MyRecipes
+                    myRecipes={myRecipes}
+                    setMyRecipes={setMyRecipes}
+                    myRecipesPage={myRecipesPage}
+                    setMyRecipesPage={setMyRecipesPage}
+                    totalPage={totalMyRecipesPages}
+                />
             </S_Content>
 
             <S_MyInfo>
@@ -432,56 +328,11 @@ const S_Content = styled.div`
         justify-content: flex-start;
     }
 `;
-
-const S_MyScrap = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-`;
-const S_MyPosting = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-`;
-
 const S_Subtitle = styled.p`
     font-size: 22px;
     font-weight: 600;
     margin-bottom: 8px;
 `;
-
-const S_MyFigure = styled.figure`
-    position: relative;
-    background-color: #fff;
-    padding: 16px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out;
-    width: 100%;
-    max-height: 230px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    &:hover {
-        transform: translateY(-5px);
-    }
-`;
-
-const S_MyFigcaption = styled.figcaption`
-    margin-top: 8px;
-    text-align: center;
-    line-height: 22px;
-    min-height: 40px;
-    word-break: keep-all;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-`;
-
 const S_MyInfo = styled.div`
     position: sticky;
     top: 50px;
@@ -494,7 +345,6 @@ const S_MyInfo = styled.div`
         top: 0;
     }
 `;
-
 const S_MyInfoFigure = styled.figure`
     display: flex;
     flex-direction: column;
@@ -514,13 +364,6 @@ const S_ButtonWrapper = styled.div`
     display: flex;
     justify-content: space-around;
 `;
-
-const S_PaginationContainer = styled.div`
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-`;
-
 const S_ErrorMessage = styled.p<{ visible: boolean }>`
     color: red;
     font-size: 0.8rem;
@@ -529,7 +372,6 @@ const S_ErrorMessage = styled.p<{ visible: boolean }>`
     min-height: 20px;
     visibility: ${(props) => (props.visible ? 'visible' : 'hidden')};
 `;
-
 const S_Input = styled.input<{ isError: boolean }>`
     width: 400px;
     height: 45px;
@@ -539,15 +381,6 @@ const S_Input = styled.input<{ isError: boolean }>`
     font-size: 1rem;
     border: ${(props) => (props.isError ? '2px solid red' : '1px solid #ccc')};
 `;
-
-const M_BookmarkIcons = styled(Box)<{ mark: boolean }>(({ mark }) => ({
-    position: 'absolute',
-    top: '10px',
-    right: '10px',
-    color: mark ? colors[400] : 'inherit',
-    cursor: 'pointer',
-}));
-
 const ErrorMessage = styled.p<{ visible: boolean }>`
     min-height: 20px;
     margin-top: 5px;
@@ -556,56 +389,6 @@ const ErrorMessage = styled.p<{ visible: boolean }>`
     text-align: start;
     visibility: ${(props) => (props.visible ? 'visible' : 'none')}; /* 에러가 없을 때는 숨김 */
 `;
-
-const M_Linked = styled(Link)({
-    display: 'block',
-    textDecorationLine: 'none',
-    color: '#000',
-
-    '&:hover': {
-        color: colors[400],
-        cursor: 'pointer',
-    },
-});
-
-const S_thumbnail = styled.img`
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-    border-radius: 8px;
-    flex-shrink: 0;
-`;
-const S_MyRecipeToggleButton = styled.span`
-    position: absolute;
-    top: 10px;
-    left: 10px;
-`;
-const S_button = styled.button`
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    color: black;
-    border: none;
-    cursor: pointer;
-    &:hover {
-        color: ${colors[400]};
-        font-weight: bold;
-    }
-`;
-
-const S_PagenationWrapper = styled.div`
-    margin-top: auto;
-    display: flex;
-    justify-content: center;
-`;
-const S_ScrapWrapper = styled.div`
-    flex-grow: 1;
-`;
-
-const S_MyRecipeWrapper = styled.div`
-    flex-grow: 1;
-`;
-
 const S_MyinfoBtn = styled.button<{ red: boolean }>`
     width: 150px;
     height: 40px;
