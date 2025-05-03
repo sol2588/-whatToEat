@@ -27,7 +27,7 @@
 | 레시피 등록하기 | 레시피 평가하기 | 레시피 찜하기 |
 | ![레시피 등록-min](https://github.com/user-attachments/assets/75acd73e-d0d7-412c-b9bf-29fe3408c799) | ![댓글 및 평점-min](https://github.com/user-attachments/assets/b7147fd2-055f-4d12-aff4-b9025cf3f9e7) | ![스크랩](https://github.com/user-attachments/assets/45ca10f7-be1d-4c18-b6e5-e9ecab8c62d1) |
 | 추천 레시피 | 댓글 알림 받기 | 모니터링 |
-| ![스크랩](https://github.com/user-attachments/assets/45ca10f7-be1d-4c18-b6e5-e9ecab8c62d1) | ![알림](https://github.com/user-attachments/assets/92b3458f-4506-4b8b-9ea9-4a1b5c625560) | ![모니터링](https://github.com/user-attachments/assets/90d17d7a-b093-4dd4-bbee-9d858e61b2f0) |
+| ![스크랩](https://github.com/user-attachments/assets/45ca10f7-be1d-4c18-b6e5-e9ecab8c62d1) |  | ![모니터링](https://github.com/user-attachments/assets/90d17d7a-b093-4dd4-bbee-9d858e61b2f0) |
 
 # ERD
 ![jamanchu-erd](https://github.com/user-attachments/assets/9cefdef3-1f6e-42f5-98e3-d02be66fe339)
