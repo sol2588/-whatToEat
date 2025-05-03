@@ -21,13 +21,14 @@
 
 # Feature
 
+
 | 전체 레시피 살펴보기 | 인기 레시피 살펴보기 | 레시피 검색 |
 |----------------------|----------------------|------|
 | ![전체 레시피 조회-min](https://github.com/user-attachments/assets/98868f2f-a3fe-4224-81db-68d76658ae5a) | ![인기 레시피 조회-min](https://github.com/user-attachments/assets/1f3931e7-b029-4e2c-99a6-cfe982cc6857) | ![검색](https://github.com/user-attachments/assets/195dc7f7-5f67-46d0-81bb-dfb8d9c8b3cc) |
 | 레시피 등록하기 | 레시피 평가하기 | 레시피 찜하기 |
 | ![레시피 등록-min](https://github.com/user-attachments/assets/75acd73e-d0d7-412c-b9bf-29fe3408c799) | ![댓글 및 평점-min](https://github.com/user-attachments/assets/b7147fd2-055f-4d12-aff4-b9025cf3f9e7) | ![스크랩](https://github.com/user-attachments/assets/45ca10f7-be1d-4c18-b6e5-e9ecab8c62d1) |
 | 추천 레시피 | 댓글 알림 받기 | 모니터링 |
-| ![스크랩](https://github.com/user-attachments/assets/45ca10f7-be1d-4c18-b6e5-e9ecab8c62d1) |  | ![모니터링](https://github.com/user-attachments/assets/90d17d7a-b093-4dd4-bbee-9d858e61b2f0) |
+| ![스크랩](https://github.com/user-attachments/assets/45ca10f7-be1d-4c18-b6e5-e9ecab8c62d1) | ![alarm-ezgif com-resize](https://github.com/user-attachments/assets/c8df3128-da45-4e77-9b58-3f52485525fb) | ![모니터링](https://github.com/user-attachments/assets/90d17d7a-b093-4dd4-bbee-9d858e61b2f0) |
 
 # ERD
 ![jamanchu-erd](https://github.com/user-attachments/assets/9cefdef3-1f6e-42f5-98e3-d02be66fe339)
