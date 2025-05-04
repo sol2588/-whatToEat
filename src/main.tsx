@@ -13,17 +13,18 @@ import './styles/App.css';
 const queryClient = new QueryClient({
     queryCache: new QueryCache({
         onError: (error: any) => {
+            console.error('쿼리 에러 발생:', error);
             store.dispatch(
                 showModal({
                     isOpen: true,
-                    content: error.data.message || '알 수 없는 에러가 발생했습니다. 잠시후 다시 시도하여주시기 바랍니다.',
+                    content: error?.data?.message ?? '알 수 없는 에러가 발생했습니다. 잠시후 다시 시도하여주시기 바랍니다.',
                     onConfirm: null,
                 }),
             );
         },
     }),
 });
-worker.start({ onUnhandledRequest: 'bypass' });
+worker.start({ onUnhandledRequest: 'warn' });
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
