@@ -19,6 +19,7 @@ const getTypeRecipes = async (type: string | null, offset: number, ingredients?:
 
     if (response.data.code !== 'OK') {
         console.log('response:  ', response);
+        console.log('BASE_URL:', import.meta.env.VITE_BASE_URL);
         throw new Error(response.data.message || '레시피 조회에 실패했습니다. 잠시 후 다시 시도해주세요');
     }
 
