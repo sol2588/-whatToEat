@@ -108,7 +108,7 @@ export const recipeHandlers = [
             });
         } catch (err) {
             return HttpResponse.json({
-                message: ', 검색 중 작은 문제가 발생했습니다. 잠시 후 다시 시도하여 주시기 바랍니다.',
+                message: ', 검색 중 문제가 발생했습니다. 잠시 후 다시 시도하여 주시기 바랍니다.',
             });
         }
     }),
