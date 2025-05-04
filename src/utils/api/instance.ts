@@ -16,6 +16,14 @@ instance.interceptors.request.use(
     // request 서버 전송 전 처리되는 코드로 config는 http 요청 시 사용할 설정과 데이터를 포함
     (config) => {
         const token = store.getState().user.value.token;
+        const fullUrl = axios.getUri(config);
+        console.log('요청 URL:', fullUrl);
+
+        console.log('--- 📡 API 요청 시작 ---');
+        console.log('요청 URL:', fullUrl);
+        console.log('환경 BASE_URL:', import.meta.env.VITE_BASE_URL);
+        console.log('현재 Token:', token ? token.slice(0, 10) + '...' : '없음');
+        console.log('--- 📡 API 요청 끝 ---');
         if (token) {
             config.headers['access-token'] = `Bearer ${token}`;
         }
