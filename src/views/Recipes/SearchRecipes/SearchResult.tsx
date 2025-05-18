@@ -12,7 +12,7 @@ import NoData from '../../../components/Loading/NoData.js';
 
 export default function SearchResult(): JSX.Element {
     const dispatch = useDispatch();
-    const { searchParams, recipes, setRecipes } = useFilterContext();
+    const { searchParams, actions, recipes, setRecipes } = useFilterContext();
     const { refetch, data, isFetching, hasNextPage, fetchNextPage } = useGetRecipes(
         'search',
         searchParams.ingredientsList,
@@ -20,23 +20,30 @@ export default function SearchResult(): JSX.Element {
         searchParams.level,
     );
 
+    // 초기 data fetching
     useEffect(() => {
         if (searchParams.canFetchData) {
-            const getRecipes = async () => await refetch();
+            const getRecipes = async () => {
+                await refetch();
+                actions.updateSearchParams('canFetchData', false);
+            };
             getRecipes();
-            if (!data?.pages[0].totalRecipes) {
-                dispatch(showModal({ isOpen: true, content: '일치하는 레시피가 없습니다. 다른 조건으로 검색해주세요.', onConfirm: null }));
-            }
-            setRecipes(
-                data?.pages.flatMap((page) =>
-                    page.recipes.map((recipe: RecipeProps) => ({
-                        ...recipe,
-                        recipeLevel: convertLevel(recipe.recipeLevel),
-                        recipeCookingTime: convertTime(recipe.recipeCookingTime),
-                    })),
-                ) || [],
-            );
         }
+    }, [searchParams.canFetchData, refetch, actions]);
+
+    useEffect(() => {
+        if (!data?.pages[0].totalRecipes) {
+            dispatch(showModal({ isOpen: true, content: '일치하는 레시피가 없습니다. 다른 조건으로 검색해주세요.', onConfirm: null }));
+        }
+        setRecipes(
+            data?.pages.flatMap((page) =>
+                page.recipes.map((recipe: RecipeProps) => ({
+                    ...recipe,
+                    recipeLevel: convertLevel(recipe.recipeLevel),
+                    recipeCookingTime: convertTime(recipe.recipeCookingTime),
+                })),
+            ) || [],
+        );
     }, [data, refetch, searchParams]);
 
     const handleObserver = async (entry: IntersectionObserverEntry) => {
