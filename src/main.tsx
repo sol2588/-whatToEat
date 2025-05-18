@@ -13,7 +13,6 @@ import './styles/App.css';
 const queryClient = new QueryClient({
     queryCache: new QueryCache({
         onError: (error: any) => {
-            console.error('쿼리 에러 발생:', error);
             store.dispatch(
                 showModal({
                     isOpen: true,
@@ -24,7 +23,8 @@ const queryClient = new QueryClient({
         },
     }),
 });
-worker.start({ onUnhandledRequest: 'warn' });
+
+worker.start({ onUnhandledRequest: 'bypass' });
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
