@@ -32,7 +32,8 @@ export function useGetRecipes(type: string = 'all', ingredients?: string[], time
         getNextPageParam: (lastPage, allPages) => {
             return allPages.length * 15 < lastPage.totalRecipes ? allPages.length : null;
         },
-        staleTime: 1000 * 60 * 5,
+        staleTime: type === 'recommended' ? 0 : 1000 * 60 * 5,
+        gcTime: type === 'recommended' ? 0 : 1000 * 60 * 10,
     });
 
     return { refetch, data, isLoading, isFetching, isError, error, hasNextPage, fetchNextPage, ingredients, time, level };
